@@ -1,4 +1,13 @@
 :root {
+    --primary-color: #F1F4F9;
+    --secondary-color: #8D8D8D;
+    --link: #3F70ED;
+
+    --border-color: #D8D9DB;
+    --label-color: #656565;
+}
+
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -15,16 +24,16 @@ body {
 }
 
 .card {
-    height: 55%;
+    height: 60%;
     background-color: #fff;
 }
 
 input:not([type="checkbox"]) {
-    background: #F1F4F9;
+    /* background: var(--primary-color); */
     padding: 10px;
     border-radius: 10px;
 
-    border: 1px solid #D8D9DB;
+    border: 1px solid var(--border-color);
     outline: none;
 
     color: #191919;
@@ -32,7 +41,7 @@ input:not([type="checkbox"]) {
 }
 
 label {
-    color: #656565;
+    color: var(--label-color);
     font-size: 14px;
 }
 
@@ -41,10 +50,10 @@ label {
 }
 
 input[type="checkbox"] {
-    background: #F1F4F9;
-    border: 1px solid #D8D9DB;
+    background: var(--primary-color);
+    border: 1px solid var(--border-color);
     outline: none;
-    color: #F1F4F9;
+    color: var(--primary-color);
     margin: 0px 5px;
 }
 
@@ -65,7 +74,7 @@ button {
     left: 0; /* Start from the left */
     width: 0; /* Initially no width */
     height: 2px; /* Underline thickness */
-    background-color: #3F70ED; /* Color of the underline */
+    background-color: var(--link); /* Color of the underline */
     transition: width 0.3s ease; /* Smooth transition */
 }
 
@@ -88,3 +97,60 @@ button {
     pointer-events: none;
 }
 
+
+/* 
+
+    LINE SEPARATOR
+
+*/
+
+.line__separator .line {
+    content: '';
+    height: 1px;
+    background-color: var(--border-color);
+    width: 45%;
+}
+
+.line__separator #or__separator {
+    color: var(--secondary-color);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
+/* 
+
+    OAUTH
+
+*/
+
+.oauth__login {
+    padding: 12px 25px;
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+
+    transition: 300ms all;
+}
+
+.oauth__login:hover {
+    background-color: var(--primary-color);
+}
+
+.oauth__login:hover .oauth__button__contents {
+    color: #5a5a5a;
+}
+
+.oauth__login .oauth__icon {
+    height: 20px;
+    margin-right: 12px;
+    min-width: 20px;
+    width: 20px;
+}
+
+.oauth__button__contents {
+    font-size: 14px;
+}
+
+.oauth__login .oauth__icon > img {
+    height: 20px;
+}
