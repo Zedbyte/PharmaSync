@@ -15,7 +15,7 @@ body {
 }
 
 .card {
-    height: 60%;
+    height: 55%;
     background-color: #fff;
 }
 
@@ -53,4 +53,24 @@ input[type="checkbox"] {
 button {
     padding: 10px;
     border-radius: 7px;
+}
+
+.forgot__password__link {
+    font-size: 15px;
+    position: relative;
+}
+
+.forgot__password__link::before {
+    content: ''; /* Add content for pseudo-element */
+    position: absolute; /* Position pseudo-element */
+    bottom: -2px; /* Adjust to your preference */
+    left: 0; /* Start from the left */
+    width: 0; /* Initially no width */
+    height: 2px; /* Underline thickness */
+    background-color: #3F70ED; /* Color of the underline */
+    transition: width 0.3s ease; /* Smooth transition */
+}
+
+.forgot__password__link:hover::before {
+    width: 100%; /* Expand width to create underline effect */
 }

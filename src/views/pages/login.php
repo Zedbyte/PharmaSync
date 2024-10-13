@@ -30,14 +30,14 @@
                         <input type="password" name="password" placeholder="Password">
                     </div>
 
-                    <div class="mb-7 flex justify-between">
+                    <div class="mb-10 flex justify-between">
                         <div class="flex items-center">
                             <input type="checkbox" name="remember" id="remember__box">
                             <label for="remember__box">Remember me</label>
                         </div>
 
                         <div class="">
-                            <p>Forget Password</p>
+                            <a href="#" class="forgot__password__link text-[#3F70ED] font-medium">Forget Password</a>
                         </div>
                     </div>
 
