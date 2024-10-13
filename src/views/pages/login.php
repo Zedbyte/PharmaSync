@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../../../public/assets/css/output.css">
     <link rel="stylesheet" href="../../../public/assets/css/login.css">
     <link rel="stylesheet" href="../../../public/assets/css/main.css">
+
+    <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
 </head>
 <body class="bg-white md:bg-[#F1F4F9]">
     <main class="grid grid-cols-1 md:grid-cols-12 h-full">
@@ -25,10 +27,16 @@
                         <input type="email" name="email" placeholder="Email">
                     </div>
 
-                    <div class="flex flex-col mb-2">
+                    <div class="flex flex-col mb-2 relative">
                         <label class="input__box" for="password">Password</label>
-                        <input type="password" name="password" placeholder="Password">
+                        <div>
+                            <input type="password" name="password" id="password" placeholder="Password" class="p-2 border border-gray-300 rounded w-full">
+                            <span id="togglePassword" class="eye__container absolute right-3 top-7 cursor-pointer disabled opacity-50">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </span>
+                        </div> 
                     </div>
+
 
                     <div class="mb-10 flex justify-between">
                         <div class="flex items-center">
@@ -37,7 +45,7 @@
                         </div>
 
                         <div class="">
-                            <a href="#" class="forgot__password__link text-[#3F70ED] font-medium">Forget Password</a>
+                            <a href="#" class="forgot__password__link text-[#3F70ED] font-medium">Forget Password?</a>
                         </div>
                     </div>
 
@@ -54,6 +62,8 @@
         </div>
     </main>
 
+
+    <script src="../../../public/assets/js/login.js"></script>
 
 </body>
 </html>
