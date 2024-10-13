@@ -4,7 +4,7 @@
     --link: #3F70ED;
 
     --border-color: #D8D9DB;
-    --label-color: #656565;
+    --label-color: #8D8D8D;
 }
 
 * {
@@ -24,8 +24,10 @@ body {
 }
 
 .card {
-    height: 60%;
+    height: 70%;
     background-color: #fff;
+
+    position: relative;
 }
 
 input:not([type="checkbox"]) {
@@ -47,6 +49,7 @@ label {
 
 .input__box {
     margin-left: 6px;
+    margin-bottom: 10px;
 }
 
 input[type="checkbox"] {
@@ -88,7 +91,7 @@ button {
 
 .eye__container {
     color: #191919;
-    font-size: 20px;
+    font-size: 17px;
 }
 
 
@@ -151,6 +154,57 @@ button {
     font-size: 14px;
 }
 
+@media (max-width: 1500px) {
+    .oauth__login {
+        padding: 10px;
+    }
+
+    .oauth__button__contents {
+        font-size: 13px;
+    }
+
+    .oauth__login .oauth__icon {
+        margin-right: 3px;
+    }
+}
+
 .oauth__login .oauth__icon > img {
     height: 20px;
+}
+
+
+/* 
+
+    HERO CONTAINER
+
+*/
+
+.hero__container {
+    padding: 30px 30px;
+}
+
+.img__container {
+    height: 100%;
+    width: 100%;
+    background-color: #3f70ed;
+
+    border-radius: 20px;
+}
+
+
+/* 
+
+    CARD FOOT
+
+*/
+
+.card__foot {
+    display: flex;
+    justify-content: center;
+    margin-top: calc(10%);
+}
+
+.card__foot p {
+    color: var(--label-color);
+    text-align: center;
 }
