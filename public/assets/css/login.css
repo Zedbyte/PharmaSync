@@ -5,5 +5,52 @@
 }
 
 body {
-    background-color: #F1F4F9;
+    height: 100dvh;
+}
+
+.card__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    height: 60%;
+    background-color: #fff;
+}
+
+input:not([type="checkbox"]) {
+    background: #F1F4F9;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+
+    border: 1px solid #D8D9DB;
+    outline: none;
+
+    color: #191919;
+    font-size: 15px;
+}
+
+label {
+    color: #656565;
+    font-size: 14px;
+}
+
+.input__box {
+    margin-left: 6px;
+}
+
+input[type="checkbox"] {
+    background: #F1F4F9;
+    border: 1px solid #D8D9DB;
+    outline: none;
+    color: #F1F4F9;
+    margin: 0px 5px;
+}
+
+button {
+    padding: 10px;
+    border-radius: 7px;
 }
