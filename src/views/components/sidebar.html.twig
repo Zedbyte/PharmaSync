@@ -1,0 +1,101 @@
+<!-- <div class="sidebar__container">
+    <ul class="sidebar__ul">
+
+        <li class="nav__item">
+            <a>
+                <ion-icon name="grid-outline"></ion-icon>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li>FINANCES</li>
+
+        <li class="nav__item">
+            <a>
+                <ion-icon name="grid-outline"></ion-icon>
+                <span>Purchases</span>
+            </a>
+        </li>
+    </ul>
+
+</div> -->
+
+<nav class="sidebar">
+    <ul>
+        <!-- Dashboard -->
+        <li class="nav__item">
+            <a href="#" class="nav__link">Dashboard</a>
+        </li>
+
+        <li>FINANCES</li>
+
+        <!-- Purchases (Collapsible) -->
+        <li class="nav__item">
+            <button class="nav__link collapsible" onclick="toggleCollapse('purchases')">
+                Purchases
+                <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
+            </button>
+            <ul id="purchases" class="nav__collapse hidden">
+                <li class="nav__subitem">
+                    <a href="#" class="nav__link">Material</a>
+                </li>
+                <li class="nav__subitem">
+                    <a href="#" class="nav__link">Medicine</a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Orders -->
+        <li class="nav__item">
+            <a href="#" class="nav__link">Orders</a>
+        </li>
+
+        <!-- Inventory (Collapsible) -->
+        <li class="nav__item">
+            <button class="nav__link collapsible" onclick="toggleCollapse('inventory')">
+                Inventory
+                <span class="arrow"></span>
+            </button>
+            <ul id="inventory" class="nav__collapse hidden">
+                <li class="nav__subitem">
+                    <a href="#" class="nav__link">Manufactured</a>
+                </li>
+                <li class="nav__subitem">
+                    <a href="#" class="nav__link">Raw Materials</a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Customers -->
+        <li class="nav__item">
+            <a href="#" class="nav__link">Medicine</a>
+        </li>
+
+        <!-- Customers -->
+        <li class="nav__item">
+            <a href="#" class="nav__link">Customers</a>
+        </li>
+
+        <!-- Users -->
+        <li class="nav__item">
+            <a href="#" class="nav__link">Users</a>
+        </li>
+
+        <!-- Payroll -->
+        <li class="nav__item">
+            <a href="#" class="nav__link">Payroll</a>
+        </li>
+
+        <!-- Settings -->
+        <li class="nav__item">
+            <a href="#" class="nav__link">Settings</a>
+        </li>
+    </ul>
+</nav>
+
+<script>
+    function toggleCollapse(id) {
+        const element = document.getElementById(id);
+        element.classList.toggle('hidden');
+    }
+</script>

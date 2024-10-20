@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PharmaSync{% endblock %}</title>
+
+    <link rel="stylesheet" href="../../../public/assets/css/output.css">
+    <link rel="stylesheet" href="../../../public/assets/css/main.css">
+    
+    <link rel="stylesheet" href="../../../public/assets/css/sidebar.css">
+    <link rel="stylesheet" href="../../../public/assets/css/root.css">
+
+</head>
+<body>
+
+    <header>
+        <nav>
+            {% include 'navbar.html.twig' %}
+        </nav>
+    </header>
+
+    <main class="grid grid-cols-1 2xl:grid-cols-12 h-full">
+        <aside class="sidebar__container 2xl:col-span-2">
+            {% include 'sidebar.html.twig' %}
+        </aside> 
+
+        <section class="panel__container 2xl:col-span-10">
+            {% block body %}
+            <!-- Page content will go here -->
+            {% endblock %}
+        </section>
+    </main>
+
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

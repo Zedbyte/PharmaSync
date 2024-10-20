@@ -1,0 +1,51 @@
+/* :root {
+    --primary-color: #fdfdfd;
+    --item-color: #444444;
+}
+
+.sidebar__container {
+    background: var(--primary-color);
+}
+
+.sidebar__container > .sidebar__ul {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar__container > .sidebar__ul .nav__item > a {
+    display: flex;
+    align-items: center;
+
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--item-color);
+
+    transition: 0.3;
+    
+    padding: 10px 0 10px 40px;
+}
+
+.sidebar__container > .sidebar__ul .nav__item > a ion-icon {
+    font-size: 17px;
+    margin-right: 8px;
+    line-height: 0;
+} */
+
+.nav__item {
+    padding: 10px;
+}
+.nav__link {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+.collapsible .arrow {
+    transform: rotate(0deg);
+    transition: transform 0.2s ease;
+}
+.collapsible.active .arrow {
+    transform: rotate(90deg);
+}
+.hidden {
+    display: none;
+}

@@ -2,7 +2,7 @@
 
 namespace App\controllers;
 
-class LoginController {
+class DashboardController {
     protected $twig;
 
     // Constructor to pass Twig environment for rendering templates
@@ -11,6 +11,6 @@ class LoginController {
     }
 
     function display() {
-        echo $this->twig->render('login.html.twig');
+        echo $this->twig->render('dashboard.html.twig');
     }
 }
