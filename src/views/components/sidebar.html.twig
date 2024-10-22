@@ -34,7 +34,7 @@
 
         <!-- Purchases (Collapsible) -->
         <li class="nav__item">
-            <button class="nav__link nav__link_button collapsible justify-between" onclick="toggleCollapse('purchases')">
+            <button class="nav__link nav__link_button collapsible justify-between" onclick="toggleCollapse('purchases', this)">
                 <span class="flex items-center">  
                     <ion-icon name="cash-outline"></ion-icon>
                     <span>Purchases</span>
@@ -70,7 +70,7 @@
 
         <!-- Inventory (Collapsible) -->
         <li class="nav__item">
-            <button class="nav__link nav__link_button collapsible justify-between" onclick="toggleCollapse('inventory')">
+            <button class="nav__link nav__link_button collapsible justify-between" onclick="toggleCollapse('inventory', this)">
                 <span class="flex items-center">
                     <ion-icon name="cube-outline"></ion-icon>
                     <span>Inventory</span>
@@ -95,7 +95,7 @@
 
         <!-- Medicine -->
         <li class="nav__item">
-            <button class="nav__link nav__link_button collapsible justify-between" onclick="toggleCollapse('medicine')">
+            <button class="nav__link nav__link_button collapsible justify-between" onclick="toggleCollapse('medicine', this)">
                 <span class="flex items-center">
                     <ion-icon name="heart-circle-outline"></ion-icon>
                     <span>Medicine</span>
@@ -153,8 +153,9 @@
 </nav>
 
 <script>
-    function toggleCollapse(id) {
-        const element = document.getElementById(id);
-        element.classList.toggle('hidden');
+    function toggleCollapse(id, button) {
+        const collapseSection = document.getElementById(id);
+        collapseSection.classList.toggle('hidden');
+        button.classList.toggle('expanded');
     }
-</script>
+    </script>
