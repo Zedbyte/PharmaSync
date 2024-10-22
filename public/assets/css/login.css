@@ -5,6 +5,7 @@
 
     --border-color: #D8D9DB;
     --label-color: #8D8D8D;
+    --footer-text: #c9c9c9;
 }
 
 body {
@@ -195,10 +196,11 @@ button {
 .card__foot {
     display: flex;
     justify-content: center;
-    margin-top: calc(10%);
+    margin-top: calc(15%);
 }
 
 .card__foot p {
-    color: var(--label-color);
+    color: var(--footer-text);
     text-align: center;
+    font-size: 10px;
 }

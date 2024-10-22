@@ -1,3 +1,15 @@
+:root {
+    --primary-color: #F1F4F9;
+}
+
 body {
-    height: 100dvh;
+    height: calc(100dvh - 90px); /*Navbar height*/
+    overflow: hidden;
+}
+
+.panel__container {
+    background-color: var(--primary-color);
+    border-radius: 20px 0 0 0;
+
+    padding: 30px 20px;
 }

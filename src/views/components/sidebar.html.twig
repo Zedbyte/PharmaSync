@@ -21,74 +21,133 @@
 </div> -->
 
 <nav class="sidebar">
-    <ul>
+    <ul class="sidebar__ul">
         <!-- Dashboard -->
         <li class="nav__item">
-            <a href="#" class="nav__link">Dashboard</a>
+            <a href="#" class="nav__link">
+                <ion-icon name="grid-outline"></ion-icon>
+                <span class="nav__name">Dashboard</span>
+            </a>
         </li>
 
-        <li>FINANCES</li>
+        <li class="nav__label">FINANCES</li>
 
         <!-- Purchases (Collapsible) -->
         <li class="nav__item">
-            <button class="nav__link collapsible" onclick="toggleCollapse('purchases')">
-                Purchases
+            <button class="nav__link nav__link_button collapsible justify-between" onclick="toggleCollapse('purchases')">
+                <span class="flex items-center">  
+                    <ion-icon name="cash-outline"></ion-icon>
+                    <span>Purchases</span>
+                </span>
                 <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
             </button>
             <ul id="purchases" class="nav__collapse hidden">
                 <li class="nav__subitem">
-                    <a href="#" class="nav__link">Material</a>
+                    <a href="#" class="nav__link_subitem">
+                        <ion-icon name="water-outline"></ion-icon>
+                        <span>Material</span>
+                    </a>
                 </li>
                 <li class="nav__subitem">
-                    <a href="#" class="nav__link">Medicine</a>
+                    <a href="#" class="nav__link_subitem">
+                        <ion-icon name="pulse-outline"></ion-icon>
+                        <span>Medicine</span>
+                    </a>
                 </li>
             </ul>
         </li>
 
         <!-- Orders -->
         <li class="nav__item">
-            <a href="#" class="nav__link">Orders</a>
+            <a href="#" class="nav__link">
+                <ion-icon name="list-circle-outline"></ion-icon>
+                <span>Orders</span>
+            </a>
         </li>
+
+
+        <li class="nav__label">STORAGE</li>
 
         <!-- Inventory (Collapsible) -->
         <li class="nav__item">
-            <button class="nav__link collapsible" onclick="toggleCollapse('inventory')">
-                Inventory
-                <span class="arrow"></span>
+            <button class="nav__link nav__link_button collapsible justify-between" onclick="toggleCollapse('inventory')">
+                <span class="flex items-center">
+                    <ion-icon name="cube-outline"></ion-icon>
+                    <span>Inventory</span>
+                </span>
+                <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
             </button>
             <ul id="inventory" class="nav__collapse hidden">
                 <li class="nav__subitem">
-                    <a href="#" class="nav__link">Manufactured</a>
+                    <a href="#" class="nav__link_subitem">
+                        <ion-icon name="flask-outline"></ion-icon>
+                        <span>Manufactured</span>
+                    </a>
                 </li>
                 <li class="nav__subitem">
-                    <a href="#" class="nav__link">Raw Materials</a>
+                    <a href="#" class="nav__link_subitem">
+                        <ion-icon name="leaf-outline"></ion-icon>
+                        <span>Raw Materials</span>
+                    </a>
                 </li>
             </ul>
         </li>
 
-        <!-- Customers -->
+        <!-- Medicine -->
         <li class="nav__item">
-            <a href="#" class="nav__link">Medicine</a>
+            <button class="nav__link nav__link_button collapsible justify-between" onclick="toggleCollapse('medicine')">
+                <span class="flex items-center">
+                    <ion-icon name="heart-circle-outline"></ion-icon>
+                    <span>Medicine</span>
+                </span>
+                <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
+            </button>
+            <ul id="medicine" class="nav__collapse hidden">
+                <li class="nav__subitem">
+                    <a href="#" class="nav__link_subitem">
+                        <ion-icon name="create-outline"></ion-icon>
+                        <span>Categories</span>
+                    </a>
+                </li>
+            </ul>
         </li>
+
+        <li class="nav__label">CUSTOMERS</li>
 
         <!-- Customers -->
         <li class="nav__item">
-            <a href="#" class="nav__link">Customers</a>
+            <a href="#" class="nav__link">
+                <ion-icon name="people-outline"></ion-icon>
+                <span>Customers</span>
+            </a>
         </li>
+
+        <li class="nav__label">USERS</li>
 
         <!-- Users -->
         <li class="nav__item">
-            <a href="#" class="nav__link">Users</a>
+            <a href="#" class="nav__link">
+                <ion-icon name="person-outline"></ion-icon>
+                <span>Users</span>
+            </a>
         </li>
 
         <!-- Payroll -->
         <li class="nav__item">
-            <a href="#" class="nav__link">Payroll</a>
+            <a href="#" class="nav__link">
+                <ion-icon name="clipboard-outline"></ion-icon>
+                <span>Payroll</span>
+            </a>
         </li>
+
+        <li class="nav__label">CONFIGURATIONS</li>
 
         <!-- Settings -->
         <li class="nav__item">
-            <a href="#" class="nav__link">Settings</a>
+            <a href="#" class="nav__link">
+                <ion-icon name="settings-outline"></ion-icon>
+                <span>Settings</span>
+            </a>
         </li>
     </ul>
 </nav>
