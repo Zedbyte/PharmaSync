@@ -1,4 +1,12 @@
 <div class="navbar__child_container grid grid-cols-12">
+
+    <!-- Add a toggle button for mobile view -->
+    <section class="toggle__container col-span-1 lg:hidden flex justify-center items-center">
+        <button class="sidebar__toggle dark:text-white flex items-center">
+            <ion-icon name="menu-outline"></ion-icon>
+        </button>
+    </section>
+
     <section class="logo__container col-span-4
     lg:col-span-2 flex justify-center items-center">
         <a href='/dashboard' class="dark:text-white spacing">
@@ -8,19 +16,22 @@
 
     <section class="search__container col-span-4 lg:col-span-8">
         <form> 
-            <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <div class="relative flex justify-end md:block">
+                <button class="absolute w-7 inset-y-0 end-3 md:start-0 flex items-center ps-3">
                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
-                </div>
-                <input type="search" id="search" class="block w-full 2xl:w-7/12 transition-all duration-300 ease-in-out p-4 ps-10 rounded-full text-sm text-gray-900 bg-[#F1F4F9] dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white outline-none" placeholder="Search here" required />
+                </button>
+                <input type="text" id="search" class="block w-3/12 focus:w-full md:w-full 
+                2xl:w-7/12 2xl:focus:w-7/12 
+                transition-all duration-300 ease-in-out 
+                py-3 md:py-4 px-4 ps-8 md:ps-10 rounded-full 
+                text-sm text-gray-900 bg-[#F1F4F9] dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white outline-none" placeholder="Search here" required />
             </div>
         </form>
     </section>
 
-    <section class="profile__container col-span-4 lg:col-span-2 flex justify-evenly items-center">
+    <section class="profile__container col-span-3 lg:col-span-2 flex justify-evenly items-center">
         <!-- Notification Container (30% width) -->
         <div class="notification__container hidden xl:!block
         bg-[#F1F4F9] dark:bg-gray-700 p-4 rounded-xl">

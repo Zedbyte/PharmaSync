@@ -25,3 +25,13 @@ body {
 
     padding: 30px 20px;
 }
+
+@media (max-width: 1200px) {
+    .sidebar__container {
+        position: absolute !important;
+    }
+
+    .panel__container {
+        width: 100vw !important;
+    }
+}
