@@ -4,7 +4,8 @@
     --nav-label: #444444;
     --hover-primary: #D1F7FF;
     --hover-text: #2998FF;
-    --subitem-color: #616161;
+    --subitem-color: #2e2e2e;
+    --separator-color: #D8DBE1;
 }
 
 
@@ -78,7 +79,7 @@
     border-radius: 4px;
 
     font-size: 17px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--item-color);
 
     transition: all 200ms linear;
@@ -132,7 +133,7 @@
 
 
 .nav__collapse .nav__subitem {
-    margin-left: 20px;
+    margin-left: 25px;
 }
 
 .nav__collapse .nav__subitem > a {
@@ -149,14 +150,14 @@
     border-radius: 4px;
 
     font-size: 17px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--item-color);
 
     transition: all 200ms linear;
 }
 
 .nav__subitem .nav__link_subitem ion-icon {
-    font-size: 16px;
+    font-size: 18px;
     margin-right: 10px;
 }
 
@@ -182,7 +183,7 @@
     background-color: transparent;
 }
 
-.inventory-label {
+.expanded__label {
     color: inherit;
 }
 
@@ -193,9 +194,16 @@
 }
 
 .nav__collapse {
-    border-radius: 4px;
+    border-radius: 0px;
 }
 
-.nav__link_button.expanded .inventory-label {
+.nav__link_button.expanded .expanded__label {
     color: #939393;
+}
+
+.nav__collapse .separator__line {
+    height: 1px;
+    width: 90%;
+    margin: 0 auto;
+    background-color: var(--separator-color);
 }
