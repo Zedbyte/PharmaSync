@@ -27,6 +27,12 @@ body {
 }
 
 @media (max-width: 1200px) {
+    .panel__container {
+        border-radius: 0px 0 0 0;
+    }
+}
+
+@media (max-width: 1200px) {
     .sidebar__container {
         position: absolute !important;
     }

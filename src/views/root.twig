@@ -22,12 +22,12 @@
         </nav>
     </header>
 
-    <main class="grid grid-cols-1 2xl:grid-cols-12 h-full">
-        <aside class="sidebar__container left 2xl:col-span-2 dark:bg-slate-900 ">
+    <main class="grid grid-cols-1 xl:grid-cols-12 h-full">
+        <aside class="sidebar__container left xl:col-span-2 dark:!bg-slate-900 ">
             {% include 'sidebar.html.twig' %}
         </aside> 
 
-        <section class="panel__container 2xl:col-span-10">
+        <section class="panel__container xl:col-span-10">
             {% block body %}
             <!-- Page content will go here -->
             {% endblock %}
@@ -37,7 +37,7 @@
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script> 
-
     <script src="../../public/assets/js/sidebar.js"></script>
+    <script src="../../../public/assets/js/theme.js"></script>
 </body>
 </html>
