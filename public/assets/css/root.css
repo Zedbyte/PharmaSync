@@ -1,5 +1,17 @@
 :root {
     --primary-color: #F1F4F9;
+    
+    --sidebar-primary-color: #fdfdfd;
+    --item-color: #2e2e2e;
+    --nav-label: #444444;
+    --hover-primary: #D1F7FF;
+    --hover-text: #2998FF;
+
+    --subitem-bg-color: #F1F4F9;
+    --separator-color: #D8DBE1;
+
+    --dark-hover-primary: #7655fa;
+    --dark-hover-text: #704dfd;
 }
 
 body {

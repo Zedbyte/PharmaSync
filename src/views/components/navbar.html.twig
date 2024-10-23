@@ -1,11 +1,12 @@
 <div class="navbar__child_container grid grid-cols-12">
-    <section class="logo__container col-span-2 flex justify-center items-center">
-        <a href='/dashboard' class="dark:text-white">
+    <section class="logo__container col-span-4
+    lg:col-span-2 flex justify-center items-center">
+        <a href='/dashboard' class="dark:text-white spacing">
             Pharma<span class="text-[#00CFFE] dark:text-purple-600">Sync</span>
         </a>
     </section>
 
-    <section class="search__container col-span-8">
+    <section class="search__container col-span-4 lg:col-span-8">
         <form> 
             <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative">
@@ -14,18 +15,30 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
                 </div>
-                <input type="search" id="search" class="block w-4/12 p-4 ps-10 text-sm text-gray-900 rounded-xl bg-[#F1F4F9] dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white outline-none" placeholder="Search here" required />
+                <input type="search" id="search" class="block w-full 2xl:w-7/12 transition-all duration-300 ease-in-out p-4 ps-10 rounded-full text-sm text-gray-900 bg-[#F1F4F9] dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white outline-none" placeholder="Search here" required />
             </div>
         </form>
     </section>
 
-    <section class="profile__container col-span-2">
-        <div>
-            Notification
+    <section class="profile__container col-span-4 lg:col-span-2 flex justify-evenly items-center">
+        <!-- Notification Container (30% width) -->
+        <div class="notification__container hidden xl:!block
+        bg-[#F1F4F9] dark:bg-gray-700 p-4 rounded-xl">
+            <div class="icon__container flex justify-center items-center h-full">
+                <ion-icon name="notifications-outline" class="text-gray-500 dark:text-[#fdfdfd]"></ion-icon>
+            </div>
         </div>
 
-        <div>
-            Picture
+        <!-- Image Container (70% width) -->
+        <div class="image__container flex flex-grow-[0.7] justify-center items-center">
+            <div class="person__container w-8/12 flex justify-between items-center bg-[#F1F4F9] dark:bg-gray-700 rounded-full p-1 pr-3">
+                <span class="flex items-center">
+                    <img class="rounded-full object-cover w-[40px] h-[40px]" src="https://uploads.dailydot.com/2024/07/side-eye-cat.jpg?q=65&auto=format&w=1600&ar=2:1&fit=crop" alt="Profile Picture">
+                    <h2 class="ml-1 hidden md:!block
+                    font-bold text-gray-900 dark:text-white">Zucker</h2>
+                </span>
+                <ion-icon name="chevron-down-outline" class="arrow expanded__label text-gray-500 dark:!text-white"></ion-icon>
+            </div>
         </div>
     </section>
 </div>
