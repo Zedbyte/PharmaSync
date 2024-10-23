@@ -1,3 +1,34 @@
 .navbar__container {
     height: 90px;
 }
+
+.navbar__container .navbar__child_container {
+    height: 100%;
+}
+
+/* 
+
+    LOGO
+
+*/
+
+.navbar__child_container .logo__container > a {
+    font-size: clamp(24px, calc(2.5rem + ((1vw - 6px) * 1.2254)), 28px);
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+
+
+/* 
+
+    SEARCH INPUT
+
+*/
+
+.search__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+

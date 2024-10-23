@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,js,php,twig}", "./public/**/*.twig"],
+  darkMode: 'selector',
   theme: {
     extend: {
       transitionDuration: {

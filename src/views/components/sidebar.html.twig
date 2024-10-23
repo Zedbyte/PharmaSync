@@ -2,33 +2,32 @@
     <ul class="sidebar__ul">
         <!-- Dashboard -->
         <li class="nav__item">
-            <a href="#" class="nav__link">
-                <ion-icon name="grid-outline"></ion-icon>
-                <span class="nav__name">Dashboard</span>
+            <a href="#" class="nav__link dark:hover:!bg-[#7655fa]">
+                <ion-icon name="grid-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                <span class="nav__name dark:text-[#fdfdfd]">Dashboard</span>
             </a>
         </li>
 
-        <li class="nav__label">FINANCES</li>
+        <li class="nav__label dark:!text-[#fdfdfd]">FINANCES</li>
 
         <!-- Purchases (Collapsible) -->
         <li class="nav__item">
-            <button class="nav__link nav__link_button collapsible justify-between" onclick="toggleCollapse('purchases', this)">
+            <button class="nav__link nav__link_button collapsible justify-between dark:hover:!bg-[#7655fa]" onclick="toggleCollapse('purchases', this)">
                 <span class="flex items-center expanded__label">  
-                    <ion-icon name="cash-outline"></ion-icon>
-                    <span>Purchases</span>
+                    <ion-icon name="card-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                    <span class="dark:text-[#fdfdfd]">Purchases</span>
                 </span>
-                <ion-icon name="chevron-forward-outline" class="arrow expanded__label"></ion-icon>
+                <ion-icon name="chevron-forward-outline" class="arrow expanded__label dark:!text-[#fdfdfd]"></ion-icon>
             </button>
-            <ul id="purchases" class="nav__collapse hidden">
-                <div class="separator__line"></div>
+            <ul id="purchases" class="nav__collapse hidden dark:!bg-gray-700">
                 <li class="nav__subitem">
-                    <a href="#" class="nav__link_subitem">
+                    <a href="#" class="nav__link_subitem text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
                         <ion-icon name="water-outline"></ion-icon>
                         <span>Material</span>
                     </a>
                 </li>
                 <li class="nav__subitem">
-                    <a href="#" class="nav__link_subitem">
+                    <a href="#" class="nav__link_subitem text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
                         <ion-icon name="pulse-outline"></ion-icon>
                         <span>Medicine</span>
                     </a>
@@ -38,34 +37,33 @@
 
         <!-- Orders -->
         <li class="nav__item">
-            <a href="#" class="nav__link">
-                <ion-icon name="list-circle-outline"></ion-icon>
-                <span>Orders</span>
+            <a href="#" class="nav__link dark:hover:!bg-[#7655fa]">
+                <ion-icon name="list-circle-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                <span class="dark:text-[#fdfdfd]">Orders</span>
             </a>
         </li>
 
 
-        <li class="nav__label">STORAGE</li>
+        <li class="nav__label dark:!text-[#fdfdfd]">STORAGE</li>
 
         <!-- Inventory (Collapsible) -->
         <li class="nav__item">
-            <button class="nav__link nav__link_button collapsible justify-between" onclick="toggleCollapse('inventory', this)">
+            <button class="nav__link nav__link_button collapsible justify-between dark:hover:!bg-[#7655fa]" onclick="toggleCollapse('inventory', this)">
                 <span class="flex items-center expanded__label">
-                    <ion-icon name="cube-outline"></ion-icon>
-                    <span>Inventory</span>
+                    <ion-icon name="cube-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                    <span class="dark:text-[#fdfdfd]">Inventory</span>
                 </span>
-                <ion-icon name="chevron-forward-outline" class="arrow expanded__label"></ion-icon>
+                <ion-icon name="chevron-forward-outline" class="arrow expanded__label dark:!text-[#fdfdfd]"></ion-icon>
             </button>
-            <ul id="inventory" class="nav__collapse hidden">
-                <div class="separator__line"></div>
+            <ul id="inventory" class="nav__collapse hidden dark:!bg-gray-700">
                 <li class="nav__subitem">
-                    <a href="#" class="nav__link_subitem">
+                    <a href="#" class="nav__link_subitem text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
                         <ion-icon name="flask-outline"></ion-icon>
                         <span>Manufactured</span>
                     </a>
                 </li>
                 <li class="nav__subitem">
-                    <a href="#" class="nav__link_subitem">
+                    <a href="#" class="nav__link_subitem text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
                         <ion-icon name="leaf-outline"></ion-icon>
                         <span>Raw Materials</span>
                     </a>
@@ -75,17 +73,16 @@
 
         <!-- Medicine -->
         <li class="nav__item">
-            <button class="nav__link nav__link_button collapsible justify-between" onclick="toggleCollapse('medicine', this)">
+            <button class="nav__link nav__link_button collapsible justify-between dark:hover:!bg-[#7655fa]" onclick="toggleCollapse('medicine', this)">
                 <span class="flex items-center expanded__label">
-                    <ion-icon name="heart-circle-outline"></ion-icon>
-                    <span>Medicine</span>
+                    <ion-icon name="medkit-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                    <span class="dark:text-[#fdfdfd]">Medicine</span>
                 </span>
-                <ion-icon name="chevron-forward-outline" class="arrow expanded__label"></ion-icon>
+                <ion-icon name="chevron-forward-outline" class="arrow expanded__label dark:!text-[#fdfdfd]"></ion-icon>
             </button>
-            <ul id="medicine" class="nav__collapse hidden">
-                <div class="separator__line"></div>
+            <ul id="medicine" class="nav__collapse hidden dark:!bg-gray-700">
                 <li class="nav__subitem">
-                    <a href="#" class="nav__link_subitem">
+                    <a href="#" class="nav__link_subitem text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
                         <ion-icon name="list-outline"></ion-icon>
                         <span>Categories</span>
                     </a>
@@ -93,41 +90,41 @@
             </ul>
         </li>
 
-        <li class="nav__label">CUSTOMERS</li>
+        <li class="nav__label dark:!text-[#fdfdfd]">CUSTOMERS</li>
 
         <!-- Customers -->
         <li class="nav__item">
-            <a href="#" class="nav__link">
-                <ion-icon name="people-outline"></ion-icon>
-                <span>Customers</span>
+            <a href="#" class="nav__link dark:hover:!bg-[#7655fa]">
+                <ion-icon name="people-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                <span class="dark:text-[#fdfdfd]">Customers</span>
             </a>
         </li>
 
-        <li class="nav__label">USERS</li>
+        <li class="nav__label dark:!text-[#fdfdfd]" id="#important">USERS</li>
 
         <!-- Users -->
         <li class="nav__item">
-            <a href="#" class="nav__link">
-                <ion-icon name="person-outline"></ion-icon>
-                <span>Users</span>
+            <a href="#" class="nav__link dark:hover:!bg-[#7655fa]">
+                <ion-icon name="person-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                <span class="dark:text-[#fdfdfd]">Users</span>
             </a>
         </li>
 
         <!-- Payroll -->
         <li class="nav__item">
-            <a href="#" class="nav__link">
-                <ion-icon name="clipboard-outline"></ion-icon>
-                <span>Payroll</span>
+            <a href="#" class="nav__link dark:hover:!bg-[#7655fa]">
+                <ion-icon name="clipboard-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                <span class="dark:text-[#fdfdfd]">Payroll</span>
             </a>
         </li>
 
-        <li class="nav__label">CONFIGURATIONS</li>
+        <li class="nav__label dark:!text-[#fdfdfd]">CONFIGURATIONS</li>
 
         <!-- Settings -->
         <li class="nav__item">
-            <a href="#" class="nav__link">
-                <ion-icon name="settings-outline"></ion-icon>
-                <span>Settings</span>
+            <a href="#" class="nav__link dark:hover:!bg-[#7655fa]">
+                <ion-icon name="settings-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                <span class="dark:text-[#fdfdfd]">Settings</span>
             </a>
         </li>
     </ul>
