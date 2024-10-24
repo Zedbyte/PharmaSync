@@ -20,6 +20,10 @@
     border-radius: 10px; /* Rounded corners to mimic iPhone's look */
 }
 
+.dark ::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
 ::-webkit-scrollbar-thumb:hover {
     background-color: rgba(0, 0, 0, 0.5); /* Darker thumb on hover */
 }

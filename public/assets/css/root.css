@@ -25,6 +25,8 @@ body {
 
     padding: 30px 20px;
     overflow-y: auto;
+
+    height: 100%;
 }
 
 @media (max-width: 1200px) {

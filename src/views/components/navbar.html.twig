@@ -7,12 +7,19 @@
         </button>
     </section>
 
-    <section class="logo__container col-span-4
-    lg:col-span-2 flex justify-center items-center">
-        <a href='/dashboard' class="dark:text-white spacing">
+    <section class="logo__container col-span-4 lg:col-span-2 flex justify-center items-center">
+        <a href='/dashboard' class="dark:text-white spacing relative group">
             Pharma<span class="text-[#00CFFE] dark:text-purple-600">Sync</span>
+            
+            <!-- Light mode shine effect -->
+            <span class="absolute inset-0 rounded-lg bg-[#00CFFE] opacity-0 group-hover:opacity-50 blur-lg group-hover:blur-md transition duration-500 dark:hidden"></span>
+            
+            <!-- Dark mode shine effect -->
+            <span class="absolute inset-0 rounded-lg bg-purple-600 opacity-0 group-hover:opacity-50 blur-lg group-hover:blur-md transition duration-500 hidden dark:block"></span>
         </a>
     </section>
+    
+    
 
     <section class="search__container col-span-4 lg:col-span-8">
         <form> 

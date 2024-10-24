@@ -15,8 +15,12 @@
 
     <script src="../../../public/assets/js/localStorage.js"></script>
 
+    {% block headers %}
+
+    {% endblock %}
+
 </head>
-<body class="dark:bg-slate-900">
+<body class="root__body dark:bg-slate-900">
 
     <header>
         <nav class="navbar__container dark:bg-slate-900 ">
@@ -29,7 +33,7 @@
             {% include 'sidebar.html.twig' %}
         </aside> 
 
-        <section class="panel__container lg:col-span-10 dark:!bg-gray-700 dark:text-white">
+        <section class="flex flex-col flex-grow panel__container lg:col-span-10 dark:!bg-gray-700 dark:text-white">
             {% block body %}
             <!-- Page content will go here -->
             {% endblock %}

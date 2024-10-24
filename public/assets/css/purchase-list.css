@@ -1,0 +1,4 @@
+.purchase__list_container_content {
+    /* height: calc(100%); */
+    overflow-y: auto;
+}
