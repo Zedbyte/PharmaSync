@@ -12,6 +12,7 @@ use Twig\Environment;
 use App\controllers\LoginController;
 use App\controllers\DashboardController;
 use App\controllers\SettingsController;
+use App\controllers\PurchaseController;
 
 try {
 
@@ -30,6 +31,7 @@ try {
     $loginController = new LoginController($twig);
     $dashboardController = new DashboardController($twig);
     $settingsController = new SettingsController($twig);
+    $purchaseController = new PurchaseController($twig);
 
     // Landing Page
     // $router->respond('GET', '/', function() use ($loginController) {
@@ -46,9 +48,14 @@ try {
         $dashboardController->display();
     });
 
-    // Dashboard Page
+    // Settings Page
     $router->respond('GET', '/settings', function() use ($settingsController) {
         $settingsController->display();
+    });
+
+    // Purchase Page
+    $router->respond('GET', '/purchase-list', function() use ($purchaseController) {
+        $purchaseController->display();
     });
 
     $router->dispatch();

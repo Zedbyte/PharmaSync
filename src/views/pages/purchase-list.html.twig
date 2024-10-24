@@ -1,0 +1,40 @@
+{% extends 'root.twig' %}
+
+{% block title %}
+    Purchase List
+{% endblock %}
+
+{% block body %}
+    <h1>Purchase List</h1>
+    <a href="/dashboard">Dashboard</a> / <a href="/purchase-list">Purchase List</a>
+
+
+    <section class="flex justify-between">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+            <div class="cols-span-5">
+                <h1>Start Date</h1>
+                <input type="date" placeholder="28 Jun, 2022 - 10:00">
+            </div>
+        
+            <div class="cols-span-5">
+                <h1>End Date</h1>
+                <input type="date" placeholder="30 Jun, 2022 - 10:00">
+            </div>
+    
+            <div class="cols-span-2">
+                <button >
+                    Search Data
+                </button>
+            </div>
+        </div>
+        
+        <div>
+            Export Data
+        </div>
+    </section>
+
+    <section>
+        Content
+    </section>
+
+{% endblock %}
