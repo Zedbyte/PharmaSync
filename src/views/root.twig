@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="../../../public/assets/css/sidebar.css">
     <link rel="stylesheet" href="../../../public/assets/css/navbar.css">
 
+    <script src="../../../public/assets/js/localStorage.js"></script>
+
 </head>
 <body class="dark:bg-slate-900">
 
@@ -23,11 +25,11 @@
     </header>
 
     <main class="grid grid-cols-1 lg:grid-cols-12 h-full">
-        <aside class="sidebar__container left lg:col-span-2 dark:!bg-slate-900 ">
+        <aside class="sidebar__container left lg:col-span-2 dark:!bg-slate-900">
             {% include 'sidebar.html.twig' %}
         </aside> 
 
-        <section class="panel__container lg:col-span-10">
+        <section class="panel__container lg:col-span-10 dark:!bg-gray-700 dark:text-white">
             {% block body %}
             <!-- Page content will go here -->
             {% endblock %}

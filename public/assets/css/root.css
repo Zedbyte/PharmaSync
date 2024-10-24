@@ -42,3 +42,8 @@ body {
         width: 100vw !important;
     }
 }
+
+.disable-transitions * {
+    transition-property: background-color, color !important;
+    transition-duration: 0s !important;
+}
