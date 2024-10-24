@@ -100,6 +100,16 @@
             </a>
         </li>
 
+        <li class="nav__label dark:!text-[#fdfdfd]">SUPPLIERS</li>
+
+        <!-- Supplier -->
+        <li class="nav__item">
+            <a href="#" class="nav__link dark:hover:!bg-[#7655fa]">
+                <ion-icon name="people-circle-outline"></ion-icon>
+                <span class="dark:text-[#fdfdfd]">Supplier</span>
+            </a>
+        </li>
+
         <li class="nav__label dark:!text-[#fdfdfd]" id="#important">USERS</li>
 
         <!-- Users -->
@@ -136,20 +146,32 @@
     function toggleCollapse(id, button) {
         const collapseSection = document.getElementById(id);
         const isExpanded = collapseSection.classList.contains('expanded');
-
+        const sectionHeight = collapseSection.scrollHeight;
+    
         if (!isExpanded) {
-            collapseSection.style.maxHeight = collapseSection.scrollHeight + "px";  // Set max-height to the content's height
-            setTimeout(() => {
-                collapseSection.style.maxHeight = '9999px';  // After transition, set max-height to an arbitrary large value
-            }, 300);  // Match the transition duration
+            // Expand: Set max-height to the actual height and trigger transition
+            collapseSection.style.maxHeight = sectionHeight + "px"; 
+            collapseSection.classList.add('expanded');
+            button.classList.add('expanded');
+    
+            // Remove max-height after transition to allow natural expansion
+            collapseSection.addEventListener('transitionend', function handleExpandEnd() {
+                collapseSection.style.maxHeight = 'none';  // Allow the content to expand without a fixed height
+                collapseSection.removeEventListener('transitionend', handleExpandEnd);  // Remove listener to avoid repeated triggers
+            });
         } else {
-            collapseSection.style.maxHeight = collapseSection.scrollHeight + "px";  // Temporary height to trigger transition
-            setTimeout(() => {
-                collapseSection.style.maxHeight = '0';
-            }, 1);
+            // Collapse: Reset max-height to current height and trigger collapse transition
+            collapseSection.classList.remove('expanded');
+            button.classList.remove('expanded');
+            collapseSection.style.maxHeight = sectionHeight + "px";
+            collapseSection.offsetHeight;  // Force reflow to apply height before transition
+            collapseSection.style.maxHeight = '0';  // Trigger collapse transition
+    
+            collapseSection.addEventListener('transitionend', function handleCollapseEnd() {
+                collapseSection.style.maxHeight = '';  // Reset to original state
+                collapseSection.removeEventListener('transitionend', handleCollapseEnd);  // Remove listener
+            });
         }
-
-        collapseSection.classList.toggle('expanded');
-        button.classList.toggle('expanded');
     }
+    
 </script>
