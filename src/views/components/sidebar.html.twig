@@ -19,7 +19,7 @@
                 </span>
                 <ion-icon name="chevron-forward-outline" class="arrow expanded__label dark:!text-[#fdfdfd]"></ion-icon>
             </button>
-            <ul id="purchases" class="nav__collapse hidden dark:!bg-gray-700">
+            <ul id="purchases" class="nav__collapse transition-all ease-in-out duration-300 overflow-hidden max-h-0 opacity-0 dark:!bg-gray-700">
                 <li class="nav__subitem">
                     <a href="#" class="nav__link_subitem text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
                         <ion-icon name="water-outline"></ion-icon>
@@ -55,7 +55,7 @@
                 </span>
                 <ion-icon name="chevron-forward-outline" class="arrow expanded__label dark:!text-[#fdfdfd]"></ion-icon>
             </button>
-            <ul id="inventory" class="nav__collapse hidden dark:!bg-gray-700">
+            <ul id="inventory" class="nav__collapse transition-all ease-in-out duration-300 overflow-hidden max-h-0 opacity-0 dark:!bg-gray-700">
                 <li class="nav__subitem">
                     <a href="#" class="nav__link_subitem text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
                         <ion-icon name="flask-outline"></ion-icon>
@@ -80,7 +80,7 @@
                 </span>
                 <ion-icon name="chevron-forward-outline" class="arrow expanded__label dark:!text-[#fdfdfd]"></ion-icon>
             </button>
-            <ul id="medicine" class="nav__collapse hidden dark:!bg-gray-700">
+            <ul id="medicine" class="nav__collapse transition-all ease-in-out duration-300 overflow-hidden max-h-0 opacity-0 dark:!bg-gray-700">
                 <li class="nav__subitem">
                     <a href="#" class="nav__link_subitem text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
                         <ion-icon name="list-outline"></ion-icon>
@@ -131,9 +131,25 @@
 </nav>
 
 <script>
+    /* TO BE REMOVED IF SIDEBAR CREATES AN ERROR DUE TO TRANSITION DELAY */
+    /* COLLAPSIBLE CLASS [UL] nav__collapse hidden dark:!bg-gray-700"> */
     function toggleCollapse(id, button) {
         const collapseSection = document.getElementById(id);
-        collapseSection.classList.toggle('hidden');
+        const isExpanded = collapseSection.classList.contains('expanded');
+
+        if (!isExpanded) {
+            collapseSection.style.maxHeight = collapseSection.scrollHeight + "px";  // Set max-height to the content's height
+            setTimeout(() => {
+                collapseSection.style.maxHeight = '9999px';  // After transition, set max-height to an arbitrary large value
+            }, 300);  // Match the transition duration
+        } else {
+            collapseSection.style.maxHeight = collapseSection.scrollHeight + "px";  // Temporary height to trigger transition
+            setTimeout(() => {
+                collapseSection.style.maxHeight = '0';
+            }, 1);
+        }
+
+        collapseSection.classList.toggle('expanded');
         button.classList.toggle('expanded');
     }
 </script>

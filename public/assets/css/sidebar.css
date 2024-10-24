@@ -187,12 +187,15 @@
     transform: rotate(0deg);
     transition: transform 0.2s ease;
 }
+
 .collapsible.expanded .arrow {
     transform: rotate(90deg);
 }
-.hidden {
+
+/* TO BE EXECUTED IF SIDEBAR CREATES AN ERROR DUE TO TRANSITION DELAY */
+/* .hidden {
     display: none;
-}
+} */
 
 /* Default styles */
 .nav__link_button {
@@ -214,6 +217,18 @@
 
 .nav__collapse {
     border-radius: 0px;
+
+    /* TO BE REMOVED IF SIDEBAR CREATES AN ERROR DUE TO TRANSITION DELAY */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+/* TO BE REMOVED IF SIDEBAR CREATES AN ERROR DUE TO TRANSITION DELAY */
+.nav__collapse.expanded {
+    max-height: 9999px;
+    opacity: 1;
 }
 
 .nav__link_button.expanded .expanded__label {
