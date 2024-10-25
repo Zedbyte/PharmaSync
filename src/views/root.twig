@@ -33,7 +33,7 @@
             {% include 'sidebar.html.twig' %}
         </aside> 
 
-        <section class="flex flex-col flex-grow panel__container lg:col-span-10 dark:!bg-gray-700 dark:text-white">
+        <section class="flex flex-col flex-grow panel__container lg:col-span-10 dark:!bg-gray-700 dark:text-white border dark:border-gray-700 border-gray-300 ">
             {% block body %}
             <!-- Page content will go here -->
             {% endblock %}
@@ -45,6 +45,9 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script> 
     <script src="../../public/assets/js/sidebar.js"></script>
     <script src="../../../public/assets/js/theme.js"></script>
+    
+    <!-- For dropdowns -->
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
     {% block scripts %}
     <!-- Scripts will go here -->

@@ -7,7 +7,7 @@
     color-scheme: dark;
 }
 
-.purchase__list_container_head div div button ion-icon {
+.purchase__list_container_head div div button .search__icon {
     font-size: 25px;
 }
 
@@ -17,4 +17,8 @@
 
 .purchase__list_container_head .content__button_container {
     place-self: end end;
+}
+
+.purchase__list_container_head div a button .add__icon {
+    font-size: 25px;
 }

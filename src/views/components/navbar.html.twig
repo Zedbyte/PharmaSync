@@ -32,7 +32,7 @@
                 <input type="text" id="search" class="block w-3/12 focus:w-full md:w-full 
                 2xl:w-7/12 2xl:focus:w-7/12 
                 transition-all duration-300 ease-in-out 
-                py-3 md:py-4 px-4 ps-8 md:ps-10 rounded-full 
+                py-3 md:py-4 px-4 ps-8 md:ps-10 rounded-full border dark:border-gray-700 border-gray-300 
                 text-sm text-gray-900 bg-[#F1F4F9] focus:bg-[#ced0d4] dark:bg-gray-700 dark:focus:bg-gray-800 dark:placeholder-gray-400 dark:text-white outline-none" placeholder="Search here" required />
             </div>
         </form>
@@ -40,7 +40,7 @@
 
     <section class="profile__container col-span-3 lg:col-span-2 flex justify-evenly items-center">
         <!-- Notification Container (30% width) -->
-        <div class="notification__container hidden xl:!block
+        <div class="notification__container hidden xl:!block border dark:border-gray-700 border-gray-300 
         bg-[#F1F4F9] dark:bg-gray-700 p-4 rounded-xl">
             <div class="icon__container flex justify-center items-center h-full">
                 <ion-icon name="notifications-outline" class="text-gray-500 dark:text-[#fdfdfd]"></ion-icon>
@@ -49,13 +49,65 @@
 
         <!-- Image Container (70% width) -->
         <div class="image__container flex flex-grow-[0.7] justify-center items-center">
-            <div class="person__container w-8/12 flex justify-between items-center bg-[#F1F4F9] dark:bg-gray-700 rounded-full p-1 pr-3">
+            <div id="multiLevelDropdownButton" data-dropdown-toggle="multi-dropdown" 
+            class="person__container w-8/12 flex justify-between items-center border dark:border-gray-700 border-gray-300 transition-all duration-200
+            bg-[#F1F4F9] hover:bg-[#ced0d4] dark:bg-gray-700 dark:hover:bg-gray-500 rounded-full p-1 pr-3">
                 <span class="flex items-center">
                     <img class="rounded-full object-cover w-[40px] h-[40px]" src="https://uploads.dailydot.com/2024/07/side-eye-cat.jpg?q=65&auto=format&w=1600&ar=2:1&fit=crop" alt="Profile Picture">
                     <h2 class="ml-1 hidden md:!block
                     font-bold text-gray-900 dark:text-white">Zucker</h2>
                 </span>
                 <ion-icon name="chevron-down-outline" class="arrow expanded__label text-gray-500 dark:!text-white"></ion-icon>
+            </div>
+
+            <!-- Dropdown menu -->
+            <div id="multi-dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
+                    <li>
+                        <a href="#"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                    </li>
+                    <li>
+                        <button id="doubleDropdownButton" data-dropdown-toggle="doubleDropdown"
+                            data-dropdown-placement="right-start" type="button"
+                            class="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dropdown<svg
+                                class="w-2.5 h-2.5 ms-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 6 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m1 9 4-4-4-4" />
+                            </svg></button>
+                        <div id="doubleDropdown"
+                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Overview</a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">My
+                                        downloads</a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Billing</a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Rewards</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                    </li>
+                    <li>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign
+                            out</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </section>
