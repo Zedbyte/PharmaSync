@@ -9,14 +9,16 @@
     <link rel="stylesheet" href="../../../public/assets/css/utility/link.css">
 {% endblock %}
 
-{% block body %}
-    <header class="mb-5">
-        <h1 class="text-2xl font-bold">Purchase List</h1>
-            <span class="text-sm dark:text-gray-300">
-                <a class="link__underline_hover dark:hover:text-gray-200" href="/dashboard">Dashboard</a><span class="dark:hover:text-gray-200"> / </span><a class="link__underline_hover dark:hover:text-gray-200" href="/purchase-list">Purchase List</a>
-            </span>
-        </header>
+{% block panel_title %}
+    Purchase List
+{% endblock %}
 
+{% set paths = [
+    { 'name': 'Dashboard', 'url': '/dashboard' },
+    { 'name': 'Purchase List', 'url': '/purchase-list' }
+] %}
+
+{% block body %}
     <section class="purchase__list_container_head grid grid-cols-1 md:grid-cols-12">
         <div class="col-span-6 grid grid-cols-1 md:grid-cols-12 gap-4">
             <div class="col-span-4">

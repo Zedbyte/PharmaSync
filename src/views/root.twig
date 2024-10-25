@@ -34,6 +34,18 @@
         </aside> 
 
         <section class="flex flex-col flex-grow panel__container lg:col-span-10 dark:!bg-gray-700 dark:text-white border dark:border-gray-700 border-gray-300 ">
+            <header class="mb-5">
+                <h1 class="text-2xl font-bold">{% block panel_title %}Default Title{% endblock %}</h1>
+                <span class="text-sm dark:text-gray-300">
+                    {% for path in paths %}
+                        <a class="link__underline_hover dark:hover:text-gray-200" href="{{ path.url }}">{{ path.name }}</a>
+                        {% if not loop.last %}
+                            <span class="dark:hover:text-gray-200"> / </span>
+                        {% endif %}
+                    {% endfor %}
+                </span>
+            </header>
+            
             {% block body %}
             <!-- Page content will go here -->
             {% endblock %}
