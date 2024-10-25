@@ -45,6 +45,8 @@
     transition: all 0.3s;
 
     background-color: #fff;
+
+    z-index: 9999;
 }
 
 .sidebar {
@@ -104,6 +106,12 @@
     color: var(--item-color);
 
     transition: all 200ms linear;
+}
+
+@media (max-width: 1199px) {
+    .nav__link {
+        font-size: 14px;
+    }
 }
 
 .nav__link:hover {
