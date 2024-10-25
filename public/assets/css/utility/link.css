@@ -1,0 +1,18 @@
+.link__underline_hover {
+    position: relative;
+}
+
+.link__underline_hover::before {
+    content: ''; 
+    position: absolute; 
+    bottom: -2px; 
+    left: 0; 
+    width: 0; 
+    height: 1px;
+    background-color: currentColor; 
+    transition: width 0.3s ease; 
+}
+
+.link__underline_hover:hover::before {
+    width: 100%;
+}

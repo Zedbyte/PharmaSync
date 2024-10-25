@@ -6,40 +6,68 @@
 
 {% block headers %}
     <link rel="stylesheet" href="../../../public/assets/css/purchase-list.css">
+    <link rel="stylesheet" href="../../../public/assets/css/utility/link.css">
 {% endblock %}
 
 {% block body %}
-    <header>
-        <h1>Purchase List</h1>
-        <a href="/dashboard">Dashboard</a> / <a href="/purchase-list">Purchase List</a>
-    </header>
+    <header class="mb-5">
+        <h1 class="text-2xl font-bold">Purchase List</h1>
+            <span class="text-sm dark:text-gray-300">
+                <a class="link__underline_hover dark:hover:text-gray-200" href="/dashboard">Dashboard</a><span class="dark:hover:text-gray-200"> / </span><a class="link__underline_hover dark:hover:text-gray-200" href="/purchase-list">Purchase List</a>
+            </span>
+        </header>
 
-    <section class="flex justify-between">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
-            <div class="cols-span-5">
+    <section class="purchase__list_container_head grid grid-cols-1 md:grid-cols-12">
+        <div class="col-span-6 grid grid-cols-1 md:grid-cols-12 gap-4">
+            <div class="col-span-4">
                 <h1>Start Date</h1>
-                <input type="date" placeholder="28 Jun, 2022 - 10:00">
-            </div>
-        
-            <div class="cols-span-5">
-                <h1>End Date</h1>
-                <input type="date" placeholder="30 Jun, 2022 - 10:00">
+                <input id="start-date" type="text" placeholder="28 Jun, 2022 - 10:00" class="bg-gray-50 border border-gray-300 text-gray-900 
+                text-sm rounded-lg block w-full p-2.5
+                transition-all duration-200
+                focus:bg-gray-200 dark:focus:bg-slate-600
+                outline-none
+                dark:bg-slate-500 dark:border-gray-700 
+                dark:placeholder-gray-400 dark:text-white 
+                " onfocus="(this.type='date')" onblur="(this.type='text')">
             </div>
     
-            <div class="cols-span-2">
-                <button >
-                    Search Data
+            <div class="col-span-4">
+                <h1>End Date</h1>
+                <input id="end-date" type="text" placeholder="30 Jun, 2022 - 10:00" class="bg-gray-50 border border-gray-300 text-gray-900 
+                text-sm rounded-lg block w-full p-2.5
+                transition-all duration-200
+                focus:bg-gray-200 dark:focus:bg-slate-600
+                outline-none
+                dark:bg-slate-500 dark:border-gray-700 
+                dark:placeholder-gray-400 dark:text-white 
+                " onfocus="(this.type='date')" onblur="(this.type='text')">
+            </div>
+    
+            <div class="head__button_container col-span-4">
+                <button class="bg-green-500 hover:bg-green-600 transition-all duration-200 text-white rounded-lg px-3 py-2.5 flex justify-center items-center">
+                    <ion-icon name="search-outline" class="search__icon dark:text-[#fdfdfd]"></ion-icon>
                 </button>
             </div>
         </div>
-        
-        <div>
-            Export Data
+    
+        <div class="content__button_container col-span-6">
+            <button class="bg-[#2998FF] hover:bg-[#3280c9] 
+            dark:bg-[#7655fa] dark:hover:bg-[#8162fa] transition-all duration-200 text-white rounded-lg px-3 py-2.5 flex justify-center items-center">
+                Export Data
+            </button>
         </div>
     </section>
-
-    <section class="purchase__list_container_content mt-8 flex-grow">
+    
+    <section class="purchase__list_container_content mt-8 
+    flex-grow p-6 rounded-lg dark:border-gray-700
+    bg-gray-50 border border-gray-300 dark:bg-slate-500">
         Content
     </section>
 
+{% endblock %}
+
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="../../../public/assets/js/calendarTheme.js"></script>
 {% endblock %}

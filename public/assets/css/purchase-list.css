@@ -2,3 +2,19 @@
     /* height: calc(100%); */
     overflow-y: auto;
 }
+
+.dark .purchase__list_container_head div div input {
+    color-scheme: dark;
+}
+
+.purchase__list_container_head div div button ion-icon {
+    font-size: 25px;
+}
+
+.purchase__list_container_head div .head__button_container {
+    place-self: end start;
+}
+
+.purchase__list_container_head .content__button_container {
+    place-self: end end;
+}
