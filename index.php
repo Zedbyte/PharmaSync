@@ -9,10 +9,10 @@ use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 
 // Controllers
-use App\controllers\LoginController;
-use App\controllers\DashboardController;
-use App\controllers\SettingsController;
-use App\controllers\PurchaseController;
+use App\Controllers\LoginController;
+use App\Controllers\DashboardController;
+use App\Controllers\SettingsController;
+use App\Controllers\PurchaseController;
 
 try {
 
