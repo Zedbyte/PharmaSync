@@ -22,6 +22,9 @@ try {
     // Initialize Twig
     $loader = new FilesystemLoader([
         __DIR__ . '\src\views\pages',
+        __DIR__ . '\src\views\pages\purchase',
+        __DIR__ . '\src\views\pages\dashboard',
+        __DIR__ . '\src\views\pages\settings',
         __DIR__ . '\src\views\components',
         __DIR__ . '\src\views'
     ]);
@@ -56,6 +59,11 @@ try {
     // Purchase Page
     $router->respond('GET', '/purchase-list', function() use ($purchaseController) {
         $purchaseController->display();
+    });
+
+    // Add Purchase Page
+    $router->respond('GET', '/add-purchase', function() use ($purchaseController) {
+        $purchaseController->addPurchaseDisplay();
     });
 
     $router->dispatch();

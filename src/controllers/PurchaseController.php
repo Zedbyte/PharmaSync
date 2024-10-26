@@ -13,4 +13,8 @@ class PurchaseController {
     function display() {
         echo $this->twig->render('purchase-list.html.twig');
     }
+
+    function addPurchaseDisplay() {
+        echo $this->twig->render('add-purchase.html.twig');
+    }
 }
