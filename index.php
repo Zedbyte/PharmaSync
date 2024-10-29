@@ -1,11 +1,11 @@
 <?php
 
 require_once "vendor/autoload.php";
+require_once "init.php";
 
 // Dependencies
 
 use Klein\Klein as Route;
-use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 
 // Controllers
@@ -18,17 +18,7 @@ try {
 
     // Initialize Klein router
     $router = new Route();
-
-    // Initialize Twig
-    $loader = new FilesystemLoader([
-        __DIR__ . '\src\views\pages',
-        __DIR__ . '\src\views\pages\purchase',
-        __DIR__ . '\src\views\pages\dashboard',
-        __DIR__ . '\src\views\pages\settings',
-        __DIR__ . '\src\views\components',
-        __DIR__ . '\src\views'
-    ]);
-    
+    //$loader came from init.php
     $twig = new Environment($loader);
 
     $loginController = new LoginController($twig);

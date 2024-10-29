@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+require_once __DIR__ . '/../../config/config.php';
 
 class PurchaseController {
     protected $twig;
@@ -11,10 +12,10 @@ class PurchaseController {
     }
 
     function display() {
-        echo $this->twig->render('purchase-list.html.twig');
+        echo $this->twig->render('purchase-list.html.twig', ['BASE_URL' => BASE_URL]);
     }
 
     function addPurchaseDisplay() {
-        echo $this->twig->render('add-purchase.html.twig');
+        echo $this->twig->render('add-purchase.html.twig', ['BASE_URL' => BASE_URL]);
     }
 }
