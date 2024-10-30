@@ -52,9 +52,9 @@ try {
     });
 
     // Add Purchase Page
-    $router->respond('GET', '/add-purchase', function() use ($purchaseController) {
-        $purchaseController->addPurchaseDisplay();
-    });
+    // $router->respond('GET', '/add-purchase', function() use ($purchaseController) {
+    //     $purchaseController->addPurchaseDisplay();
+    // });
 
     $router->dispatch();
 

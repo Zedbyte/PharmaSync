@@ -55,15 +55,25 @@
         </div>
     
         <div class="content__button_container col-span-6">
-            <a href="/add-purchase">
-                <button class="bg-[#2998FF] hover:bg-[#3280c9] 
-            dark:bg-[#7655fa] dark:hover:bg-[#8162fa] transition-all duration-200 text-white rounded-lg px-3 py-2.5 flex justify-center items-center">
-                <ion-icon name="add-outline" class="add__icon dark:text-[#fdfdfd] mr-2"></ion-icon>    
-                Add Purchase
-                </button>
-            </a>
+            <!-- <a> -->
+            <button onclick="togglePanel()" class="bg-[#2998FF] hover:bg-[#3280c9]  
+        dark:bg-[#7655fa] dark:hover:bg-[#8162fa] transition-all duration-200 text-white rounded-lg px-3 py-2.5 flex justify-center items-center">
+            <ion-icon name="add-outline" class="add__icon dark:text-[#fdfdfd] mr-2"></ion-icon>    
+            Add Purchase
+            </button>
+            <!-- </a> -->
         </div>
     </section>
+
+
+    <!-- Background Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+
+    <!-- Sliding Panel -->
+    <div id="slidePanel" class="fixed right-0 top-0 w-full md:w-1/2 h-full bg-white 
+    dark:bg-gray-800 transform translate-x-full transition-transform duration-300 shadow-lg z-50 overflow-y-auto">
+        {% include 'add-purchase.html.twig' %}
+    </div>
     
     <section class="purchase__list_container_content mt-8 
     flex-grow p-6 rounded-lg dark:border-gray-700
@@ -372,4 +382,16 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{{ BASE_URL }}/js/calendarTheme.js"></script>
     <script src="{{ BASE_URL }}/js/tableEntry.js"></script>
+
+    <!-- JavaScript -->
+    <script>
+        function togglePanel() {
+            const panel = document.getElementById("slidePanel");
+            const overlay = document.getElementById("overlay");
+
+            // Toggle the panel and overlay visibility
+            panel.classList.toggle("translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+    </script>
 {% endblock %}
