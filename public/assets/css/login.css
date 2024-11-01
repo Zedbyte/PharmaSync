@@ -2,6 +2,7 @@
     --primary-color: #F1F4F9;
     --secondary-color: #8D8D8D;
     --link: #3F70ED;
+    --dark-link: #7655fa;
 
     --border-color: #D8D9DB;
     --label-color: #8D8D8D;
@@ -73,6 +74,17 @@ button {
     width: 0; /* Initially no width */
     height: 2px; /* Underline thickness */
     background-color: var(--link); /* Color of the underline */
+    transition: width 0.3s ease; /* Smooth transition */
+}
+
+.dark .forgot__password__link::before {
+    content: ''; /* Add content for pseudo-element */
+    position: absolute; /* Position pseudo-element */
+    bottom: -2px; /* Adjust to your preference */
+    left: 0; /* Start from the left */
+    width: 0; /* Initially no width */
+    height: 2px; /* Underline thickness */
+    background-color: var(--dark-link); /* Color of the underline */
     transition: width 0.3s ease; /* Smooth transition */
 }
 

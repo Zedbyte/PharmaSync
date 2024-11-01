@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,60 +8,64 @@
 
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/output.css">
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/main.css">
-    
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/login.css">
 
     <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
 </head>
-<body class="bg-white 2xl:bg-[#F1F4F9]">
+
+<body class="bg-white 2xl:bg-[#F1F4F9] dark:bg-gray-900">
+
+    {% if error %}
+    <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+        role="alert">
+        <p class="font-bold">Warning</p>
+        <p>{{ error }}</p>
+    </div>
+    {% endif %}
+
     <main class="grid grid-cols-1 2xl:grid-cols-12 h-full">
         <!-- Card Container (Form) -->
         <div class="card__container w-full 2xl:col-span-6 order-2 2xl:order-1">
-            <div class="card p-3 2xl:p-12 rounded-xl w-11/12 2xl:w-7/12">
+            <div class="card p-3 2xl:p-12 rounded-xl w-11/12 2xl:w-7/12 bg-white dark:!bg-gray-800 text-gray-900 dark:text-gray-200">
                 <div class="header text-center pb-12">
                     <h1 class="text-3xl font-bold">Sign In</h1>
-                    <p class="text-[#8D8D8D]">Welcome! Please enter your details.</p>
+                    <p class="text-[#8D8D8D] dark:text-gray-400">Welcome! Please enter your details.</p>
                 </div>
 
                 <form action="/login" method="POST" class="flex flex-col">
                     <div class="flex flex-col mb-7">
                         <label class="input__box font-semibold" for="email">Email</label>
-                        <input type="email" name="email" placeholder="Email">
+                        <input type="email" name="email" placeholder="Email" class="p-2 border border-gray-300 dark:!border-gray-600 rounded w-full bg-white dark:bg-gray-700 text-gray-900 dark:!text-gray-200">
                     </div>
 
                     <div class="flex flex-col mb-2 relative">
                         <label class="input__box font-semibold" for="password">Password</label>
                         <div class="relative">
-                            <input type="password" name="password" id="password" placeholder="Password" class="p-2 border border-gray-300 rounded w-full">
-                            <span id="togglePassword" class="eye__container absolute 
-                            right-5 top-2.5
-                            cursor-pointer disabled opacity-50">
-                                <i class="fa-solid fa-eye-slash"></i>
+                            <input type="password" name="password" id="password" placeholder="Password" class="p-2 border border-gray-300 dark:!border-gray-600 rounded w-full bg-white dark:bg-gray-700 text-gray-900 dark:!text-gray-200">
+                            <span id="togglePassword" class="eye__container absolute right-5 top-2.5 cursor-pointer disabled opacity-50">
+                                <i class="fa-solid fa-eye-slash dark:!text-gray-200"></i>
                             </span>
-                        </div> 
+                        </div>
                     </div>
-
 
                     <div class="mb-10 flex justify-between">
                         <div class="flex items-center">
-                            <input type="checkbox" name="remember" id="remember__box">
-                            <label for="remember__box">Remember me</label>
+                            <input type="checkbox" name="remember" id="remember__box" class="text-[#3F70ED] dark:text-[#7655fa]">
+                            <label for="remember__box" class="text-gray-900 dark:text-gray-200">Remember me</label>
                         </div>
 
                         <div class="">
-                            <a href="#" class="forgot__password__link text-[#3F70ED] font-medium">Forgot Password?</a>
+                            <a href="#" class="forgot__password__link text-[#3F70ED] dark:text-[#7655fa] font-medium">Forgot Password?</a>
                         </div>
                     </div>
 
-                    <button type="submit" class="font-bold text-lg 
-                    bg-[#3F70ED] hover:bg-[#5384ff] 
-                    ease-linear duration-200 text-white hover:text-[#c8d8fd] mb-8">Sign In</button>
+                    <button type="submit" class="font-bold text-lg bg-[#3F70ED] dark:bg-[#7655fa] hover:bg-[#5384ff] dark:hover:bg-[#6b46c1] ease-linear duration-200 text-white hover:text-[#c8d8fd] mb-8">Sign In</button>
                 </form>
 
-                <div class="line__separator flex justify-between items-center"> 
-                    <div class="line"></div> 
-                    <div id="or__separator">OR</div> 
-                    <div class="line"></div> 
+                <div class="line__separator flex justify-between items-center">
+                    <div class="line"></div>
+                    <div id="or__separator">OR</div>
+                    <div class="line"></div>
                 </div>
 
                 <div class="oauth__container grid grid-cols-1 gap-5 place-items-center 2xl:flex 2xl:justify-evenly mt-5">
@@ -86,20 +91,26 @@
                 </div>
 
                 <section class="card__foot">
-                    <p class="foot__p">&copy; Group 9 Pharmaceutical Management System</p>
+                    <p class="foot__p text-gray-900 dark:text-gray-400">&copy; Group 9 Pharmaceutical Management System</p>
                 </section>
             </div>
         </div>
 
         <!-- Hero Container (Image) -->
         <div class="hero__container order-1 2xl:order-2 hidden 2xl:block 2xl:col-span-6">
-            <div class="img__container">
-            </div>
+            <div class="img__container dark:!bg-[#7655fa] dark:hover:bg-[#6b46c1]"></div>
         </div>
     </main>
 
+    <!-- Theme Button -->
+    <button class="theme__btn fixed bottom-4 left-4 bg-[#3F70ED] dark:bg-[#7655fa] hover:bg-[#5384ff] dark:hover:bg-[#6b46c1] text-white font-semibold p-2 rounded-full shadow-lg">
+        🌘
+    </button>
 
     <script src="{{ ASSETS_URL }}/js/login.js"></script>
+    <script src="{{ ASSETS_URL }}/js/theme.js"></script>
+    <script src="{{ ASSETS_URL }}/js/localStorage.js"></script>
 
 </body>
+
 </html>
