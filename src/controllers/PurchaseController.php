@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Controllers;
+
 require_once __DIR__ . '/../../config/config.php';
 
-class PurchaseController {
+class PurchaseController extends BaseController {
     protected $twig;
 
     // Constructor to pass Twig environment for rendering templates
     public function __construct($twig) {
+        parent::__construct(); // Initializes session management in BaseController
         $this->twig = $twig;
     }
 
