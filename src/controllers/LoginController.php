@@ -23,7 +23,6 @@ class LoginController extends BaseController
             header("Location: /dashboard");
             exit();
         }
-
         echo $this->twig->render('login.html.twig', ['ASSETS_URL' => ASSETS_URL]);
     }
 
@@ -71,7 +70,7 @@ class LoginController extends BaseController
         exit();
     }
 
-    // Simulated authentication function (replace with database logic)
+    // Authentication function
     protected function authenticateUser($email, $password) {
         $userObject = new User();
         return $userObject->verifyAccess($email, $password);

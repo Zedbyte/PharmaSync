@@ -67,4 +67,27 @@ class User extends BaseModel
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
+
+    // Method to find a user by ID
+    public function findById($id)
+    {
+        try {
+            $sql = "SELECT * FROM users WHERE id = :id";
+            $statement = $this->db->prepare($sql);
+            $statement->execute(['id' => $id]);
+
+            $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+            if ($user) {
+                // Remove sensitive information before returning
+                unset($user['password_hash']); // Ensure you do not expose the password hash
+                return $user;
+            }
+
+            return null; // User not found
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
 }

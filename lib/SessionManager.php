@@ -13,7 +13,7 @@ class SessionManager
         ini_set('session.use_strict_mode', 1);
         
         session_set_cookie_params([
-            'lifetime' => $interval,
+            'lifetime' => 0, // This makes the cookie a session cookie
             'path' => '/',
             'domain' => 'localhost',
             'secure' => true,
