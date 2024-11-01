@@ -12,6 +12,6 @@ class DashboardController {
     }
 
     function display() {
-        echo $this->twig->render('dashboard.html.twig', ['BASE_URL' => BASE_URL]);
+        echo $this->twig->render('dashboard.html.twig', ['ASSETS_URL' => ASSETS_URL]);
     }
 }

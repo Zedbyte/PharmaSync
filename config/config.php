@@ -1,2 +1,3 @@
 <?php
-define('BASE_URL', '/public/assets');
+define('ASSETS_URL', '/public/assets');
+define('LIB_URL', './lib');

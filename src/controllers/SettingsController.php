@@ -12,6 +12,6 @@ class SettingsController {
     }
 
     function display() {
-        echo $this->twig->render('settings.html.twig', ['BASE_URL' => BASE_URL]);
+        echo $this->twig->render('settings.html.twig', ['ASSETS_URL' => ASSETS_URL]);
     }
 }

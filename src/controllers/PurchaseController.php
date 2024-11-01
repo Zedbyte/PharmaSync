@@ -12,10 +12,10 @@ class PurchaseController {
     }
 
     function display() {
-        echo $this->twig->render('purchase-list.html.twig', ['BASE_URL' => BASE_URL]);
+        echo $this->twig->render('purchase-list.html.twig', ['ASSETS_URL' => ASSETS_URL]);
     }
 
     // function addPurchaseDisplay() {
-    //     echo $this->twig->render('add-purchase.html.twig', ['BASE_URL' => BASE_URL]);
+    //     echo $this->twig->render('add-purchase.html.twig', ['ASSETS_URL' => ASSETS_URL]);
     // }
 }
