@@ -13,36 +13,36 @@ use \Exception;
 class User extends BaseModel
 {
     public function save($data)
-{
-    $sql = "INSERT INTO users 
-            SET
-                `name`=:complete_name,
-                username=:username,
-                contact_no=:contact_no,
-                email_address=:email_address,
-                `password_hash`=:password_hash,
-                `role`=:role";
+    {
+        $sql = "INSERT INTO users 
+                SET
+                    `name`=:complete_name,
+                    username=:username,
+                    contact_no=:contact_no,
+                    email_address=:email_address,
+                    `password_hash`=:password_hash,
+                    `role`=:role";
 
-    try {
-        $statement = $this->db->prepare($sql);
-        
-        $password_hash = hashPassword($data['password_hash']);
-        
-        $statement->execute([
-            'complete_name' => $data['complete_name'],
-            'username' => $data['username'],
-            'contact_no' => $data['contact_no'],
-            'email_address' => $data['email_address'],
-            'password_hash' => $password_hash,
-            'role' => $data['role']
-        ]);
-        
-        return $this->db->lastInsertId();
-    } catch (PDOException $e) {
-        error_log($e->getMessage());
-        throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        try {
+            $statement = $this->db->prepare($sql);
+            
+            $password_hash = hashPassword($data['password_hash']);
+            
+            $statement->execute([
+                'complete_name' => $data['complete_name'],
+                'username' => $data['username'],
+                'contact_no' => $data['contact_no'],
+                'email_address' => $data['email_address'],
+                'password_hash' => $password_hash,
+                'role' => $data['role']
+            ]);
+            
+            return $this->db->lastInsertId();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
     }
-}
 
 
     public function verifyAccess($email, $password)

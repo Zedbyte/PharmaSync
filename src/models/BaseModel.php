@@ -20,4 +20,8 @@ class BaseModel
             }
         }
     }
+
+    public function getDBCon() {
+        return $this->db;
+    }
 }
