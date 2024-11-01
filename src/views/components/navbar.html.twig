@@ -21,7 +21,7 @@
     
     
 
-    <section class="search__container col-span-4 lg:col-span-8">
+    <section class="search__container col-span-4 lg:col-span-7">
         <form> 
             <div class="relative flex justify-end md:block">
                 <button class="absolute w-7 inset-y-0 end-3 md:start-0 flex items-center ps-3">
@@ -38,7 +38,7 @@
         </form>
     </section>
 
-    <section class="profile__container col-span-3 lg:col-span-2 flex justify-evenly items-center">
+    <section class="profile__container col-span-3 lg:col-span-3 flex justify-evenly items-center">
         <!-- Notification Container (30% width) -->
         <div class="notification__container hidden xl:!block border dark:border-gray-700 border-gray-300 
         bg-[#F1F4F9] dark:bg-gray-700 p-4 rounded-xl">
@@ -48,9 +48,9 @@
         </div>
 
         <!-- Image Container (70% width) -->
-        <div class="image__container flex flex-grow-[0.7] justify-center items-center">
+        <div class="image__container flex flex-grow-[0.1] justify-center items-center">
             <div id="multiLevelDropdownButton" data-dropdown-toggle="multi-dropdown" 
-            class="person__container w-8/12 flex justify-between items-center border dark:border-gray-700 border-gray-300 transition-all duration-200
+            class="person__container w-full flex justify-between items-center border dark:border-gray-700 border-gray-300 transition-all duration-200
             bg-[#F1F4F9] hover:bg-[#ced0d4] dark:bg-gray-700 dark:hover:bg-gray-500 rounded-full p-1 pr-3">
                 <span class="flex items-center">
                     <img class="rounded-full object-cover w-[40px] h-[40px]" src="https://uploads.dailydot.com/2024/07/side-eye-cat.jpg?q=65&auto=format&w=1600&ar=2:1&fit=crop" alt="Profile Picture">
@@ -110,5 +110,19 @@
                 </ul>
             </div>
         </div>
+
+        <button
+            class="theme__btn inline-flex relative h-6 w-11 rounded-full bg-gray-200 transition-all duration-300 ease-in-out dark:bg-gray-600 group"
+            aria-label="Toggle theme">
+                <div class="absolute left-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white shadow-sm transition-transform duration-300 ease-in-out dark:bg-gray-800 
+                    translate-x-0">
+                    <svg class="h-3 w-3 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                        fill-rule="evenodd" clip-rule="evenodd">
+                    </path>
+                    </svg>
+                </div>
+        </button>
     </section>
 </div>
