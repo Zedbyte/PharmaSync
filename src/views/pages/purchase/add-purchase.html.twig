@@ -11,7 +11,7 @@
         </div>
     
         <!-- Purchase Information Section -->
-        <form class="h-full space-y-6">
+        <form action="/add-purchase" method="post" class="h-full space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label for="purchase-date" class="block text-sm font-medium">Purchase Date</label>
@@ -21,14 +21,18 @@
                 <div>
                     <label for="vendor" class="block text-sm font-medium">Vendor</label>
                     <select id="vendor" name="vendor" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
-                        <option value="">Select Vendor</option>
+                        <option value="" disabled selected>Select Vendor</option>
                         <option value="new">Add New Vendor</option>
+                        {% for supplier in suppliers %}
+                            <option value="{{ supplier.id }}">{{ supplier.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
     
                 <div>
                     <label for="status" class="block text-sm font-medium">Status</label>
                     <select id="status" name="status" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
+                        <option value="" selected disabled>Select Status</option>
                         <option value="pending">Pending</option>
                         <option value="delivered">Delivered</option>
                         <option value="backordered">Backordered</option>
@@ -40,11 +44,12 @@
             <div class="border-t border-gray-300 dark:border-gray-600 mt-6 pt-6">
                 <h3 class="text-xl font-semibold mb-6">Material in Purchase</h3>
     
-                <div class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div id="items__container" class="space-y-6">
+                    <div class="item__template grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 border-b border-gray-300 dark:border-gray-600 pb-6">
                         <div>
                             <label for="material-type" class="block text-sm font-medium">Material Type</label>
                             <select id="material-type" name="material_type[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
+                                <option value="" selected disabled>Select Material Type</option>
                                 <option value="raw">Raw Material</option>
                                 <option value="packaging">Packaging Material</option>
                                 <option value="equipment">Equipment</option>
@@ -85,6 +90,7 @@
                         <div>
                             <label for="qc-status" class="block text-sm font-medium">QC Status</label>
                             <select id="qc-status" name="qc_status[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
+                                <option value="" selected disabled>Select QC Status</option>
                                 <option value="approved">Approved</option>
                                 <option value="rejected">Rejected</option>
                                 <option value="pending">Pending</option>
@@ -101,9 +107,9 @@
                             <textarea id="qc-notes" name="qc_notes[]" class="mt-1 block w-full h-24 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4 py-2"></textarea>
                         </div>
                     </div>
-    
-                    <button type="button" class="transition-all duration-150 mt-4 px-4 py-2 text-white bg-[#2998FF] dark:bg-[#7655fa] rounded-lg hover:bg-opacity-80">Add Another Item</button>
                 </div>
+
+                <button type="button" onclick="addNewItem()" class="transition-all duration-150 mt-4 px-4 py-2 text-white bg-[#2998FF] dark:bg-[#7655fa] rounded-lg hover:bg-opacity-80">Add Another Item</button>
             </div>
     
             <!-- Save and Reset Buttons -->

@@ -48,28 +48,30 @@ try {
         $loginController->logout();
     });
 
-    // Dashboard Page
+    // Dashboard Page [GET]
     $router->respond('GET', '/dashboard', function() use ($dashboardController) {
         AuthMiddleware::checkAuth();
         $dashboardController->display();
     });
 
-    // Settings Page
+    // Settings Page [GET]
     $router->respond('GET', '/settings', function() use ($settingsController) {
         AuthMiddleware::checkAuth();
         $settingsController->display();
     });
 
-    // Purchase Page
+    // Purchase Page [GET]
     $router->respond('GET', '/purchase-list', function() use ($purchaseController) {
         AuthMiddleware::checkAuth();
         $purchaseController->display();
     });
 
-    // Add Purchase Page
-    // $router->respond('GET', '/add-purchase', function() use ($purchaseController) {
-    //     $purchaseController->addPurchaseDisplay();
-    // });
+    // Add Purchase Page [POST]
+    $router->respond('POST', '/add-purchase', function($request) use ($purchaseController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $purchaseController->addPurchaseMaterial($data);
+    });
 
     $router->dispatch();
 

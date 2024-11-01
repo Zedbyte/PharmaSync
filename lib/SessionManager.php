@@ -52,10 +52,10 @@ class SessionManager
     private function regenerateSessionIdLoggedIn()
     {
         session_regenerate_id(true);
-
         $userID = $_SESSION["user_id"];
-        $newSessionID = session_create_id() . "_$userID";
-        session_id($newSessionID);
+        
+        // Generate a secure hash that appends $userID for added security.
+        $_SESSION['session_hash'] = session_id() . '_' . hash('sha256', $userID . session_id());
 
         $_SESSION['last_regeneration'] = time();
     }

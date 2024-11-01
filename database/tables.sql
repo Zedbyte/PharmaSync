@@ -18,16 +18,19 @@ CREATE TABLE `users` (
     UNIQUE KEY `email_address` (`email_address`)
 );
 
-CREATE TABLE `material` (
+CREATE TABLE `materials` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `name` varchar(255) NOT NULL,
     `description` varchar(255) NOT NULL,
     `material_type` varchar(255) NOT NULL,
     `expiration_date` date DEFAULT NULL,
+    `qc_status` varchar(50) NOT NULL,
+    `inspection_date` date DEFAULT NULL,
+    `qc_notes` varchar(255) NOT NULL,
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `purchase` (
+CREATE TABLE `purchases` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `date` date NOT NULL,
     `material_count` int(11) NOT NULL,
@@ -40,22 +43,19 @@ CREATE TABLE `purchase` (
 ); 
 
 CREATE TABLE `purchase_material` (
-    `id` int(11) NOT NULL,
     `pm_purchase_id` int(11) NOT NULL,
     `pm_material_id` int(11) NOT NULL,
     `quantity` int(11) NOT NULL,
     `unit_price` double NOT NULL,
     `total_price` double NOT NULL,
     `batch_number` varchar(255) NOT NULL,
-    PRIMARY KEY (`id`, `pm_purchase_id`, `pm_material_id`),
-    UNIQUE KEY `batch_number` (`batch_number`),
-    KEY `pm_purchase_id` (`pm_purchase_id`),
+    PRIMARY KEY (`pm_purchase_id`, `pm_material_id`),
     KEY `pm_material_id` (`pm_material_id`),
-    CONSTRAINT `purchase_material_ibfk_1` FOREIGN KEY (`pm_purchase_id`) REFERENCES `purchase` (`id`) ON DELETE NO ACTION,
-    CONSTRAINT `purchase_material_ibfk_2` FOREIGN KEY (`pm_material_id`) REFERENCES `material` (`id`) ON DELETE NO ACTION
+    CONSTRAINT `purchase_material_ibfk_1` FOREIGN KEY (`pm_material_id`) REFERENCES `materials` (`id`) ON DELETE NO ACTION,
+    CONSTRAINT `purchase_material_ibfk_2` FOREIGN KEY (`pm_purchase_id`) REFERENCES `purchases` (`id`) ON DELETE NO ACTION
 );
 
-CREATE TABLE `supplier` (
+CREATE TABLE `suppliers` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `name` varchar(255) NOT NULL,
     `email` varchar(255) NOT NULL,
