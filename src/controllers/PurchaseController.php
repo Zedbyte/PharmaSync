@@ -26,8 +26,19 @@ class PurchaseController extends BaseController {
 
     public function display() {
         $supplierObject = new Supplier();
-        $data = $supplierObject->getAllSuppliers();
-        echo $this->twig->render('purchase-list.html.twig', ['ASSETS_URL' => ASSETS_URL, 'suppliers' => $data]);
+        $supplierData = $supplierObject->getAllSuppliers();
+
+        $purchaseMaterialObject = new PurchaseMaterial();
+        $purchaseMaterialData = $purchaseMaterialObject->getAllPurchaseMaterial();
+
+        $data = [
+            'suppliers' => $supplierData,
+            'purchaseMaterials' => $purchaseMaterialData,
+        ];
+
+        echo $this->twig->render('purchase-list.html.twig', 
+        ['ASSETS_URL' => ASSETS_URL, 'suppliers' => $data['suppliers'], 
+        'purchaseMaterials' => $data['purchaseMaterials']]);
     }
 
     public function addPurchaseMaterial($data) {

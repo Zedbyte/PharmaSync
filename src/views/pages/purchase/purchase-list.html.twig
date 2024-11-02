@@ -277,28 +277,28 @@
                             <th scope="col" class="px-6 py-3">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    {% for purchase in purchaseMaterials %}
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td class="md:px-6 md:py-4">
                                 <div class="flex items-center px-4">
-                                    <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                                    <span class="ml-2">1</span>
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label class="sr-only">checkbox</label>
+                                    <span class="ml-2">{{ purchase.purchase_id }}</span>
                                 </div>
                             </td>
-                            <td class="md:px-6 md:py-4 px-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">24-JUN-2024</td>
-                            <td class="md:px-6 md:py-4">Unilab Inc.</td>
-                            <td class="md:px-6 md:py-4">Raw, Package</td>
-                            <td class="md:px-6 md:py-4">10</td>
-                            <td class="md:px-6 md:py-4">$5000</td>
-                            <td class="md:px-6 md:py-4">Delivered</td>
+                            <td class="md:px-6 md:py-4 px-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ purchase.date_of_purchase }}</td>
+                            <td class="md:px-6 md:py-4">{{ purchase.vendor_name }}</td>
+                            <td class="md:px-6 md:py-4">{{ purchase.material_types | title }}</td>
+                            <td class="md:px-6 md:py-4">{{ purchase.material_count  }}</td>
+                            <td class="md:px-6 md:py-4">${{ purchase.total_cost | number_format(2) }}</td>
+                            <td class="md:px-6 md:py-4">{{ purchase.status | capitalize }}</td>
                             <td class="md:px-6 md:py-4 space-x-2 flex flex-wrap">
                                 <button class="text-blue-600 dark:text-blue-500 hover:underline text-xs md:text-sm">Edit</button>
                                 <button class="text-red-600 dark:text-red-500 hover:underline text-xs md:text-sm">Delete</button>
                                 <button class="text-green-600 dark:text-green-500 hover:underline text-xs md:text-sm">View</button>
                             </td>
                         </tr>
-                    </tbody>
+                    {% endfor %}
                 </table>
             </div>
         </div>
