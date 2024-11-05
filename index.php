@@ -66,6 +66,12 @@ try {
         $purchaseController->display();
     });
 
+    // Purchase List Entries Update [POST]
+    $router->respond('POST', '/purchase-list/entries', function() use ($purchaseController) {
+        AuthMiddleware::checkAuth();
+        $purchaseController->display();
+    });
+
     // Add Purchase Page [POST]
     $router->respond('POST', '/add-purchase', function($request) use ($purchaseController) {
         AuthMiddleware::checkAuth();

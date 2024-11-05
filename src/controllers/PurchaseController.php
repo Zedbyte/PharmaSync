@@ -23,23 +23,49 @@ class PurchaseController extends BaseController {
         $this->twig = $twig;
         $this->db = returnDBCon(new PurchaseMaterial()); // Initialize DB connection once
     }
-
     public function display() {
+
+        // POST, REDIRECT, GET PATTERN
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Retrieve the entry value from the submitted form
+            $entryValue = (int) $_POST['entryValue']; 
+
+            if (!isset($entryValue) || !is_numeric($entryValue) || $entryValue < 0) {
+                $entryValue = 5;
+            }
+    
+            // Redirect to the same page with the entry value as a query parameter
+            header('Location: /purchase-list?entries=' . urlencode($entryValue));
+            exit; // Important: exit after redirecting
+        }
+    
+        // Get the entry value from the query parameters if available
+        $entryValue = $_GET['entries'] ?? 5; // Default to 5 if not set
+    
         $supplierObject = new Supplier();
         $supplierData = $supplierObject->getAllSuppliers();
-
+    
         $purchaseMaterialObject = new PurchaseMaterial();
-        $purchaseMaterialData = $purchaseMaterialObject->getAllPurchaseMaterial();
+        $purchaseMaterialData = $purchaseMaterialObject->getAllPurchaseMaterial($entryValue);
+
+        $purchaseObject = new Purchase();
+        $purchaseCount = $purchaseObject->getCount();
 
         $data = [
             'suppliers' => $supplierData,
             'purchaseMaterials' => $purchaseMaterialData,
         ];
-
-        echo $this->twig->render('purchase-list.html.twig', 
-        ['ASSETS_URL' => ASSETS_URL, 'suppliers' => $data['suppliers'], 
-        'purchaseMaterials' => $data['purchaseMaterials']]);
+    
+        echo $this->twig->render('purchase-list.html.twig', [   
+            'ASSETS_URL' => ASSETS_URL,
+            'suppliers' => $data['suppliers'],
+            'purchaseMaterials' => $data['purchaseMaterials'],
+            'entryValue' => $entryValue,
+            'purchaseCount' => $purchaseCount['purchaseCount']
+        ]);
     }
+    
 
     public function addPurchaseMaterial($data) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

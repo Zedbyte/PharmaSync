@@ -60,7 +60,8 @@ class PurchaseMaterial extends BaseModel
         }
     }
 
-    public function getAllPurchaseMaterial() {
+    public function getAllPurchaseMaterial($limit = 5) {
+        $limit = (int)$limit;
         $sql = "SELECT 
                 p.id AS purchase_id,
                 p.date AS date_of_purchase,
@@ -74,10 +75,13 @@ class PurchaseMaterial extends BaseModel
                 JOIN purchase_material pm ON p.id = pm.pm_purchase_id
                 JOIN materials m ON pm.pm_material_id = m.id
                 GROUP BY p.id
-                ORDER BY p.date DESC";
+                ORDER BY p.date DESC LIMIT :limit";
 
         try {
             $statement = $this->db->prepare($sql);
+            //correct approach is to interpolate the LIMIT value directly into the query string, 
+            //since the LIMIT value is not part of the prepared statement's parameter binding system
+            $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
