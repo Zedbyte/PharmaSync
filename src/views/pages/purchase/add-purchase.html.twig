@@ -15,7 +15,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label for="purchase-date" class="block text-sm font-medium">Purchase Date</label>
-                    <input type="date" id="purchase-date" name="purchase_date" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-500 dark:bg-gray-700 px-4">
+                    <input type="text" id="purchase-date" name="purchase_date" placeholder="28 Jun, 2022 - 10:00"
+                    class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-blue-400 
+                    dark:focus:border-blue-500 dark:bg-gray-700 px-4" onfocus="(this.type='date')" onblur="(this.type='text')">
                 </div>
     
                 <div>
@@ -58,32 +60,39 @@
     
                         <div>
                             <label for="material-name" class="block text-sm font-medium">Material Name</label>
-                            <input type="text" id="material-name" name="material_name[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
+                            <input type="text" id="material-name" name="material_name[]" placeholder="Paracetamol"
+                            class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
                         </div>
     
                         <div class="md:col-span-2 lg:col-span-3">
                             <label for="description" class="block text-sm font-medium">Description</label>
-                            <input type="text" id="description" name="description[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
+                            <input type="text" id="description" name="description[]" placeholder="used to treat mild to moderate pain."
+                            class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
                         </div>
     
                         <div>
                             <label for="quantity" class="block text-sm font-medium">Quantity</label>
-                            <input type="number" id="quantity" name="quantity[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
+                            <input type="number" id="quantity" name="quantity[]" placeholder="1"
+                            class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
                         </div>
     
                         <div>
                             <label for="unit-price" class="block text-sm font-medium">Unit Price</label>
-                            <input type="number" id="unit-price" name="unit_price[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
+                            <input type="number" id="unit-price" name="unit_price[]" placeholder="1"
+                            class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
                         </div>
     
                         <div>
                             <label for="batch-number" class="block text-sm font-medium">Batch Number</label>
-                            <input type="text" id="batch-number" name="batch_number[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
+                            <input type="text" id="batch-number" name="batch_number[]" placeholder="307002"
+                            class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
                         </div>
     
                         <div>
                             <label for="expiry-date" class="block text-sm font-medium">Expiry Date</label>
-                            <input type="date" id="expiry-date" name="expiry_date[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
+                            <input type="text" id="expiry-date" name="expiry_date[]" placeholder="28 Jun, 2022 - 10:00" 
+                            class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4"
+                            onfocus="(this.type='date')" onblur="(this.type='text')">
                         </div>
     
                         <!-- Quality Control -->
@@ -99,12 +108,15 @@
     
                         <div>
                             <label for="inspection-date" class="block text-sm font-medium">Inspection Date</label>
-                            <input type="date" id="inspection-date" name="inspection_date[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
+                            <input type="text" id="inspection-date" name="inspection_date[]" placeholder="28 Jun, 2022 - 10:00" 
+                            class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4"
+                            onfocus="(this.type='date')" onblur="(this.type='text')">
                         </div>
     
                         <div class="md:col-span-2 lg:col-span-3">
                             <label for="qc-notes" class="block text-sm font-medium">QC Notes</label>
-                            <textarea id="qc-notes" name="qc_notes[]" class="mt-1 block w-full h-24 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4 py-2"></textarea>
+                            <textarea id="qc-notes" name="qc_notes[]" placeholder="QC review pending for new material purchase; details to follow upon inspection."
+                            class="mt-1 block w-full h-24 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4 py-2"></textarea>
                         </div>
                     </div>
                 </div>

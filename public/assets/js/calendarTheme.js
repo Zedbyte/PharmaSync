@@ -24,6 +24,21 @@
             dateFormat: "d M, Y - H:i",
             enableTime: true,
         });
+
+        flatpickr("#purchase-date", {
+            dateFormat: "d M, Y - H:i",
+            enableTime: true,
+        });
+
+        flatpickr("#expiry-date", {
+            dateFormat: "d M, Y - H:i",
+            enableTime: true,
+        });
+
+        flatpickr("#inspection-date", {
+            dateFormat: "d M, Y - H:i",
+            enableTime: true,
+        });
     }
 
     // Run the functions when the page is loaded
