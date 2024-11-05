@@ -20,38 +20,40 @@
 
 {% block body %}
     <section class="purchase__list_container_head grid grid-cols-1 md:grid-cols-12">
-        <div class="col-span-6 grid grid-cols-1 md:grid-cols-12 gap-4">
-            <div class="col-span-4">
-                <h1>Start Date</h1>
-                <input id="start-date" type="text" placeholder="28 Jun, 2022 - 10:00" class="bg-gray-50 border border-gray-300 text-gray-900 
-                text-sm rounded-lg block w-full p-2.5
-                transition-all duration-200
-                focus:bg-gray-200 dark:focus:bg-slate-600
-                outline-none h-11 min-h-11
-                dark:bg-slate-500 dark:border-gray-700 
-                dark:placeholder-gray-400 dark:text-white 
-                " onfocus="(this.type='date')" onblur="(this.type='text')">
-            </div>
-    
-            <div class="col-span-4">
-                <h1>End Date</h1>
-                <input id="end-date" type="text" placeholder="30 Jun, 2022 - 10:00" class="bg-gray-50 border border-gray-300 text-gray-900 
-                text-sm rounded-lg block w-full p-2.5
-                transition-all duration-200
-                focus:bg-gray-200 dark:focus:bg-slate-600
-                outline-none h-11 min-h-11
-                dark:bg-slate-500 dark:border-gray-700 
-                dark:placeholder-gray-400 dark:text-white 
-                " onfocus="(this.type='date')" onblur="(this.type='text')">
-            </div>
-    
-            <div class="head__button_container col-span-4">
-                <button class="bg-green-500 hover:bg-green-600 transition-all duration-200 
-                text-white rounded-lg px-3 py-2.5 flex justify-center items-center">
-                    <ion-icon name="search-outline" class="search__icon dark:text-[#fdfdfd]"></ion-icon>
-                    <span class="ml-2 block md:hidden">Search</span>
-                </button>
-            </div>
+        <div class="col-span-6">
+            <form id="dateRangeForm" class="filter-form grid grid-cols-1 md:grid-cols-12 gap-4" action="" method="post">
+                <div class="col-span-4">
+                    <h1>Start Date</h1>
+                    <input id="start-date" name="start_date" type="text" placeholder="01 Jan, 2024 - 10:00" class="bg-gray-50 border border-gray-300 text-gray-900 
+                    text-sm rounded-lg block w-full p-2.5
+                    transition-all duration-200
+                    focus:bg-gray-200 dark:focus:bg-slate-600
+                    outline-none h-11 min-h-11
+                    dark:bg-slate-500 dark:border-gray-700 
+                    dark:placeholder-gray-400 dark:text-white 
+                    " value="{{ start_date }}">
+                </div>
+        
+                <div class="col-span-4">
+                    <h1>End Date</h1>
+                    <input id="end-date" name="end_date"  type="text" placeholder="31 Dec, 2024 - 10:00" class="bg-gray-50 border border-gray-300 text-gray-900 
+                    text-sm rounded-lg block w-full p-2.5
+                    transition-all duration-200
+                    focus:bg-gray-200 dark:focus:bg-slate-600
+                    outline-none h-11 min-h-11
+                    dark:bg-slate-500 dark:border-gray-700 
+                    dark:placeholder-gray-400 dark:text-white 
+                    " value="{{ end_date }}">
+                </div>
+        
+                <div class="head__button_container col-span-4">
+                    <button class="bg-green-500 hover:bg-green-600 transition-all duration-200 
+                    text-white rounded-lg px-3 py-2.5 flex justify-center items-center">
+                        <ion-icon name="search-outline" class="search__icon dark:text-[#fdfdfd]"></ion-icon>
+                        <span class="ml-2 block md:hidden">Search</span>
+                    </button>
+                </div>
+            </form>
         </div>
     
         <div class="content__button_container col-span-6">
@@ -88,47 +90,47 @@
                         <svg class="w-3 h-3 text-gray-500 dark:text-gray-400 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"/>
                         </svg>
-                        Last 30 days
+                        Last {{ relativeDate }} days
                         <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                         </svg>
                     </button>
                     
                     <!-- Dropdown menu -->
-                    <div id="dropdownRadio" class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(522.5px, 3847.5px, 0px);">
-                        <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownRadioButton">
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="filter-radio-example-1" type="radio" value="" name="filter-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="filter-radio-example-1" class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Last day</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input checked="" id="filter-radio-example-2" type="radio" value="" name="filter-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="filter-radio-example-2" class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Last 7 days</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="filter-radio-example-3" type="radio" value="" name="filter-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="filter-radio-example-3" class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Last 30 days</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="filter-radio-example-4" type="radio" value="" name="filter-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="filter-radio-example-4" class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Last month</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="filter-radio-example-5" type="radio" value="" name="filter-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="filter-radio-example-5" class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Last year</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    <form id="relativeDateForm" class="filter-form" action="" method="post">
+                        <div id="dropdownRadio" class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
+                            <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownRadioButton">
+                                <li>
+                                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        <input id="filter-radio-example-1" name="relativeDate" type="radio" value="1" 
+                                            {% if relativeDate == 1 %} checked {% endif %} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="filter-radio-example-1" class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Last day</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        <input id="filter-radio-example-2" name="relativeDate" type="radio" value="7" 
+                                            {% if relativeDate == 7 %} checked {% endif %} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="filter-radio-example-2" class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Last 7 days</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        <input id="filter-radio-example-3" name="relativeDate" type="radio" value="30" 
+                                            {% if relativeDate == 30 %} checked {% endif %} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="filter-radio-example-3" class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Last 30 days</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        <input id="filter-radio-example-5" name="relativeDate" type="radio" value="365" 
+                                            {% if relativeDate == 365 %} checked {% endif %} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="filter-radio-example-5" class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Last year</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
 
                     <!-- Advanced Filter Button -->
                     <button id="dropdownDefault" data-dropdown-toggle="dropdown"
@@ -148,7 +150,7 @@
                     
                     <!-- Dropdown menu -->
                     <div id="dropdown" class="z-10 hidden h-[34rem] w-72 px-3 py-1 bg-white rounded-lg shadow dark:bg-gray-700 overflow-y-auto">
-                        <form action="#" method="get" id="dropdown" class="inset-0 m-0 px-4 py-2 bg-white rounded-lg dark:bg-gray-700" aria-labelledby="dropdownDefault">
+                        <form action="" method="post" id="advancedFilterForm" class="filter-form inset-0 m-0 px-4 py-2 bg-white rounded-lg dark:bg-gray-700" aria-labelledby="dropdownDefault">
                             <!-- Filter Title -->
                             <h6 id="drawer-label" class="text-lg font-semibold text-gray-700 dark:text-gray-200">
                                 Advanced Filter
@@ -257,10 +259,10 @@
                     </div>
                 </div>
             </div>
-            <div class="w-full max-h-96 overflow-y-auto border border-gray-300 dark:border-gray-700 rounded-lg">
+            <div class="w-full max-h-[27rem] overflow-y-auto border border-gray-300 dark:border-gray-700 rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
+                    <thead class="relative text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr class="sticky top-0 bg-white dark:bg-gray-700">
                             <th scope="col" class="p-4">
                                 <div class="flex items-center">
                                     <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -318,39 +320,29 @@
 
                     <!-- Dropdown menu -->
                     <div id="entryDropdownMenu" class="z-9999 hidden bg-white rounded-lg shadow w-60 dark:bg-gray-700">
-                        <form id="entryForm" action="/purchase-list/entries" method="POST" autocomplete='off'>
-                            <!-- Custom input field for user-defined entries -->
+                        <form id="entryForm" class="filter-form" action="" method="post">
                             <div class="p-3">
                                 <label for="customEntryInput" class="sr-only">Custom Entry</label>
-                                <input type="number" id="customEntryInput" name="entryValue" class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Custom entry">
+                                <input type="number" id="customEntryInput" name="entryValue" class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Custom entry" value="{{ entryValue }}">
                             </div>
-                        
-                            <!-- Predefined entries as submit buttons -->
+                            
                             <ul class="px-3 pb-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="entryDropdownButton">
+                                {% for val in [5, 10, 20, 30, 50, 100] %}
                                 <li>
-                                    <button type="submit" name="entryValue" value="5" class="w-full text-left py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-600">5</button>
+                                    <button type="submit" name="entryValue" value="{{ val }}" class="w-full text-left py-2 px-3 rounded hover:bg-gray-900 dark:hover:bg-gray-600
+                                    {% if entryValue == val %}
+                                        bg-gray-200 dark:bg-gray-900
+                                    {% endif %}">
+                                    {{ val }}
+                                </button>
                                 </li>
-                                <li>
-                                    <button type="submit" name="entryValue" value="10" class="w-full text-left py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-600">10</button>
-                                </li>
-                                <li>
-                                    <button type="submit" name="entryValue" value="20" class="w-full text-left py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-600">20</button>
-                                </li>
-                                <li>
-                                    <button type="submit" name="entryValue" value="30" class="w-full text-left py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-600">30</button>
-                                </li>
-                                <li>
-                                    <button type="submit" name="entryValue" value="50" class="w-full text-left py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-600">50</button>
-                                </li>
-                                <li>
-                                    <button type="submit" name="entryValue" value="100" class="w-full text-left py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-600">100</button>
-                                </li>
+                                {% endfor %}
                             </ul>
-                        </form>                        
+                        </form>            
                     </div>
 
                 </span> of <span class="font-semibold text-gray-900 dark:text-white">{{ purchaseCount }}</span></span>
-            <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+            <!-- <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
                 <li>
                     <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
                 </li>
@@ -372,7 +364,7 @@
                 <li>
                     <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
                 </li>
-            </ul>
+            </ul> -->
         </nav>
     
     
@@ -387,9 +379,9 @@
     <script src="{{ ASSETS_URL }}/js/calendarTheme.js"></script>
     <script src="{{ ASSETS_URL }}/js/tableEntry.js"></script>
     <script src="{{ ASSETS_URL }}/js/addNewItem.js"></script>
-    <script src="{{ ASSETS_URL }}/js/entries.js"></script>
+    <!-- <script src="{{ ASSETS_URL }}/js/entries.js"></script> -->
+    <script src="{{ ASSETS_URL }}/js/filterSubmission.js"></script>
 
-    <!-- JavaScript -->
     <script>
         function togglePanel() {
             const panel = document.getElementById("slidePanel");

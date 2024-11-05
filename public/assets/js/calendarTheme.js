@@ -16,27 +16,29 @@
     // Initialize flatpickr on the inputs by their IDs
     function initializeFlatpickr() {
         flatpickr("#start-date", {
-            dateFormat: "d M, Y - H:i",
+            dateFormat: "Y-m-d - H:i",
             enableTime: true,
+            defaultDate: document.getElementById("start-date").value || null
         });
 
         flatpickr("#end-date", {
-            dateFormat: "d M, Y - H:i",
+            dateFormat: "Y-m-d - H:i",
             enableTime: true,
+            defaultDate: document.getElementById("end-date").value || null
         });
 
         flatpickr("#purchase-date", {
-            dateFormat: "d M, Y - H:i",
+            dateFormat: "Y-m-d - H:i",
             enableTime: true,
         });
 
         flatpickr("#expiry-date", {
-            dateFormat: "d M, Y - H:i",
+            dateFormat: "Y-m-d - H:i",
             enableTime: true,
         });
 
         flatpickr("#inspection-date", {
-            dateFormat: "d M, Y - H:i",
+            dateFormat: "Y-m-d - H:i",
             enableTime: true,
         });
     }

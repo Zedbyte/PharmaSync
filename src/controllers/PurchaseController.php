@@ -24,47 +24,56 @@ class PurchaseController extends BaseController {
         $this->db = returnDBCon(new PurchaseMaterial()); // Initialize DB connection once
     }
     public function display() {
-
-        // POST, REDIRECT, GET PATTERN
-        
+        // POST-Redirect-GET (PRG) PATTERN
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Retrieve the entry value from the submitted form
-            $entryValue = (int) $_POST['entryValue']; 
+            // Collect and sanitize POST data
+            $startDate = $_POST['start_date'] ?? null;
+            $endDate = $_POST['end_date'] ?? null;
+            $relativeDate = $_POST['relativeDate'] ?? null;
+            $entryValue = isset($_POST['entryValue']) && is_numeric($_POST['entryValue']) && $_POST['entryValue'] > 0 ? (int) $_POST['entryValue'] : 5;
 
-            if (!isset($entryValue) || !is_numeric($entryValue) || $entryValue < 0) {
-                $entryValue = 5;
-            }
+            // Redirect with the filters as query parameters
+            $queryParams = [];
+            if ($startDate) $queryParams['start_date'] = $startDate;
+            if ($endDate) $queryParams['end_date'] = $endDate;
+            if ($relativeDate) $queryParams['relativeDate'] = $relativeDate;
+            if ($entryValue) $queryParams['entryValue'] = $entryValue;
     
-            // Redirect to the same page with the entry value as a query parameter
-            header('Location: /purchase-list?entries=' . urlencode($entryValue));
-            exit; // Important: exit after redirecting
+            header('Location: /purchase-list?' . http_build_query($queryParams));
+            exit;
         }
     
-        // Get the entry value from the query parameters if available
-        $entryValue = $_GET['entries'] ?? 5; // Default to 5 if not set
+        // Retrieve filter values from query parameters (GET)
+        $startDate = $_GET['start_date'] ?? '2024-01-01';
+        $endDate = $_GET['end_date']  ?? '2024-12-31';
+
+        $relativeDate = $_GET['relativeDate'] ?? 7;
+        $entryValue = isset($_GET['entryValue']) && is_numeric($_GET['entryValue']) ? (int) $_GET['entryValue'] : 5;
+
     
+        // Load data models based on filters
         $supplierObject = new Supplier();
         $supplierData = $supplierObject->getAllSuppliers();
     
         $purchaseMaterialObject = new PurchaseMaterial();
-        $purchaseMaterialData = $purchaseMaterialObject->getAllPurchaseMaterial($entryValue);
+        $purchaseMaterialData = $purchaseMaterialObject->getAllPurchaseMaterial($entryValue, $startDate, $endDate, $relativeDate);
 
         $purchaseObject = new Purchase();
         $purchaseCount = $purchaseObject->getCount();
-
-        $data = [
+    
+        // Pass data and filter values to Twig template for rendering
+        echo $this->twig->render('purchase-list.html.twig', [
+            'ASSETS_URL' => ASSETS_URL,
             'suppliers' => $supplierData,
             'purchaseMaterials' => $purchaseMaterialData,
-        ];
-    
-        echo $this->twig->render('purchase-list.html.twig', [   
-            'ASSETS_URL' => ASSETS_URL,
-            'suppliers' => $data['suppliers'],
-            'purchaseMaterials' => $data['purchaseMaterials'],
-            'entryValue' => $entryValue,
-            'purchaseCount' => $purchaseCount['purchaseCount']
+            'purchaseCount' => $purchaseCount['purchaseCount'],
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+            'relativeDate' => $relativeDate,
+            'entryValue' => $entryValue
         ]);
     }
+    
     
 
     public function addPurchaseMaterial($data) {

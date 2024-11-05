@@ -66,8 +66,8 @@ try {
         $purchaseController->display();
     });
 
-    // Purchase List Entries Update [POST]
-    $router->respond('POST', '/purchase-list/entries', function() use ($purchaseController) {
+    // Purchase List Filter Update [POST]
+    $router->respond('POST', '/purchase-list/filter', function() use ($purchaseController) {
         AuthMiddleware::checkAuth();
         $purchaseController->display();
     });

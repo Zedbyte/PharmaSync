@@ -60,8 +60,30 @@ class PurchaseMaterial extends BaseModel
         }
     }
 
-    public function getAllPurchaseMaterial($limit = 5) {
+    public function getAllPurchaseMaterial($limit = 5, $startDate = null, $endDate = null, $relativeDate = null) {
         $limit = (int)$limit;
+    
+        // Set default values if empty
+        $startDate = $startDate ?: null; // Default to null if not provided (to handle unset case)
+        $endDate = $endDate ?: date('Y-m-d'); // Default to today
+        $relativeDate = $relativeDate ?: null; // Default to null if not provided
+
+        // If startDate is set, clear relativeDate (no relativeDate should be used)
+        if ($startDate) {
+            $relativeDate = null;
+        }
+
+        // If relativeDate is set, calculate startDate based on that
+        if ($relativeDate) {
+            $startDate = date('Y-m-d', strtotime("-$relativeDate days"));
+        }
+
+        // If still no startDate, set it to the default earliest date
+        $startDate = $startDate ?: '1970-01-01';
+
+        // var_dump($startDate, $relativeDate); exit;
+
+        // Create the SQL query
         $sql = "SELECT 
                 p.id AS purchase_id,
                 p.date AS date_of_purchase,
@@ -74,14 +96,19 @@ class PurchaseMaterial extends BaseModel
                 JOIN suppliers s ON p.p_supplier_id = s.id
                 JOIN purchase_material pm ON p.id = pm.pm_purchase_id
                 JOIN materials m ON pm.pm_material_id = m.id
+                WHERE p.date BETWEEN :startDate AND :endDate
                 GROUP BY p.id
-                ORDER BY p.date DESC LIMIT :limit";
-
+                ORDER BY p.date DESC
+                LIMIT :limit";
+    
         try {
             $statement = $this->db->prepare($sql);
-            //correct approach is to interpolate the LIMIT value directly into the query string, 
-            //since the LIMIT value is not part of the prepared statement's parameter binding system
+            
+            // Bind parameters
+            $statement->bindValue(':startDate', $startDate);
+            $statement->bindValue(':endDate', $endDate);
             $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+            
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
