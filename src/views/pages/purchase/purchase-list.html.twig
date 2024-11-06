@@ -24,26 +24,27 @@
             <form id="dateRangeForm" class="filter-form grid grid-cols-1 md:grid-cols-12 gap-4" action="" method="post">
                 <div class="col-span-4">
                     <h1>Start Date</h1>
-                    <input id="start-date" name="start_date" type="text" placeholder="01 Jan, 2024 - 10:00" class="bg-gray-50 border border-gray-300 text-gray-900 
+                    <input id="start-date" name="start_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 
                     text-sm rounded-lg block w-full p-2.5
                     transition-all duration-200
                     focus:bg-gray-200 dark:focus:bg-slate-600
                     outline-none h-11 min-h-11
                     dark:bg-slate-500 dark:border-gray-700 
                     dark:placeholder-gray-400 dark:text-white 
-                    " value="{{ start_date }}">
+                    " 
+                    {% if (start_date) %} placeholder="{{ start_date }}" {% else %} placeholder="01 Jan, 2024 - 10:00" {% endif %}>
                 </div>
         
                 <div class="col-span-4">
                     <h1>End Date</h1>
-                    <input id="end-date" name="end_date"  type="text" placeholder="31 Dec, 2024 - 10:00" class="bg-gray-50 border border-gray-300 text-gray-900 
+                    <input id="end-date" name="end_date"  type="text" class="bg-gray-50 border border-gray-300 text-gray-900 
                     text-sm rounded-lg block w-full p-2.5
                     transition-all duration-200
                     focus:bg-gray-200 dark:focus:bg-slate-600
                     outline-none h-11 min-h-11
                     dark:bg-slate-500 dark:border-gray-700 
                     dark:placeholder-gray-400 dark:text-white 
-                    " value="{{ end_date }}">
+                    " {% if (end_date) %} placeholder="{{ end_date }}" {% else %} placeholder="31 Dec, 2024 - 10:00" {% endif %}>
                 </div>
         
                 <div class="head__button_container col-span-4">
@@ -329,7 +330,7 @@
                             <ul class="px-3 pb-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="entryDropdownButton">
                                 {% for val in [5, 10, 20, 30, 50, 100] %}
                                 <li>
-                                    <button type="submit" name="entryValue" value="{{ val }}" class="w-full text-left py-2 px-3 rounded hover:bg-gray-900 dark:hover:bg-gray-600
+                                    <button type="submit" name="entryValue" value="{{ val }}" class="w-full text-left py-2 px-3 rounded dark:hover:bg-gray-600 hover:bg-gray-100
                                     {% if entryValue == val %}
                                         bg-gray-200 dark:bg-gray-900
                                     {% endif %}">

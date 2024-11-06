@@ -60,7 +60,7 @@ class PurchaseMaterial extends BaseModel
         }
     }
 
-    public function getAllPurchaseMaterial($limit = 5, $startDate = null, $endDate = null, $relativeDate = null) {
+    public function getAllPurchaseMaterial($limit = 10, $startDate = null, $endDate = null, $relativeDate = null) {
         $limit = (int)$limit;
     
         // Set default values if empty
@@ -81,7 +81,7 @@ class PurchaseMaterial extends BaseModel
         // If still no startDate, set it to the default earliest date
         $startDate = $startDate ?: '1970-01-01';
 
-        // var_dump($startDate, $relativeDate); exit;
+        // var_dump($startDate, $endDate, $relativeDate); exit;
 
         // Create the SQL query
         $sql = "SELECT 

@@ -11,6 +11,7 @@ use \Exception;
 
 require_once __DIR__ . '/../../config/config.php';
 require_once LIB_URL . '/get_dbcon.inc.php';
+require_once LIB_URL . '/debug_to_console.inc.php';
 require_once 'BaseController.php';
 
 class PurchaseController extends BaseController {
@@ -30,25 +31,38 @@ class PurchaseController extends BaseController {
             $startDate = $_POST['start_date'] ?? null;
             $endDate = $_POST['end_date'] ?? null;
             $relativeDate = $_POST['relativeDate'] ?? null;
-            $entryValue = isset($_POST['entryValue']) && is_numeric($_POST['entryValue']) && $_POST['entryValue'] > 0 ? (int) $_POST['entryValue'] : 5;
+            $entryValue = isset($_POST['entryValue']) && is_numeric($_POST['entryValue']) && $_POST['entryValue'] > 0 ? (int) $_POST['entryValue'] : 10;
 
             // Redirect with the filters as query parameters
             $queryParams = [];
-            if ($startDate) $queryParams['start_date'] = $startDate;
-            if ($endDate) $queryParams['end_date'] = $endDate;
-            if ($relativeDate) $queryParams['relativeDate'] = $relativeDate;
+                    
+            // Prioritize startDate over relativeDate
+            if (($startDate && $endDate)) {
+                // Case 1: If start_date and end_date are provided, use them and ignore relativeDate
+                $queryParams['start_date'] = $startDate;
+                $queryParams['end_date'] = $endDate;
+                $queryParams['relativeDate'] = null; // Explicitly clear relativeDate
+            } elseif ($relativeDate) {
+                // Case 2: If relativeDate is provided, ignore start_date and end_date
+                $queryParams['relativeDate'] = $relativeDate;
+                $queryParams['start_date'] = null; // Explicitly clear start_date
+                $queryParams['end_date'] = null;   // Explicitly clear end_date
+            }
+
             if ($entryValue) $queryParams['entryValue'] = $entryValue;
+
+            $relativeDate = $startDate = $endDate = null;
     
             header('Location: /purchase-list?' . http_build_query($queryParams));
             exit;
         }
     
         // Retrieve filter values from query parameters (GET)
-        $startDate = $_GET['start_date'] ?? '2024-01-01';
-        $endDate = $_GET['end_date']  ?? '2024-12-31';
+        $startDate = $_GET['start_date'] ?? null;
+        $endDate = $_GET['end_date']  ?? null;
 
-        $relativeDate = $_GET['relativeDate'] ?? 7;
-        $entryValue = isset($_GET['entryValue']) && is_numeric($_GET['entryValue']) ? (int) $_GET['entryValue'] : 5;
+        $relativeDate = ($startDate && $endDate) ? null : ($_GET['relativeDate'] ?? 30);
+        $entryValue = isset($_GET['entryValue']) && is_numeric($_GET['entryValue']) ? (int) $_GET['entryValue'] : 10;
 
     
         // Load data models based on filters
