@@ -155,7 +155,7 @@
                         <svg class="w-5 h-4 text-gray-500 dark:text-gray-400 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12.25V1m0 11.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M4 19v-2.25m6-13.5V1m0 2.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M10 19V7.75m6 4.5V1m0 11.25a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5ZM16 19v-2"/>
                         </svg>
-                        Advanced Filter
+                        Advanced Filters
                         <svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -163,11 +163,11 @@
                     </button>
                     
                     <!-- Dropdown menu -->
-                    <div id="dropdown" class="z-10 hidden h-[34rem] w-72 px-3 py-1 bg-white rounded-lg shadow dark:bg-gray-700 overflow-y-auto">
+                    <div id="dropdown" class="z-10 hidden h-[27rem] w-72 px-3 py-1 bg-white rounded-lg shadow dark:bg-gray-700 overflow-y-auto">
                         <form action="" method="post" id="advancedFilterForm" class="filter-form inset-0 m-0 px-4 py-2 bg-white rounded-lg dark:bg-gray-700" aria-labelledby="dropdownDefault">
                             <!-- Filter Title -->
                             <h6 id="drawer-label" class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                Advanced Filter
+                                Advanced Filters
                             </h6>
                         
                             <!-- Price Range Section -->
@@ -190,7 +190,7 @@
                             </div>
                         
                             <!-- Sales Section -->
-                            <div class="my-4">
+                            <!-- <div class="my-4">
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sales</label>
                                 <div class="flex items-center space-x-2 mt-2">
                                     <input id="min-sales" type="range" min="0" max="7000" value="300" step="1" class="w-full">
@@ -206,7 +206,7 @@
                                         <input type="number" id="max-sales-input" value="100" min="0" max="300" class="w-full mt-1 border border-gray-300 rounded-lg p-3 text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 focus:ring-blue-500 focus:border-blue-500">
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         
                             <!-- Category Section -->
                             <div class="my-4">
@@ -237,7 +237,7 @@
                                 <button type="submit" class="py-1.5 px-4 text-xs font-semibold text-white rounded-lg focus:outline-none focus:ring-2 transition-colors duration-200
                                         bg-[#2998FF] hover:bg-[#1f7ecb] focus:ring-[#2998FF]
                                         dark:bg-[#7655fa] dark:hover:bg-[#5c45c6] dark:focus:ring-[#7655fa]">
-                                    Show 32 Results
+                                    Show Results
                                 </button>
                                 <button type="reset" class="py-1.5 px-4 text-sm font-semibold text-white rounded-lg focus:outline-none focus:ring-2 transition-colors duration-200
                                         bg-[#2998FF] hover:bg-[#1f7ecb] focus:ring-[#2998FF]
@@ -328,14 +328,14 @@
                             <td class="md:px-6 md:py-4">${{ purchase.total_cost | number_format(2) }}</td>
                             <td class="md:px-6 md:py-4">
                                 <span class="
-                                    {% if purchase.status|upper == 'COMPLETED' %} bg-green-500 
-                                    {% elseif purchase.status|upper == 'PENDING' %} bg-yellow-500 
-                                    {% elseif purchase.status|upper == 'FAILED' %} bg-red-500 
-                                    {% elseif purchase.status|upper == 'CANCELLED' %} bg-gray-500
-                                    {% elseif purchase.status|upper == 'BACKORDERED' %} bg-orange-500
+                                    {% if purchase.status|upper == 'COMPLETED' %} dark:bg-green-700 bg-green-400
+                                    {% elseif purchase.status|upper == 'PENDING' %} dark:bg-yellow-600 bg-yellow-400
+                                    {% elseif purchase.status|upper == 'FAILED' %} dark:bg-red-700 bg-red-400
+                                    {% elseif purchase.status|upper == 'CANCELLED' %} dark:bg-gray-700 bg-gray-400
+                                    {% elseif purchase.status|upper == 'BACKORDERED' %} dark:bg-orange-700 bg-orange-400
                                     {% else %} bg-blue-500 {% endif %}
                                     p-1 md:p-0 md:py-1 rounded-full text-white text-xs
-                                    md:block md:w-11/12 text-center">
+                                    md:block md:w-10/12 text-center">
                                     {% if purchase.status|upper == 'COMPLETED' %} <i class="fa-solid fa-circle-check"></i>
                                     {% elseif purchase.status|upper == 'PENDING' %} <i class="fa-solid fa-spinner"></i>
                                     {% elseif purchase.status|upper == 'FAILED' %} <i class="fa-solid fa-circle-exclamation"></i>
@@ -349,7 +349,7 @@
                             </td>
                             <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap">
                                 <button class="
-                                text-blue-600 
+                                text-blue-400 
                                 dark:text-blue-500 
                                 hover:text-blue-800 text-xs md:text-base transition-all duration-200">
                                     <i class="fa-solid fa-pen-to-square"></i>
@@ -359,7 +359,7 @@
                                 onclick="openDeleteModal(this)" 
                                 data-id="{{ purchase.purchase_id }}" 
                                 data-material-count="{{ purchase.material_count }}" 
-                                class="text-red-600 hover:text-red-800 dark:text-red-500 
+                                class="text-red-400 hover:text-red-800 dark:text-red-500 
                                 text-xs md:text-base transition-all duration-200">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
@@ -367,7 +367,7 @@
                                 <button 
                                 onclick="viewPurchasePanel(this)" 
                                 data-id="{{ purchase.purchase_id }}" 
-                                class="text-green-600 hover:text-green-800 dark:text-green-500 
+                                class="text-green-400 hover:text-green-800 dark:text-green-500 
                                 dark:hover:text-green-700 text-xs md:text-base transition-all duration-200">
                                     <i class="fa-solid fa-circle-info"></i>
                                 </button>
@@ -456,6 +456,7 @@
     <script src="{{ ASSETS_URL }}/js/filterSubmission.js"></script>
     <script src="{{ ASSETS_URL }}/js/purchase/viewPurchasePanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/purchase/openDeleteModal.js"></script>
+    <script src="{{ ASSETS_URL }}/js/purchase/rangeSync.js"></script>
 
     <script>
         function togglePanel() {
