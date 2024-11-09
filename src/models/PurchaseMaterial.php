@@ -79,7 +79,8 @@ class PurchaseMaterial extends BaseModel
         $endDate = $endDate ?: date('Y-m-d'); // Default to today
         $minPrice = is_numeric($minPrice) ? (float)$minPrice : 0;
         $maxPrice = is_numeric($maxPrice) ? (float)$maxPrice : 9999999;
-        $purchase_search = $purchase_search ? "%" . trim($purchase_search) . "%" : "%";
+        $purchase_search = $purchase_search ? "%" . ucwords(trim($purchase_search)) . "%" : "%";
+
 
         // If startDate is set, clear relativeDate (no relativeDate should be used)
         if ($startDate) {
