@@ -157,4 +157,15 @@ class PurchaseController extends BaseController {
 
         return $materialIDs;
     }
+
+    public function viewPurchase($data) {
+
+        $purchaseMaterialObject = new PurchaseMaterial();
+
+        $purchaseData = $purchaseMaterialObject->getPurchaseData($data[1]);
+        
+        echo $this->twig->render('view-purchase.html.twig', [
+            'purchaseData' => $purchaseData
+        ]);
+    }
 }

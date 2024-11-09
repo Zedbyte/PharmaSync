@@ -116,4 +116,51 @@ class PurchaseMaterial extends BaseModel
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
+
+    public function getPurchaseData($purchaseID)
+    {
+        $sql = "SELECT 
+                    p.id AS purchase_id,
+                    p.date AS purchase_date,
+                    p.material_count,
+                    p.total_cost,
+                    p.status AS purchase_status,
+                    s.id AS supplier_id,
+                    s.name AS supplier_name,
+                    s.email AS supplier_email,
+                    s.address AS supplier_address,
+                    s.contact_no AS supplier_contact_no,
+                    pm.quantity,
+                    pm.unit_price,
+                    pm.total_price AS material_total_price,
+                    pm.batch_number,
+                    m.id AS material_id,
+                    m.name AS material_name,
+                    m.description AS material_description,
+                    m.material_type,
+                    m.expiration_date,
+                    m.qc_status,
+                    m.inspection_date,
+                    m.qc_notes
+                FROM 
+                    purchases p
+                JOIN 
+                    suppliers s ON p.p_supplier_id = s.id
+                JOIN 
+                    purchase_material pm ON p.id = pm.pm_purchase_id
+                JOIN 
+                    materials m ON pm.pm_material_id = m.id
+                WHERE 
+                    p.id = :purchase_id";
+    
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute(['purchase_id' => $purchaseID]);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+    
 }

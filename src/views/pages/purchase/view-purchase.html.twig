@@ -1,0 +1,96 @@
+<div class="h-full w-full px-8 py-6">
+
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold">View Purchase</h2>
+        <button onclick="viewClosePanel()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-all duration-150 flex items-center">
+            <svg class="w-4 h-4 mr-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+            Close
+        </button>
+    </div>
+
+    <div class="bg-slate-200 p-5 rounded-xl min-h-[calc(100%-80px)]">
+    
+        <!-- Purchase Information Card -->
+        <div class="rounded-lg p-6 mb-4">
+            <div class="text-right text-gray-700">
+                <p><strong>Purchase ID:</strong> {{ purchaseData[0].purchase_id }}</p>
+                <p><strong>Purchase Date:</strong> {{ purchaseData[0].purchase_date }}</p>
+                <p><strong>Status:</strong> <span class="capitalize">{{ purchaseData[0].purchase_status }}</span></p>
+            </div>
+        </div>
+    
+        <!-- Supplier Information Card -->
+        <div class="rounded-lg p-6 mb-4">
+            <h3 class="text-lg font-semibold mb-2 text-gray-800">Supplier Information</h3>
+            <div class="text-gray-700 space-y-2">
+                <p><strong>Name:</strong> {{ purchaseData[0].supplier_name }}</p>
+                <p><strong>Email:</strong> {{ purchaseData[0].supplier_email }}</p>
+                <p><strong>Address:</strong> {{ purchaseData[0].supplier_address }}</p>
+                <p><strong>Contact No:</strong> {{ purchaseData[0].supplier_contact_no }}</p>
+            </div>
+        </div>
+    
+        <!-- Materials Table Card with Detailed Information -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mb-4">
+            <h3 class="text-lg font-semibold mb-2 text-gray-800">Materials</h3>
+            <table class="w-full text-sm text-left border-t border-gray-200">
+                <thead class="text-gray-600 uppercase border-b border-gray-300">
+                    <tr>
+                        <th class="py-2 px-4">Material Name</th>
+                        <th class="py-2 px-4">Quantity</th>
+                        <th class="py-2 px-4">Unit Price</th>
+                        <th class="py-2 px-4">Total Price</th>
+                        <th class="py-2 px-4">Batch No.</th>
+                        <th class="py-2 px-4">Expiration Date</th>
+                        <th class="py-2 px-4">QC Status</th>
+                        <th class="py-2 px-4"></th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                    {% for item in purchaseData %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="py-2 px-4">{{ item.material_name }}</td>
+                        <td class="py-2 px-4">{{ item.quantity }}</td>
+                        <td class="py-2 px-4">${{ item.unit_price | number_format(2) }}</td>
+                        <td class="py-2 px-4">${{ item.material_total_price | number_format(2) }}</td>
+                        <td class="py-2 px-4">{{ item.batch_number }}</td>
+                        <td class="py-2 px-4">{{ item.expiration_date }}</td>
+                        <td class="py-2 px-4 capitalize">{{ item.qc_status }}</td>
+                        <td class="py-2 px-4">
+                            <!-- Toggle Button to Show More Details -->
+                            <button onclick="toggleDetails('details-{{ loop.index }}')" class="text-blue-500 hover:underline">
+                                Details
+                            </button>
+                        </td>
+                    </tr>
+                    <!-- Detailed Information (Hidden by Default) -->
+                    <tr id="details-{{ loop.index }}" class="hidden">
+                        <td colspan="8" class="bg-gray-50 p-4">
+                            <div class="text-gray-700 space-y-2">
+                                <p><strong>Material Description:</strong> {{ item.material_description }}</p>
+                                <p><strong>QC Notes:</strong> {{ item.qc_notes }}</p>
+                                <p><strong>Inspection Date:</strong> {{ item.inspection_date }}</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    
+        <!-- Total Cost Summary Card -->
+        <div class="rounded-lg p-6 text-right">
+            <p class="text-gray-700"><strong>Material Count:</strong> {{ purchaseData[0].material_count }}</p>
+            <p class="text-gray-700 text-lg"><strong>Total Cost:</strong> ${{ purchaseData[0].total_cost | number_format(2) }}</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleDetails(id) {
+        const row = document.getElementById(id);
+        row.classList.toggle('hidden');
+    }
+</script>

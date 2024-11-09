@@ -79,6 +79,13 @@ try {
         $purchaseController->addPurchaseMaterial($data);
     });
 
+    // View Purchase Page [GET]
+    $router->respond('GET', '/view-purchase/[i:purchaseID]', function($purchaseID) use ($purchaseController) {
+        AuthMiddleware::checkAuth();
+        $data = $purchaseID->params();
+        $purchaseController->viewPurchase($data);
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {
