@@ -36,8 +36,10 @@
                     <select id="status" name="status" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
                         <option value="" selected disabled>Select Status</option>
                         <option value="pending">Pending</option>
-                        <option value="delivered">Delivered</option>
+                        <option value="completed">Completed</option>
                         <option value="backordered">Backordered</option>
+                        <option value="failed">Failed</option>
+                        <option value="canceled">Canceled</option>
                     </select>
                 </div>
             </div>
@@ -53,6 +55,7 @@
                             <select id="material-type" name="material_type[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4">
                                 <option value="" selected disabled>Select Material Type</option>
                                 <option value="raw">Raw Material</option>
+                                <option value="medicine">Medicine</option>
                                 <option value="packaging">Packaging Material</option>
                                 <option value="equipment">Equipment</option>
                             </select>

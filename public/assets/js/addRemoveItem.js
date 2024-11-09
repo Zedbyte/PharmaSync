@@ -5,6 +5,7 @@ function addNewItem() {
 
     container.appendChild(newItem);
     toggleRemoveButtons();  // Check visibility of remove buttons
+    initializeFlatpickr();
 }
 
 function toggleRemoveButtons() {

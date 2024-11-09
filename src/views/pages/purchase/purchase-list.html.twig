@@ -7,6 +7,7 @@
 {% block headers %}
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/purchase/purchase-list.css">
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/link.css">
+    <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
 {% endblock %}
 
 {% block panel_title %}
@@ -294,7 +295,25 @@
                             <td class="md:px-6 md:py-4">{{ purchase.material_types | title }}</td>
                             <td class="md:px-6 md:py-4">{{ purchase.material_count  }}</td>
                             <td class="md:px-6 md:py-4">${{ purchase.total_cost | number_format(2) }}</td>
-                            <td class="md:px-6 md:py-4">{{ purchase.status | capitalize }}</td>
+                            <td class="md:px-6 md:py-4">
+                                <span class="
+                                    {% if purchase.status|upper == 'COMPLETED' %} bg-green-500 
+                                    {% elseif purchase.status|upper == 'PENDING' %} bg-yellow-500 
+                                    {% elseif purchase.status|upper == 'FAILED' %} bg-red-500 
+                                    {% elseif purchase.status|upper == 'CANCELLED' %} bg-gray-500
+                                    {% elseif purchase.status|upper == 'BACKORDERED' %} bg-orange-500
+                                    {% else %} bg-blue-500 {% endif %}
+                                    py-1 rounded-full text-white text-xs
+                                    block w-11/12 text-center">
+                                    {% if purchase.status|upper == 'COMPLETED' %} <i class="fa-solid fa-circle-check"></i>
+                                    {% elseif purchase.status|upper == 'PENDING' %} <i class="fa-solid fa-spinner"></i>
+                                    {% elseif purchase.status|upper == 'FAILED' %} <i class="fa-solid fa-circle-exclamation"></i>
+                                    {% elseif purchase.status|upper == 'CANCELLED' %} <i class="fa-solid fa-xmark"></i>
+                                    {% elseif purchase.status|upper == 'BACKORDERED' %} <i class="fa-solid fa-clock"></i>
+                                    {% endif %}
+                                    {{ purchase.status|upper }}
+                                </span>
+                            </td>
                             <td class="md:px-6 md:py-4 space-x-2 flex flex-wrap">
                                 <button class="text-blue-600 dark:text-blue-500 hover:underline text-xs md:text-sm">Edit</button>
                                 <button class="text-red-600 dark:text-red-500 hover:underline text-xs md:text-sm">Delete</button>
