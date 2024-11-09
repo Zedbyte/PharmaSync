@@ -32,6 +32,7 @@ class PurchaseController extends BaseController {
             $endDate = $_POST['end_date'] ?? null;
             $relativeDate = $_POST['relativeDate'] ?? null;
             $entryValue = isset($_POST['entryValue']) && is_numeric($_POST['entryValue']) && $_POST['entryValue'] > 0 ? (int) $_POST['entryValue'] : 10;
+            $purchase_search = $_POST['purchase_search'] ?? null;
 
             // Redirect with the filters as query parameters
             $queryParams = [];
@@ -50,6 +51,7 @@ class PurchaseController extends BaseController {
             }
 
             if ($entryValue) $queryParams['entryValue'] = $entryValue;
+            if ($purchase_search) $queryParams['purchase_search'] = $purchase_search;
 
             $relativeDate = $startDate = $endDate = null;
     
@@ -63,6 +65,7 @@ class PurchaseController extends BaseController {
 
         $relativeDate = ($startDate && $endDate) ? null : ($_GET['relativeDate'] ?? 30);
         $entryValue = isset($_GET['entryValue']) && is_numeric($_GET['entryValue']) ? (int) $_GET['entryValue'] : 10;
+        $purchase_search = $_GET['purchase_search'] ?? null;
 
     
         // Load data models based on filters
@@ -70,7 +73,7 @@ class PurchaseController extends BaseController {
         $supplierData = $supplierObject->getAllSuppliers();
     
         $purchaseMaterialObject = new PurchaseMaterial();
-        $purchaseMaterialData = $purchaseMaterialObject->getAllPurchaseMaterial($entryValue, $startDate, $endDate, $relativeDate);
+        $purchaseMaterialData = $purchaseMaterialObject->getAllPurchaseMaterial($entryValue, $startDate, $endDate, $relativeDate, $purchase_search);
 
         $purchaseObject = new Purchase();
         $purchaseCount = $purchaseObject->getCount();
@@ -84,7 +87,8 @@ class PurchaseController extends BaseController {
             'start_date' => $startDate,
             'end_date' => $endDate,
             'relativeDate' => $relativeDate,
-            'entryValue' => $entryValue
+            'entryValue' => $entryValue,
+            'purchase_search' => $purchase_search
         ]);
     }
     

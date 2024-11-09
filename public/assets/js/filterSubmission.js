@@ -3,7 +3,7 @@ function submitAllForms(triggeredFormId) {
     const combinedData = new FormData();
 
     // List of form IDs
-    const formIds = ["dateRangeForm", "relativeDateForm", "entryForm"];
+    const formIds = ["dateRangeForm", "relativeDateForm", "entryForm", "searchForm"];
 
     formIds.forEach((formId) => {
         const form = document.getElementById(formId);
@@ -86,4 +86,9 @@ radios.forEach((radio) => {
 document.getElementById("entryForm").addEventListener("submit", function(event) {
     event.preventDefault();
     submitAllForms("entryForm");
+});
+
+document.getElementById("searchForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    submitAllForms("searchForm");
 });

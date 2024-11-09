@@ -60,13 +60,14 @@ class PurchaseMaterial extends BaseModel
         }
     }
 
-    public function getAllPurchaseMaterial($limit = 10, $startDate = null, $endDate = null, $relativeDate = null) {
+    public function getAllPurchaseMaterial($limit = 10, $startDate = null, $endDate = null, $relativeDate = null, $purchase_search = "%") {
         $limit = (int)$limit;
     
         // Set default values if empty
         $startDate = $startDate ?: null; // Default to null if not provided (to handle unset case)
         $endDate = $endDate ?: date('Y-m-d'); // Default to today
         $relativeDate = $relativeDate ?: null; // Default to null if not provided
+        $purchase_search = "%" . $purchase_search . "%" ?: "%"; // Default to null if not provided
 
         // If startDate is set, clear relativeDate (no relativeDate should be used)
         if ($startDate) {
@@ -98,6 +99,7 @@ class PurchaseMaterial extends BaseModel
                 JOIN materials m ON pm.pm_material_id = m.id
                 WHERE p.date BETWEEN :startDate AND :endDate
                 GROUP BY p.id
+                HAVING (s.name LIKE :purchaseSearch OR material_types LIKE :purchaseSearch)
                 ORDER BY p.date DESC
                 LIMIT :limit";
     
@@ -107,6 +109,7 @@ class PurchaseMaterial extends BaseModel
             // Bind parameters
             $statement->bindValue(':startDate', $startDate);
             $statement->bindValue(':endDate', $endDate);
+            $statement->bindValue(':purchaseSearch', $purchase_search, PDO::PARAM_STR);
             $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
             
             $statement->execute();
