@@ -3,7 +3,7 @@ function submitAllForms(triggeredFormId) {
     const combinedData = new FormData();
 
     // List of form IDs
-    const formIds = ["dateRangeForm", "relativeDateForm", "entryForm", "searchForm"];
+    const formIds = ["dateRangeForm", "relativeDateForm", "entryForm", "searchForm", "advancedFilterForm"];
 
     formIds.forEach((formId) => {
         const form = document.getElementById(formId);
@@ -91,4 +91,9 @@ document.getElementById("entryForm").addEventListener("submit", function(event) 
 document.getElementById("searchForm").addEventListener("submit", function(event) {
     event.preventDefault();
     submitAllForms("searchForm");
+});
+
+document.getElementById("advancedFilterForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    submitAllForms("advancedFilterForm");
 });

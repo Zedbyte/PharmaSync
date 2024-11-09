@@ -34,6 +34,12 @@ class PurchaseController extends BaseController {
             $entryValue = isset($_POST['entryValue']) && is_numeric($_POST['entryValue']) && $_POST['entryValue'] > 0 ? (int) $_POST['entryValue'] : 10;
             $purchase_search = $_POST['purchase_search'] ?? null;
 
+            // Advanced Filters
+            $minPrice = isset($_POST['min_price']) ? (float) $_POST['min_price'] : 1;
+            $maxPrice = isset($_POST['max_price']) ? (float) $_POST['max_price'] : 9999999;
+
+            $categories = isset($_POST['category']) ? $_POST['category'] : ['pending', 'completed', 'backordered', 'failed', 'canceled'];
+
             // Redirect with the filters as query parameters
             $queryParams = [];
                     
@@ -53,6 +59,11 @@ class PurchaseController extends BaseController {
             if ($entryValue) $queryParams['entryValue'] = $entryValue;
             if ($purchase_search) $queryParams['purchase_search'] = $purchase_search;
 
+            if ($minPrice) $queryParams['min_price'] = $minPrice;
+            if ($maxPrice) $queryParams['max_price'] = $maxPrice;
+
+            if (!empty($categories)) $queryParams['category'] = $categories;
+
             $relativeDate = $startDate = $endDate = null;
     
             header('Location: /purchase-list?' . http_build_query($queryParams));
@@ -67,13 +78,24 @@ class PurchaseController extends BaseController {
         $entryValue = isset($_GET['entryValue']) && is_numeric($_GET['entryValue']) ? (int) $_GET['entryValue'] : 10;
         $purchase_search = $_GET['purchase_search'] ?? null;
 
-    
+        $minPrice = isset($_GET['min_price']) ? (float) $_GET['min_price'] : 1;
+        $maxPrice = isset($_GET['max_price']) ? (float) $_GET['max_price'] : 9999999;
+        $categories = $_GET['category'] ?? ['pending', 'completed', 'backordered', 'failed', 'canceled'];
+
         // Load data models based on filters
         $supplierObject = new Supplier();
         $supplierData = $supplierObject->getAllSuppliers();
     
         $purchaseMaterialObject = new PurchaseMaterial();
-        $purchaseMaterialData = $purchaseMaterialObject->getAllPurchaseMaterial($entryValue, $startDate, $endDate, $relativeDate, $purchase_search);
+        $purchaseMaterialData = $purchaseMaterialObject->getAllPurchaseMaterial(
+            $entryValue, 
+            $startDate, 
+            $endDate, 
+            $relativeDate, 
+            $purchase_search,
+            $minPrice, 
+            $maxPrice, 
+            $categories);
 
         $purchaseObject = new Purchase();
         $purchaseCount = $purchaseObject->getCount();
@@ -88,7 +110,10 @@ class PurchaseController extends BaseController {
             'end_date' => $endDate,
             'relativeDate' => $relativeDate,
             'entryValue' => $entryValue,
-            'purchase_search' => $purchase_search
+            'purchase_search' => $purchase_search,
+            'min_price' => $minPrice,
+            'max_price' => $maxPrice,
+            'categories' => $categories
         ]);
     }
     

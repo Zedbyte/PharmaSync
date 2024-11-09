@@ -60,14 +60,26 @@ class PurchaseMaterial extends BaseModel
         }
     }
 
-    public function getAllPurchaseMaterial($limit = 10, $startDate = null, $endDate = null, $relativeDate = null, $purchase_search = "%") {
+    public function getAllPurchaseMaterial(
+        $limit = 10, 
+        $startDate = null, 
+        $endDate = null, 
+        $relativeDate = null, 
+        $purchase_search = "%", 
+        $minPrice = 1, 
+        $maxPrice = 9999999, 
+        $categories = ['pending', 'completed', 'backordered', 'failed', 'canceled']) 
+        {
         $limit = (int)$limit;
-    
+        
         // Set default values if empty
-        $startDate = $startDate ?: null; // Default to null if not provided (to handle unset case)
+        //$startDate = $startDate ?: null; // Default to null if not provided (to handle unset case)
+        //$relativeDate = $relativeDate ?: null; // Default to null if not provided
+
         $endDate = $endDate ?: date('Y-m-d'); // Default to today
-        $relativeDate = $relativeDate ?: null; // Default to null if not provided
-        $purchase_search = "%" . $purchase_search . "%" ?: "%"; // Default to null if not provided
+        $minPrice = is_numeric($minPrice) ? (float)$minPrice : 0;
+        $maxPrice = is_numeric($maxPrice) ? (float)$maxPrice : 9999999;
+        $purchase_search = $purchase_search ? "%" . trim($purchase_search) . "%" : "%";
 
         // If startDate is set, clear relativeDate (no relativeDate should be used)
         if ($startDate) {
@@ -82,35 +94,55 @@ class PurchaseMaterial extends BaseModel
         // If still no startDate, set it to the default earliest date
         $startDate = $startDate ?: '1970-01-01';
 
-        // var_dump($startDate, $endDate, $relativeDate); exit;
-
         // Create the SQL query
         $sql = "SELECT 
-                p.id AS purchase_id,
-                p.date AS date_of_purchase,
-                s.name AS vendor_name,
-                GROUP_CONCAT(DISTINCT m.material_type ORDER BY m.material_type ASC SEPARATOR ', ') AS material_types,
-                p.material_count,
-                p.total_cost,
-                p.status
-                FROM purchases p
-                JOIN suppliers s ON p.p_supplier_id = s.id
-                JOIN purchase_material pm ON p.id = pm.pm_purchase_id
-                JOIN materials m ON pm.pm_material_id = m.id
-                WHERE p.date BETWEEN :startDate AND :endDate
-                GROUP BY p.id
+        p.id AS purchase_id,
+        p.date AS date_of_purchase,
+        s.name AS vendor_name,
+        GROUP_CONCAT(DISTINCT m.material_type ORDER BY m.material_type ASC SEPARATOR ', ') AS material_types,
+        p.material_count,
+        p.total_cost,
+        p.status
+        FROM purchases p
+        JOIN suppliers s ON p.p_supplier_id = s.id
+        JOIN purchase_material pm ON p.id = pm.pm_purchase_id
+        JOIN materials m ON pm.pm_material_id = m.id
+        WHERE p.date BETWEEN :startDate AND :endDate
+        AND p.total_cost BETWEEN :minPrice AND :maxPrice ";  // Added: price range filter
+
+        // Added: Filter by categories if provided
+        if (!empty($categories)) {
+            $categoryPlaceholders = [];
+            foreach ($categories as $index => $category) {
+                $param = ":category" . $index;
+                $categoryPlaceholders[] = $param;
+            }
+            $sql .= " AND p.status IN (" . implode(", ", $categoryPlaceholders) . ")";
+        }
+
+
+        $sql .= "GROUP BY p.id
                 HAVING (s.name LIKE :purchaseSearch OR material_types LIKE :purchaseSearch)
                 ORDER BY p.date DESC
                 LIMIT :limit";
-    
+            
         try {
             $statement = $this->db->prepare($sql);
             
             // Bind parameters
             $statement->bindValue(':startDate', $startDate);
             $statement->bindValue(':endDate', $endDate);
+            $statement->bindValue(':minPrice', $minPrice, PDO::PARAM_INT);
+            $statement->bindValue(':maxPrice', $maxPrice, PDO::PARAM_INT);
             $statement->bindValue(':purchaseSearch', $purchase_search, PDO::PARAM_STR);
             $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+
+            // Bind each category if categories are provided
+            if (!empty($categories)) {
+                foreach ($categories as $index => $category) {
+                    $statement->bindValue(":category" . $index, $category, PDO::PARAM_STR);
+                }
+            }
             
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
