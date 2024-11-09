@@ -310,15 +310,17 @@
                                     {% elseif purchase.status|upper == 'CANCELLED' %} bg-gray-500
                                     {% elseif purchase.status|upper == 'BACKORDERED' %} bg-orange-500
                                     {% else %} bg-blue-500 {% endif %}
-                                    py-1 rounded-full text-white text-xs
-                                    block w-11/12 text-center">
+                                    p-1 md:p-0 md:py-1 rounded-full text-white text-xs
+                                    md:block md:w-11/12 text-center">
                                     {% if purchase.status|upper == 'COMPLETED' %} <i class="fa-solid fa-circle-check"></i>
                                     {% elseif purchase.status|upper == 'PENDING' %} <i class="fa-solid fa-spinner"></i>
                                     {% elseif purchase.status|upper == 'FAILED' %} <i class="fa-solid fa-circle-exclamation"></i>
                                     {% elseif purchase.status|upper == 'CANCELLED' %} <i class="fa-solid fa-xmark"></i>
                                     {% elseif purchase.status|upper == 'BACKORDERED' %} <i class="fa-solid fa-clock"></i>
                                     {% endif %}
-                                    {{ purchase.status|upper }}
+                                    <span class="hidden md:inline">
+                                        {{ purchase.status|upper }}
+                                    </span>
                                 </span>
                             </td>
                             <td class="md:px-6 md:py-4 space-x-2 flex flex-wrap">
