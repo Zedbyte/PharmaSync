@@ -72,20 +72,27 @@ try {
         $purchaseController->display();
     });
 
-    // Add Purchase Page [POST]
+    // Add Purchase Panel [POST]
     $router->respond('POST', '/add-purchase', function($request) use ($purchaseController) {
         AuthMiddleware::checkAuth();
         $data = $request->params();
         $purchaseController->addPurchaseMaterial($data);
     });
 
-    // View Purchase Page [GET]
+    // View Purchase Panel [GET]
     $router->respond('GET', '/view-purchase/[i:purchaseID]', function($purchaseID) use ($purchaseController) {
         AuthMiddleware::checkAuth();
         $data = $purchaseID->params();
         $purchaseController->viewPurchase($data);
     });
 
+    // Delete Purchase [POST]
+    $router->respond('POST', '/delete-purchase/[i:purchaseID]', function($request) use ($purchaseController) {
+        AuthMiddleware::checkAuth();
+        $purchaseID = $request->param('purchaseID');
+        $purchaseController->deletePurchase($purchaseID);
+    });
+    
     $router->dispatch();
 
 } catch (Exception $e) {

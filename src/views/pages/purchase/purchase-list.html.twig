@@ -85,6 +85,11 @@
     dark:bg-gray-800 transform translate-x-full transition-transform duration-300 shadow-lg z-50 overflow-y-auto">
         {% include 'view-purchase.html.twig' %}
     </div>
+
+    <!-- Delete Modal -->
+    <div id="deletePurchaseModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
+        {% include 'delete-purchase-modal.html.twig' %}
+    </div>
     
     <section class="purchase__list_container_content mt-8 
     flex-grow p-6 rounded-lg dark:border-gray-700
@@ -323,10 +328,23 @@
                                     </span>
                                 </span>
                             </td>
-                            <td class="md:px-6 md:py-4 space-x-2 flex flex-wrap">
-                                <button class="text-blue-600 dark:text-blue-500 hover:underline text-xs md:text-sm">Edit</button>
-                                <button class="text-red-600 dark:text-red-500 hover:underline text-xs md:text-sm">Delete</button>
-                                <button onclick="viewPurchasePanel(this)" data-id="{{ purchase.purchase_id }}" class="text-green-600 dark:text-green-500 hover:underline text-xs md:text-sm">View</button>
+                            <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap">
+                                <button class="text-blue-600 dark:text-blue-500 hover:underline text-xs md:text-base"><i class="fa-solid fa-pen-to-square"></i></button>
+                                
+                                <button 
+                                onclick="openDeleteModal(this)" 
+                                data-id="{{ purchase.purchase_id }}" 
+                                data-material-count="{{ purchase.material_count }}" 
+                                class="text-red-600 dark:text-red-500 hover:underline text-xs md:text-base">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+
+                                <button 
+                                onclick="viewPurchasePanel(this)" 
+                                data-id="{{ purchase.purchase_id }}" 
+                                class="text-green-600 dark:text-green-500 hover:underline text-xs md:text-base">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                </button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -411,6 +429,7 @@
     <!-- <script src="{{ ASSETS_URL }}/js/entries.js"></script> -->
     <script src="{{ ASSETS_URL }}/js/filterSubmission.js"></script>
     <script src="{{ ASSETS_URL }}/js/purchase/viewPurchasePanel.js"></script>
+    <script src="{{ ASSETS_URL }}/js/purchase/openDeleteModal.js"></script>
 
     <script>
         function togglePanel() {

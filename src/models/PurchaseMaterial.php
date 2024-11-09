@@ -162,5 +162,32 @@ class PurchaseMaterial extends BaseModel
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
-    
+
+    public function deletePurchaseData($purchaseID)
+    {
+        try {
+            // Start a transaction
+            $this->db->beginTransaction();
+
+            // Delete related records from purchase_material first
+            $sqlDeleteMaterials = "DELETE FROM purchase_material WHERE pm_purchase_id = :purchase_id";
+            $statementMaterials = $this->db->prepare($sqlDeleteMaterials);
+            $statementMaterials->execute(['purchase_id' => $purchaseID]);
+
+            // Delete the purchase record
+            $sqlDeletePurchase = "DELETE FROM purchases WHERE id = :purchase_id";
+            $statementPurchase = $this->db->prepare($sqlDeletePurchase);
+            $statementPurchase->execute(['purchase_id' => $purchaseID]);
+
+            // Commit the transaction
+            $this->db->commit();
+            return $statementPurchase->rowCount(); // Returns the number of deleted rows from purchases
+
+        } catch (PDOException $e) {
+            // Rollback the transaction on error
+            $this->db->rollBack();
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
 }

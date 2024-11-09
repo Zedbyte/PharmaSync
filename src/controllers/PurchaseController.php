@@ -168,4 +168,12 @@ class PurchaseController extends BaseController {
             'purchaseData' => $purchaseData
         ]);
     }
+
+    public function deletePurchase($purchaseID) {
+        $purchaseMaterialObject = new PurchaseMaterial();
+
+        $purchaseData = $purchaseMaterialObject->deletePurchaseData($purchaseID);
+        
+        header('Location: /purchase-list');
+    }
 }
