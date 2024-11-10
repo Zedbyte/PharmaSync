@@ -39,6 +39,36 @@ class Purchase extends BaseModel
         }
     }
 
+    public function update($purchaseID, $data)
+    {
+        $sql = "UPDATE purchases 
+                SET
+                    `date` = :date,
+                    `material_count` = :material_count,
+                    `total_cost` = :total_cost,
+                    `status` = :status,
+                    `p_supplier_id` = :p_supplier_id
+                WHERE `id` = :id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+
+            $statement->execute([
+                'date' => $data['date'],
+                'material_count' => $data['material_count'],
+                'total_cost' => $data['total_cost'],
+                'status' => $data['status'],
+                'p_supplier_id' => $data['p_supplier_id'],
+                'id' => $purchaseID
+            ]);
+
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+
     public function getPurchase($id)
     {
         $sql = "SELECT * FROM purchases WHERE id = :id";

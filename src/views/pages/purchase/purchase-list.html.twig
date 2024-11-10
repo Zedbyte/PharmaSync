@@ -74,7 +74,7 @@
     
         <div class="content__button_container col-span-6">
             <!-- <a> -->
-            <button onclick="togglePanel()" class="bg-[#2998FF] hover:bg-[#3280c9]  
+            <button onclick="addPurchaseTogglePanel()" class="bg-[#2998FF] hover:bg-[#3280c9]  
         dark:bg-[#7655fa] dark:hover:bg-[#8162fa] transition-all duration-200 text-white rounded-lg px-3 py-2.5 flex justify-center items-center">
             <ion-icon name="add-outline" class="add__icon dark:text-[#fdfdfd] mr-2"></ion-icon>    
             Add Purchase
@@ -88,13 +88,13 @@
     <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
 
     <!-- Sliding Panel -->
-    <div id="slidePanel" class="fixed right-0 top-0 w-full md:w-1/2 h-full bg-white 
+    <div id="addPurchasePanel" class="fixed right-0 top-0 w-full md:w-1/2 h-full bg-white 
     dark:bg-gray-800 transform translate-x-full transition-transform duration-300 shadow-lg z-50 overflow-y-auto">
         {% include 'add-purchase.html.twig' %}
     </div>
 
     <!-- View Panel -->
-    <div id="viewPanel" class="fixed right-0 top-0 w-full md:w-1/2 h-full bg-white 
+    <div id="viewPurchasePanel" class="fixed right-0 top-0 w-full md:w-1/2 h-full bg-white 
     dark:bg-gray-800 transform translate-x-full transition-transform duration-300 shadow-lg z-50 overflow-y-auto">
         {% include 'view-purchase.html.twig' %}
     </div>
@@ -102,6 +102,12 @@
     <!-- Delete Modal -->
     <div id="deletePurchaseModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
         {% include 'delete-purchase-modal.html.twig' %}
+    </div>
+
+    <!-- Update Panel -->
+    <div id="updatePurchasePanel" class="fixed right-0 top-0 w-full md:w-1/2 h-full bg-white 
+    dark:bg-gray-800 transform translate-x-full transition-transform duration-300 shadow-lg z-50 overflow-y-auto">
+        {% include 'update-purchase.html.twig' %}
     </div>
     
     <section class="purchase__list_container_content mt-8 
@@ -417,8 +423,10 @@
                                 </span>
                             </td> -->
                             <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap">
-                                <button class="
-                                text-blue-400 
+                                <button 
+                                onclick="updatePurchasePanel(this)"
+                                data-id="{{ purchase.purchase_id }}" 
+                                class="text-blue-400 
                                 dark:text-blue-500 
                                 hover:text-blue-800 text-xs md:text-base transition-all duration-200">
                                     <i class="fa-solid fa-pen-to-square"></i>
@@ -523,18 +531,9 @@
     <script src="{{ ASSETS_URL }}/js/addRemoveItem.js"></script>
     <!-- <script src="{{ ASSETS_URL }}/js/entries.js"></script> -->
     <script src="{{ ASSETS_URL }}/js/filterSubmission.js"></script>
+    <script src="{{ ASSETS_URL }}/js/purchase/addPurchasePanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/purchase/viewPurchasePanel.js"></script>
+    <script src="{{ ASSETS_URL }}/js/purchase/updatePurchasePanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/purchase/openDeleteModal.js"></script>
     <script src="{{ ASSETS_URL }}/js/purchase/rangeSync.js"></script>
-
-    <script>
-        function togglePanel() {
-            const panel = document.getElementById("slidePanel");
-            const overlay = document.getElementById("overlay");
-
-            // Toggle the panel and overlay visibility
-            panel.classList.toggle("translate-x-full");
-            overlay.classList.toggle("hidden");
-        }
-    </script>
 {% endblock %}

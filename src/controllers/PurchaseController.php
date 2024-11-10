@@ -208,6 +208,81 @@ class PurchaseController extends BaseController {
         ]);
     }
 
+    public function updatePurchase($data) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            try {
+                $this->db->beginTransaction();
+    
+                // Update purchase details
+                $purchaseID = $data['purchase_id'];
+                $purchaseObject = new Purchase();
+                $purchaseObject->update($purchaseID, [
+                    'date' => $data['purchase_date'],
+                    'material_count' => count($data['material_name']),
+                    'total_cost' => array_sum(array_map(function($quantity, $unitPrice) {
+                        return $quantity * $unitPrice;
+                    }, $data['quantity'], $data['unit_price'])),
+                    'status' => $data['status'],
+                    'p_supplier_id' => $data['vendor']
+                ]);
+    
+                // Update each material and link to purchase
+                $purchaseMaterialObject = new PurchaseMaterial();
+                $materialObject = new Material();
+    
+                foreach ($data['material_name'] as $index => $materialName) {
+                    $materialID = $data['material_id'][$index];
+    
+                    // Update material data
+                    $materialObject->update($materialID, [
+                        'name' => $materialName,
+                        'description' => $data['description'][$index],
+                        'material_type' => $data['material_type'][$index],
+                        'expiration_date' => $data['expiry_date'][$index],
+                        'qc_status' => $data['qc_status'][$index],
+                        'inspection_date' => $data['inspection_date'][$index],
+                        'qc_notes' => $data['qc_notes'][$index]
+                    ]);
+    
+                    // Update purchase-material association
+                    $purchaseMaterialObject->update([
+                        'pm_purchase_id' => $purchaseID,
+                        'pm_material_id' => $materialID,
+                        'quantity' => $data['quantity'][$index],
+                        'unit_price' => $data['unit_price'][$index],
+                        'total_price' => $data['quantity'][$index] * $data['unit_price'][$index],
+                        'batch_number' => $data['batch_number'][$index]
+                    ]);
+                }
+    
+                $this->db->commit();
+    
+                // Refresh the purchase list after a successful update
+                header("Location: /purchase-list");
+                exit();
+    
+            } catch (Exception $e) {
+                $this->db->rollBack();
+                error_log($e->getMessage());
+                $errors[] = "Failed to update purchase material: " . $e->getMessage();
+                $this->display($errors);
+            }
+            header("Location: /purchase-list");
+        }
+
+        $purchaseMaterialObject = new PurchaseMaterial();
+        $supplierObject = new Supplier();
+
+        $supplierData = $supplierObject->getAllSuppliers();
+        $purchaseData = $purchaseMaterialObject->getPurchaseData($data[1]);
+
+        echo $this->twig->render('update-purchase.html.twig', [
+            'purchaseData' => $purchaseData,
+            'suppliers' => $supplierData
+        ]);
+    }
+
     public function deletePurchase($purchaseID) {
         $purchaseMaterialObject = new PurchaseMaterial();
 

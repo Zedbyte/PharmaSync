@@ -41,6 +41,36 @@ class PurchaseMaterial extends BaseModel
         }
     }
 
+    public function update($data)
+    {
+        $sql = "UPDATE purchase_material 
+                SET
+                    `quantity` = :quantity,
+                    `unit_price` = :unit_price,
+                    `total_price` = :total_price,
+                    `batch_number` = :batch_number
+                WHERE `pm_purchase_id` = :pm_purchase_id 
+                AND `pm_material_id` = :pm_material_id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+
+            $statement->execute([
+                'quantity' => $data['quantity'],
+                'unit_price' => $data['unit_price'],
+                'total_price' => $data['total_price'],
+                'batch_number' => $data['batch_number'],
+                'pm_purchase_id' => $data['pm_purchase_id'],
+                'pm_material_id' => $data['pm_material_id']
+            ]);
+
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+
     public function getPurchaseMaterial($purchase_id, $material_id)
     {
         $sql = "SELECT * FROM purchase_material 

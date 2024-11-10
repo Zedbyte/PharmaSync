@@ -86,6 +86,20 @@ try {
         $purchaseController->viewPurchase($data);
     });
 
+    // Update Purchase [GET]
+    $router->respond('GET', '/update-purchase/[i:purchaseID]', function($purchaseID) use ($purchaseController) {
+        AuthMiddleware::checkAuth();
+        $data = $purchaseID->params();
+        $purchaseController->updatePurchase($data);
+    });
+
+    // Update Purchase [POST]
+    $router->respond('POST', '/update-purchase/[i:purchaseID]', function($request) use ($purchaseController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $purchaseController->updatePurchase($data);
+    });
+
     // Delete Purchase [POST]
     $router->respond('POST', '/delete-purchase/[i:purchaseID]', function($request) use ($purchaseController) {
         AuthMiddleware::checkAuth();
