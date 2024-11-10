@@ -24,9 +24,9 @@ class PurchaseController extends BaseController {
         $this->twig = $twig;
         $this->db = returnDBCon(new PurchaseMaterial()); // Initialize DB connection once
     }
-    public function display() {
+    public function display($errors = []) {
         // POST-Redirect-GET (PRG) PATTERN
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errors)) {
             // Collect and sanitize POST data
             $startDate = $_POST['start_date'] ?? null;
             $endDate = $_POST['end_date'] ?? null;
@@ -113,13 +113,22 @@ class PurchaseController extends BaseController {
             'purchase_search' => $purchase_search,
             'min_price' => $minPrice,
             'max_price' => $maxPrice,
-            'categories' => $categories
+            'categories' => $categories,
+            'errors' => $errors
         ]);
     }
     
     
 
     public function addPurchaseMaterial($data) {
+
+        $errors = $this->validatePurchaseData($data);
+
+        if (!empty($errors)) {
+            $this->display($errors);
+            return;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $this->db->beginTransaction();
@@ -146,7 +155,8 @@ class PurchaseController extends BaseController {
             } catch (Exception $e) {
                 $this->db->rollBack();
                 error_log($e->getMessage());
-                throw new Exception("Failed to save purchase material: " . $e->getMessage());
+                $errors[] = "Failed to save purchase material: " . $e->getMessage();
+                $this->display($errors);
             }
         }
     }
@@ -235,5 +245,44 @@ class PurchaseController extends BaseController {
                 echo "Error: Missing purchase ID or status.";
             }
         }
+    }
+
+    private function validatePurchaseData($data) {
+        $errors = [];
+    
+        // Check required fields
+        if (empty($data['purchase_date']) || empty($data['vendor'])) {
+            $errors[] = "Purchase date and vendor are required.";
+        }
+    
+        // Validate purchase date
+        if (!empty($data['purchase_date'])) {
+            $purchase_date = str_replace(' - ', ' ', $data['purchase_date']);
+            if (!strtotime($purchase_date)) {
+                $errors[] = "Purchase date is invalid.";
+            }
+        }
+    
+        // Check material fields
+        foreach ($data['material_name'] as $index => $materialName) {
+            if (empty($materialName) || empty($data['quantity'][$index]) || empty($data['unit_price'][$index]) || empty($data['batch_number'][$index])) {
+                $errors[] = "Material name, quantity, unit price, and batch number are required for each item.";
+            }
+        }
+    
+        // Validate numeric and positive values for quantity and unit price
+        foreach ($data['quantity'] as $quantity) {
+            if (!is_numeric($quantity) || $quantity <= 0) {
+                $errors[] = "Each quantity must be a positive number.";
+            }
+        }
+    
+        foreach ($data['unit_price'] as $unitPrice) {
+            if (!is_numeric($unitPrice) || $unitPrice <= 0) {
+                $errors[] = "Each unit price must be a positive number.";
+            }
+        }
+    
+        return $errors;
     }
 }
