@@ -1,4 +1,4 @@
-const button = document.querySelector('.theme__btn');
+const button = document.querySelector('.theme__btn'); //Returns the first element that is a descendant of node that matches selectors.
 const htmlRoot = document.documentElement;
 
 // Function to toggle theme

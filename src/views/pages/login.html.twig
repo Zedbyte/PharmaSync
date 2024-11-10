@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/output.css">
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/main.css">
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/login.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/logo/logo.css">
 
     <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
 </head>
@@ -25,7 +26,12 @@
 
     <main class="grid grid-cols-1 2xl:grid-cols-12 h-full">
         <!-- Card Container (Form) -->
-        <div class="card__container w-full 2xl:col-span-6 order-2 2xl:order-1">
+        <div class="relative card__container w-full 2xl:col-span-6 order-2 2xl:order-1 flex flex-col">
+
+            <div class="logo__container_svg absolute top-0">
+
+            </div>
+
             <div class="card p-3 2xl:p-12 rounded-xl w-11/12 2xl:w-7/12 bg-white dark:!bg-gray-800 text-gray-900 dark:text-gray-200">
                 <div class="header text-center pb-12">
                     <h1 class="text-3xl font-bold">Sign In</h1>

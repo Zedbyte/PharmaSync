@@ -1,0 +1,58 @@
+
+/* Logo for Login */
+
+.logo__container_svg {
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.logo__container_svg {
+	background-image: url('../../images/PharmaSync__Logo_Title_Light.svg');
+}
+
+.dark .logo__container_svg {
+	background-image: url('../../images/PharmaSync__Logo_Title_Dark.svg');
+}
+
+/* Logo for Navbar */
+
+.logo__container_svg_nav {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.logo__container_svg_nav {
+	background-image: url('../../images/PharmaSync__Logo_Light.svg');
+}
+
+.dark .logo__container_svg_nav {
+	background-image: url('../../images/PharmaSync__Logo_Dark.svg');
+}
+
+/* Small screens (phones, 600px and below) */
+@media (max-width: 600px) {
+    .logo__container_svg_nav {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Medium screens (tablets, 601px to 1024px) */
+@media (max-width: 1024px) {
+    .logo__container_svg_nav {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* Large screens (laptops and desktops, 1025px and above) */
+@media (min-width: 1025px) {
+    .logo__container_svg_nav {
+        width: 50px;
+        height: 50px;
+    }
+}
