@@ -92,6 +92,12 @@ try {
         $purchaseID = $request->param('purchaseID');
         $purchaseController->deletePurchase($purchaseID);
     });
+
+    // Update Purchase Status [POST]
+    $router->respond('POST', '/update-purchase-status', function() use ($purchaseController) {
+        AuthMiddleware::checkAuth();
+        $purchaseController->updatePurchaseStatus();
+    });
     
     $router->dispatch();
 

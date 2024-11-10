@@ -344,6 +344,45 @@
                             <td class="md:px-6 md:py-4">{{ purchase.material_count  }}</td>
                             <td class="md:px-6 md:py-4">${{ purchase.total_cost | number_format(2) }}</td>
                             <td class="md:px-6 md:py-4">
+                                <form method="post" action="/update-purchase-status">
+                                    <select name="status" onchange="this.form.submit()" class="rounded-full text-xs 
+                                    md:block md:w-10/12 text-center p-1 md:p-0 md:py-1 text-white
+                                            {% if purchase.status|upper == 'COMPLETED' %} dark:bg-green-700 bg-green-400
+                                        {% elseif purchase.status|upper == 'PENDING' %} dark:bg-yellow-600 bg-yellow-400
+                                        {% elseif purchase.status|upper == 'FAILED' %} dark:bg-red-700 bg-red-400
+                                        {% elseif purchase.status|upper == 'CANCELED' %} dark:bg-gray-700 bg-gray-400
+                                        {% elseif purchase.status|upper == 'BACKORDERED' %} dark:bg-orange-700 bg-orange-400
+                                        {% else %} bg-blue-500 {% endif %}
+                                    ">
+                                        <option value="completed" {% if purchase.status == 'completed' %}selected{% endif %}>Completed</option>
+                                        <option value="pending" {% if purchase.status == 'pending' %}selected{% endif %}>Pending</option>
+                                        <option value="failed" {% if purchase.status == 'failed' %}selected{% endif %}>Failed</option>
+                                        <option value="canceled" {% if purchase.status == 'canceled' %}selected{% endif %}>Canceled</option>
+                                        <option value="backordered" {% if purchase.status == 'backordered' %}selected{% endif %}>Backordered</option>
+                                    </select>
+                                    <input type="hidden" name="purchase_id" value="{{ purchase.purchase_id }}">  
+                                </form>
+                            </td>
+                            <!-- <td class="md:px-6 md:py-4">
+                                <form method="post" action="/update-purchase-status">
+                                    <select name="status" onchange="this.form.submit()" class="rounded-full text-xs md:block md:w-10/12 text-center p-1 md:p-0 md:py-1 text-white
+                                            {% if purchase.status|upper == 'COMPLETED' %} dark:bg-green-700 bg-green-400
+                                        {% elseif purchase.status|upper == 'PENDING' %} dark:bg-yellow-600 bg-yellow-400
+                                        {% elseif purchase.status|upper == 'FAILED' %} dark:bg-red-700 bg-red-400
+                                        {% elseif purchase.status|upper == 'CANCELLED' %} dark:bg-gray-700 bg-gray-400
+                                        {% elseif purchase.status|upper == 'BACKORDERED' %} dark:bg-orange-700 bg-orange-400
+                                        {% else %} bg-blue-500 {% endif %}
+                                    ">
+                                        <option value="completed" {% if purchase.status == 'completed' %}selected{% endif %}>Completed</option>
+                                        <option value="pending" {% if purchase.status == 'pending' %}selected{% endif %}>Pending</option>
+                                        <option value="failed" {% if purchase.status == 'failed' %}selected{% endif %}>Failed</option>
+                                        <option value="canceled" {% if purchase.status == 'canceled' %}selected{% endif %}>Canceled</option>
+                                        <option value="backordered" {% if purchase.status == 'backordered' %}selected{% endif %}>Backordered</option>
+                                    </select>
+                                    <input type="hidden" name="purchase_id" value="{{ purchase.id }}">  
+                                </form>
+                            </td> -->
+                            <!-- <td class="md:px-6 md:py-4">
                                 <span class="
                                     {% if purchase.status|upper == 'COMPLETED' %} dark:bg-green-700 bg-green-400
                                     {% elseif purchase.status|upper == 'PENDING' %} dark:bg-yellow-600 bg-yellow-400
@@ -363,7 +402,7 @@
                                         {{ purchase.status|upper }}
                                     </span>
                                 </span>
-                            </td>
+                            </td> -->
                             <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap">
                                 <button class="
                                 text-blue-400 

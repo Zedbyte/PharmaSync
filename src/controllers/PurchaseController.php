@@ -205,4 +205,35 @@ class PurchaseController extends BaseController {
         
         header('Location: /purchase-list');
     }
+
+    public function updatePurchaseStatus() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['purchase_id']) && isset($_POST['status'])) {
+                $purchase_id = (int)$_POST['purchase_id'];
+                $new_status = trim($_POST['status']);
+
+                $purchaseObject = new Purchase();
+    
+                // Call the model's updateStatus method
+                try {
+                    $affectedRows = $purchaseObject->updateStatus($purchase_id, $new_status);
+    
+                    if ($affectedRows > 0) {
+                        // Redirect or return a success message
+                        header("Location: /purchase-list");
+                        exit();
+                    } else {
+                        // Handle case where no rows were affected (e.g., invalid purchase_id)
+                        throw new Exception("Purchase status update failed.");
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    echo "Error: " . $e->getMessage();
+                }
+            } else {
+                // Handle missing fields in the POST request
+                echo "Error: Missing purchase ID or status.";
+            }
+        }
+    }
 }

@@ -66,4 +66,28 @@ class Purchase extends BaseModel
         }
     }
 
+    public function updateStatus($purchase_id, $new_status) {
+        $valid_statuses = ['completed', 'pending', 'failed', 'canceled', 'backordered'];
+
+        if (!in_array(strtolower($new_status), $valid_statuses)) {
+            throw new Exception("Invalid status provided.");
+        }
+
+        $sql = "UPDATE purchases SET status = :status WHERE id = :purchase_id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->bindParam(':status', $new_status, PDO::PARAM_STR);
+            $statement->bindParam(':purchase_id', $purchase_id, PDO::PARAM_INT);
+
+            $statement->execute();
+
+            // Optionally, return the number of affected rows if needed
+            return $statement->rowCount();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
 }
