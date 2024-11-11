@@ -23,7 +23,7 @@
 {% block body %}
 
     {% if errors %}
-        <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+        <div class="error-container bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 fixed top-0 left-0 right-0 z-[999] transition-all duration-300"
             role="alert">
             <p class="font-bold">Warning</p>
             <ul>
@@ -528,7 +528,8 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{{ ASSETS_URL }}/js/calendarTheme.js"></script>
     <!-- <script src="{{ ASSETS_URL }}/js/tableEntry.js"></script> -->
-    <script src="{{ ASSETS_URL }}/js/addRemoveItem.js"></script>
+    <script src="{{ ASSETS_URL }}/js/purchase/addItemUpdatePurchase.js"></script>
+    <script src="{{ ASSETS_URL }}/js/purchase/addRemoveItem.js"></script>
     <!-- <script src="{{ ASSETS_URL }}/js/entries.js"></script> -->
     <script src="{{ ASSETS_URL }}/js/filterSubmission.js"></script>
     <script src="{{ ASSETS_URL }}/js/purchase/addPurchasePanel.js"></script>

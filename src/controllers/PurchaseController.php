@@ -121,15 +121,19 @@ class PurchaseController extends BaseController {
     
 
     public function addPurchaseMaterial($data) {
-
-        $errors = $this->validatePurchaseData($data);
-
-        if (!empty($errors)) {
-            $this->display($errors);
-            return;
-        }
-
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $errors = $this->validatePurchaseData($data);
+            
+            // POST-Redirect-GET Pattern
+            if (!empty($errors)) {
+                $_SESSION['purchase_errors'] = $errors;
+                // Redirect to the same route with GET (to prevent resubmission)
+                header('Location: /add-purchase');
+                exit;
+            }
+
             try {
                 $this->db->beginTransaction();
 
@@ -159,6 +163,14 @@ class PurchaseController extends BaseController {
                 $this->display($errors);
             }
         }
+
+        $errors = isset($_SESSION['purchase_errors']) ? $_SESSION['purchase_errors'] : [];
+    
+        // Render the template with errors, if any
+        $this->display($errors);
+        
+        // Clear the errors from session after they are displayed
+        unset($_SESSION['purchase_errors']);
     }
 
     private function addPurchase($data) {
@@ -209,7 +221,15 @@ class PurchaseController extends BaseController {
     }
 
     public function updatePurchase($data) {
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $errors = $this->validateUpdatedPurchaseData($data);
+    
+            if (!empty($errors)) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => $errors]);
+                return;
+            }
 
             try {
                 $this->db->beginTransaction();
@@ -226,27 +246,57 @@ class PurchaseController extends BaseController {
                     'status' => $data['status'],
                     'p_supplier_id' => $data['vendor']
                 ]);
-    
-                // Update each material and link to purchase
+                
+                // Get existing materials linked to the purchase
                 $purchaseMaterialObject = new PurchaseMaterial();
+
+                // Update each material and link to purchase & Delete materials (if any)
                 $materialObject = new Material();
+
+                $existingMaterialIDs = $purchaseMaterialObject->getMaterialIdsByPurchase($purchaseID);
+
+                
+                // Find materials that were removed
+                $updatedMaterialIDs = array_filter($data['material_id']); // Get non-null material IDs from the form data
+                $removedMaterialIDs = array_diff($existingMaterialIDs, $updatedMaterialIDs);
+                
+                // Remove materials that were deleted by the user
+                foreach ($removedMaterialIDs as $materialID) {
+                    $purchaseMaterialObject->delete(['pm_purchase_id' => $purchaseID, 'pm_material_id' => $materialID]);
+                    $materialObject->delete($materialID);
+                }
+                
+        
     
                 foreach ($data['material_name'] as $index => $materialName) {
-                    $materialID = $data['material_id'][$index];
+                    $materialID = $data['material_id'][$index] ?? null; // Use null if material_id is not provided
     
-                    // Update material data
-                    $materialObject->update($materialID, [
-                        'name' => $materialName,
-                        'description' => $data['description'][$index],
-                        'material_type' => $data['material_type'][$index],
-                        'expiration_date' => $data['expiry_date'][$index],
-                        'qc_status' => $data['qc_status'][$index],
-                        'inspection_date' => $data['inspection_date'][$index],
-                        'qc_notes' => $data['qc_notes'][$index]
-                    ]);
+                    if ($materialID) {
+                        // Update existing material
+                        $materialObject->update($materialID, [
+                            'name' => $materialName,
+                            'description' => $data['description'][$index],
+                            'material_type' => $data['material_type'][$index],
+                            'expiration_date' => $data['expiry_date'][$index],
+                            'qc_status' => $data['qc_status'][$index],
+                            'inspection_date' => $data['inspection_date'][$index],
+                            'qc_notes' => $data['qc_notes'][$index]
+                        ]);
+                    } else {
+                        // Insert new material and retrieve the new material ID
+                        $materialID = $materialObject->save([
+                            'name' => $materialName,
+                            'description' => $data['description'][$index],
+                            'material_type' => $data['material_type'][$index],
+                            'expiration_date' => $data['expiry_date'][$index],
+                            'qc_status' => $data['qc_status'][$index],
+                            'inspection_date' => $data['inspection_date'][$index],
+                            'qc_notes' => $data['qc_notes'][$index]
+                        ]);
+                    }
     
-                    // Update purchase-material association
-                    $purchaseMaterialObject->update([
+                    // Update or insert purchase-material association
+                    $purchaseMaterialObject->updateOrInsert([
                         'pm_purchase_id' => $purchaseID,
                         'pm_material_id' => $materialID,
                         'quantity' => $data['quantity'][$index],
@@ -257,18 +307,24 @@ class PurchaseController extends BaseController {
                 }
     
                 $this->db->commit();
-    
+                header('Content-Type: application/json');
+                echo json_encode(['success' => true]);
                 // Refresh the purchase list after a successful update
-                header("Location: /purchase-list");
-                exit();
+                // header("Location: /purchase-list");
+                return;
     
             } catch (Exception $e) {
                 $this->db->rollBack();
                 error_log($e->getMessage());
-                $errors[] = "Failed to update purchase material: " . $e->getMessage();
-                $this->display($errors);
+                
+                header('Content-Type: application/json');
+                echo json_encode(['success' => true, 'errors' => ["Failed to update purchase material."]]);
+                return;
+
+                // $errors[] = "Failed to update purchase material: " . $e->getMessage();
+                // $this->display($errors);
             }
-            header("Location: /purchase-list");
+            //header("Location: /purchase-list");
         }
 
         $purchaseMaterialObject = new PurchaseMaterial();
@@ -360,4 +416,71 @@ class PurchaseController extends BaseController {
     
         return $errors;
     }
+
+    private function validateUpdatedPurchaseData($data) {
+        $errors = [];
+    
+        // Validate required fields for purchase data
+        if (empty($data['purchase_date']) || empty($data['vendor'])) {
+            $errors[] = "Purchase date and vendor are required.";
+        }
+    
+        // Validate purchase date
+        if (!empty($data['purchase_date'])) {
+            $purchase_date = str_replace(' - ', ' ', $data['purchase_date']);
+            if (!strtotime($purchase_date)) {
+                $errors[] = "Purchase date is invalid.";
+            }
+        }
+    
+        // Validate each material's data
+        foreach ($data['material_name'] as $index => $materialName) {
+            // Check if required fields are provided for each material entry
+            if (empty($materialName)) {
+                $errors[] = "Material name for item " . ($index + 1) . " is required.";
+            }
+            if (empty($data['quantity'][$index])) {
+                $errors[] = "Quantity for item " . ($index + 1) . " is required.";
+            }
+            if (empty($data['unit_price'][$index])) {
+                $errors[] = "Unit price for item " . ($index + 1) . " is required.";
+            }
+            if (empty($data['batch_number'][$index])) {
+                $errors[] = "Batch number for item " . ($index + 1) . " is required.";
+            }
+    
+            // Validate quantity (must be numeric and positive)
+            if (isset($data['quantity'][$index]) && $data['quantity'][$index] !== '') {
+                if (!is_numeric($data['quantity'][$index]) || $data['quantity'][$index] <= 0) {
+                    $errors[] = "Quantity for item " . ($index + 1) . " must be a positive number.";
+                }
+            }
+    
+            // Validate unit price (must be numeric and positive)
+            if (isset($data['unit_price'][$index]) && $data['unit_price'][$index] !== '') {
+                if (!is_numeric($data['unit_price'][$index]) || $data['unit_price'][$index] <= 0) {
+                    $errors[] = "Unit price for item " . ($index + 1) . " must be a positive number.";
+                }
+            }
+    
+            // Validate expiry date if provided
+            if (!empty($data['expiry_date'][$index])) {
+                $expiry_date = str_replace(' - ', ' ', $data['expiry_date'][$index]);
+                if (!strtotime($expiry_date)) {
+                    $errors[] = "Expiry date for item " . ($index + 1) . " is invalid.";
+                }
+            }
+    
+            // Validate inspection date if provided
+            if (!empty($data['inspection_date'][$index])) {
+                $inspection_date = str_replace(' - ', ' ', $data['inspection_date'][$index]);
+                if (!strtotime($inspection_date)) {
+                    $errors[] = "Inspection date for item " . ($index + 1) . " is invalid.";
+                }
+            }
+        }
+    
+        return $errors;
+    }
+    
 }

@@ -76,6 +76,22 @@ class Material extends BaseModel
         }
     }
 
+    public function delete($materialID)
+    {
+        $sql = "DELETE FROM materials WHERE `id` = :id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            
+            // Execute the query with the materialID as parameter
+            $statement->execute(['id' => $materialID]);
+
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
 
     public function getMaterial($id)
     {

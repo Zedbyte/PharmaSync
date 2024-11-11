@@ -79,6 +79,13 @@ try {
         $purchaseController->addPurchaseMaterial($data);
     });
 
+    // Add Purchase Panel [GET]
+    $router->respond('GET', '/add-purchase', function($request) use ($purchaseController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $purchaseController->addPurchaseMaterial($data);
+    });
+
     // View Purchase Panel [GET]
     $router->respond('GET', '/view-purchase/[i:purchaseID]', function($purchaseID) use ($purchaseController) {
         AuthMiddleware::checkAuth();

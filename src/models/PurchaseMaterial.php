@@ -70,6 +70,66 @@ class PurchaseMaterial extends BaseModel
         }
     }
 
+    public function updateOrInsert($data)
+    {
+        // Check if the record already exists
+        $sql = "SELECT COUNT(*) FROM purchase_material 
+                WHERE pm_purchase_id = :pm_purchase_id 
+                AND pm_material_id = :pm_material_id";
+        
+        $statement = $this->db->prepare($sql);
+        $statement->execute([
+            'pm_purchase_id' => $data['pm_purchase_id'],
+            'pm_material_id' => $data['pm_material_id']
+        ]);
+        
+        $recordExists = $statement->fetchColumn() > 0;
+
+        // If the record exists, update it; otherwise, insert a new record
+        if ($recordExists) {
+            // Update the existing record
+            return $this->update($data);
+        } else {
+            // Insert a new record
+            return $this->save($data);
+        }
+    }
+
+    public function delete($data)
+    {
+        $sql = "DELETE FROM purchase_material WHERE pm_purchase_id = :pm_purchase_id AND pm_material_id = :pm_material_id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'pm_purchase_id' => $data['pm_purchase_id'],
+                'pm_material_id' => $data['pm_material_id']
+            ]);
+
+            return $statement->rowCount() > 0; // Returns true if a row was deleted
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+
+    public function getMaterialIdsByPurchase($purchaseID)
+    {
+        $sql = "SELECT pm_material_id FROM purchase_material WHERE pm_purchase_id = :pm_purchase_id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute(['pm_purchase_id' => $purchaseID]);
+
+            // Fetch all material IDs as an array
+            return $statement->fetchAll(PDO::FETCH_COLUMN);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
 
     public function getPurchaseMaterial($purchase_id, $material_id)
     {

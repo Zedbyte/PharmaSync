@@ -24,23 +24,38 @@ function updatePurchasePanel(button) {
 function handleUpdateSubmission(event) {
     event.preventDefault();
 
-    const formData = new FormData(event.target); 
+    const formData = new FormData(event.target);
     const purchaseID = formData.get("purchase_id");
 
-    // Send the updated data back to the server via AJAX
     fetch(`/update-purchase/${purchaseID}`, {
         method: "POST",
         body: formData
     })
-    .then(response => {
-        if (response.ok) {
-            // Handle successful update, e.g., close the panel and refresh data    
+    .then(response => response.json())
+    .then(result => {
+        if (!result.success && result.errors) {
+            // Find or create the error container
+            let errorContainer = document.querySelector('.error-container');
+            if (!errorContainer) {
+                errorContainer = document.createElement('div');
+                errorContainer.className = 'error-container bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 fixed top-0 left-0 right-0 z-[999] transition-all duration-300';
+                document.body.prepend(errorContainer);
+            }
+
+            // Populate the errors
+            errorContainer.innerHTML = `
+                <p class="font-bold">Warning</p>
+                <ul>
+                    ${result.errors.map(error => `<li>${error}</li>`).join('')}
+                </ul>
+            `;
             updateClosePanel();
-            window.location.href = `/purchase-list`;
-        } else {
-            // Handle error, e.g., display an error message
-            console.error("Update failed:", result.error);
+            return; // Stop further processing if errors exist
         }
+
+        // On success, update the UI and close the panel
+        updateClosePanel();
+        window.location.href = '/purchase-list';
     })
     .catch(error => console.error("Error:", error));
 }
