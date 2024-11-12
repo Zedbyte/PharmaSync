@@ -205,11 +205,11 @@ button {
 
 */
 
-.card__foot {
-    /* display: flex;
-    justify-content: center; */
-    /* margin-top: calc(15%); */
-}
+/* .card__foot {
+    display: flex;
+    justify-content: center;
+    margin-top: calc(15%);
+} */
 
 .card__foot p {
     color: var(--footer-text);
