@@ -14,6 +14,8 @@ function updatePurchasePanel(button) {
             // Toggle panel and overlay visibility
             updatePanel.classList.remove("translate-x-full");
             updateOverlay.classList.remove("hidden");
+            
+            toggleRemoveButtonsUpdate();
 
             const updateForm = updatePanel.querySelector(".update__form");
             updateForm.addEventListener("submit", handleUpdateSubmission);
@@ -64,4 +66,12 @@ function updateClosePanel() {
     // Toggle panel and overlay visibility
     updatePanel.classList.add("translate-x-full");
     updateOverlay.classList.add("hidden");    
+}
+
+function toggleRemoveButtonsUpdate() {
+    const items = document.querySelectorAll('.item__template_update');
+    items.forEach((item, index) => {
+        const removeButton = item.querySelector('.remove-button-update');
+        removeButton.style.display = items.length > 1 ? 'flex' : 'none';
+    });
 }
