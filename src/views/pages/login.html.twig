@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/output.css">
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/main.css">
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/login.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/link.css">
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/logo/logo.css">
 
     <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
@@ -74,7 +75,7 @@
                     <div class="line"></div>
                 </div>
 
-                <div class="oauth__container grid grid-cols-1 gap-5 place-items-center 2xl:flex 2xl:justify-evenly mt-5">
+                <div class="oauth__container grid grid-cols-1 gap-3 place-items-center 2xl:flex 2xl:justify-evenly mt-5">
                     <div class="oauth__login flex border dark:!border-gray-600 ">
                         <div class="oauth__icon">
                             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
@@ -96,8 +97,12 @@
                     </div>
                 </div>
 
-                <section class="card__foot absolute bottom-5 left-0 right-0 mx-auto">
-                    <p class="foot__p text-gray-900 dark:text-gray-400">&copy; Group 9 Pharmaceutical Management System</p>
+                <div class="text-center mt-2 lg:mt-5">
+                    <p class="text-sm font-medium">No account yet? <a href="/registration" class="link__underline_hover text-[#3F70ED] dark:text-[#7655fa] ">Sign In</a></p>
+                </div>
+
+                <section class="card__foot absolute bottom-0 left-0 right-0 mx-auto">
+                    <p class="foot__p text-gray-900 dark:!text-gray-500">&copy; Group 9 Pharmaceutical Management System</p>
                 </section>
             </div>
         </div>

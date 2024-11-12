@@ -22,8 +22,6 @@ body {
 .card {
     height: 70%;
     background-color: #fff;
-
-    position: relative;
 }
 
 input:not([type="checkbox"]) {
