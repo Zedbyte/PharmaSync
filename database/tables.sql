@@ -1,16 +1,18 @@
 CREATE TABLE `users` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `name` varchar(255) NOT NULL,
-    `username` varchar(255) NOT NULL,
-    `contact_no` varchar(50) NOT NULL,
+    `first_name` varchar(255) NOT NULL,
+    `last_name` varchar(255) NOT NULL,
     `email_address` varchar(255) NOT NULL,
+    `contact_no` varchar(50) NOT NULL,
+    `gender` varchar(50) NOT NULL,
+    `username` varchar(255) NOT NULL,
     `password_hash` varchar(255) NOT NULL,
     `role` enum(
-        'Administrator',
-        'Inventory Manager',
-        'Finance Manager',
-        'HR Manager',
-        'Staff'
+        'administrator',
+        'inventory_manager',
+        'finance_manager',
+        'hr_manager',
+        'staff'
     ) NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `username` (`username`),

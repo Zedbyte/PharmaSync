@@ -42,13 +42,19 @@
                 <form action="/login" method="POST" class="flex flex-col">
                     <div class="flex flex-col mb-7">
                         <label class="input__box font-semibold" for="email">Email</label>
-                        <input type="email" name="email" placeholder="Email" class="p-2 border border-gray-300 dark:!border-gray-600 rounded w-full bg-white dark:bg-gray-700 text-gray-900 dark:!text-gray-200">
+                        <input type="email" name="email" placeholder="Email" class="p-2 border 
+                        border-gray-300 dark:!border-gray-600 rounde
+                        d w-full bg-white dark:bg-gray-700 text-gray-900 
+                        dark:!text-gray-200 
+                        transition-colors duration-150 focus:dark:bg-gray-600 focus:bg-gray-100">
                     </div>
 
                     <div class="flex flex-col mb-2 relative">
                         <label class="input__box font-semibold" for="password">Password</label>
                         <div class="relative">
-                            <input type="password" name="password" id="password" placeholder="Password" class="p-2 border border-gray-300 dark:!border-gray-600 rounded w-full bg-white dark:bg-gray-700 text-gray-900 dark:!text-gray-200">
+                            <input type="password" name="password" id="password" placeholder="Password" class="p-2 border border-gray-300 
+                            dark:!border-gray-600 rounded w-full bg-white dark:bg-gray-700 text-gray-900 
+                            dark:!text-gray-200 transition-colors duration-150 focus:dark:bg-gray-600 focus:bg-gray-100">
                             <span id="togglePassword" class="eye__container absolute right-5 top-2.5 cursor-pointer disabled opacity-50">
                                 <i class="fa-solid fa-eye-slash dark:!text-gray-200"></i>
                             </span>
@@ -98,7 +104,7 @@
                 </div>
 
                 <div class="text-center mt-2 lg:mt-5">
-                    <p class="text-sm font-medium">No account yet? <a href="/registration" class="link__underline_hover text-[#3F70ED] dark:text-[#7655fa] ">Sign In</a></p>
+                    <p class="text-sm font-medium">No account yet? <a href="/registration" class="link__underline_hover text-[#3F70ED] dark:text-[#7655fa] ">Sign Up</a></p>
                 </div>
 
                 <section class="card__foot absolute bottom-0 left-0 right-0 mx-auto">
@@ -184,7 +190,7 @@
     </button>
 
     <script src="{{ ASSETS_URL }}/js/login.js"></script>
-    <script src="{{ ASSETS_URL }}/js/theme.js"></script>
+    <script src="{{ ASSETS_URL }}/js/outTheme.js"></script>
     <script src="{{ ASSETS_URL }}/js/localStorage.js"></script>
 
     <!-- Carousel -->

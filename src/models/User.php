@@ -13,32 +13,39 @@ use \Exception;
 class User extends BaseModel
 {
     public function save($data)
-    {
+    {   
+        $this->db->beginTransaction();
         $sql = "INSERT INTO users 
-                SET
-                    `name`=:complete_name,
-                    username=:username,
-                    contact_no=:contact_no,
-                    email_address=:email_address,
-                    `password_hash`=:password_hash,
-                    `role`=:role";
+        SET
+            first_name = :first_name,
+            last_name = :last_name,
+            username = :username,
+            contact_no = :contact_no,
+            email_address = :email_address,
+            password_hash = :password_hash,
+            role = :role,
+            gender = :gender";
 
         try {
             $statement = $this->db->prepare($sql);
-            
-            $password_hash = hashPassword($data['password_hash']);
+
+            // Hash password before saving
+            $password_hash = hashPassword($data['password']);
             
             $statement->execute([
-                'complete_name' => $data['complete_name'],
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
                 'username' => $data['username'],
                 'contact_no' => $data['contact_no'],
                 'email_address' => $data['email_address'],
                 'password_hash' => $password_hash,
-                'role' => $data['role']
+                'role' => $data['role'],
+                'gender' => $data['gender']
             ]);
-            
+            $this->db->commit();
             return $this->db->lastInsertId();
         } catch (PDOException $e) {
+            $this->db->rollBack();
             error_log($e->getMessage());
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
@@ -89,5 +96,33 @@ class User extends BaseModel
             error_log($e->getMessage());
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
+    }
+
+    public function checkUniqueConstraints($data)
+    {
+        $errors = [];
+        
+        // Check if username is unique
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM users WHERE username = :username");
+        $stmt->execute(['username' => $data['username']]);
+        if ($stmt->fetchColumn() > 0) {
+            $errors['username'] = 'Username already exists.';
+        }
+
+        // Check if contact number is unique
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM users WHERE contact_no = :contact_no");
+        $stmt->execute(['contact_no' => $data['contact_no']]);
+        if ($stmt->fetchColumn() > 0) {
+            $errors['contact_no'] = 'Contact number already exists.';
+        }
+
+        // Check if email address is unique
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM users WHERE email_address = :email_address");
+        $stmt->execute(['email_address' => $data['email_address']]);
+        if ($stmt->fetchColumn() > 0) {
+            $errors['email_address'] = 'Email address already exists.';
+        }
+
+        return $errors;
     }
 }

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaSync</title>
+    <link rel="icon" href="{{ ASSETS_URL }}/images/PharmaSync__Logo_Light.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/output.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/main.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/registration.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/link.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/logo/logo.css">
+
+    <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-white 2xl:bg-[#F1F4F9] dark:bg-gray-900">
+
+    {% if errors %}
+    <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+        role="alert">
+        <p class="font-bold">Warning</p>
+        {% for error in errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main class="grid grid-cols-1 2xl:grid-cols-12 h-full">
+
+        <!-- Hero Container (Image) -->
+        <div class="hero__container order-1 2xl:order-1 hidden 2xl:block 2xl:col-span-6">
+            <div class="img__container dark:!bg-[#7655fa] dark:hover:bg-[#6b46c1]">
+                <div id="default-carousel" class="relative w-full h-full" data-carousel="slide">
+                    <!-- Carousel wrapper -->
+                    <div class="relative h-56 overflow-hidden rounded-lg md:h-full z-0">
+                        <!-- Item 1 -->
+                        <div class="hidden duration-700 ease-in-out !bg-[#3F70ED] dark:!bg-[#7655fa]" data-carousel-item>
+                            <img src="{{ ASSETS_URL }}/images/carousel/Slide1TPB.png" class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                        </div>
+                        <!-- Item 2 -->
+                        <div class="hidden duration-700 ease-in-out !bg-[#3F70ED] dark:!bg-[#7655fa]" data-carousel-item>
+                            <img src="{{ ASSETS_URL }}/images/carousel/Slide2TPB.png" class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                        </div>
+                        <!-- Item 3 -->
+                        <div class="hidden duration-700 ease-in-out !bg-[#3F70ED] dark:!bg-[#7655fa]" data-carousel-item>
+                            <img src="{{ ASSETS_URL }}/images/carousel/Slide3TPB.png" class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                        </div>
+                        <!-- Item 4 -->
+                        <div class="hidden duration-700 ease-in-out !bg-[#3F70ED] dark:!bg-[#7655fa]" data-carousel-item>
+                            <img src="{{ ASSETS_URL }}/images/carousel/Slide4TPB.png" class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                        </div>
+                        <!-- Item 5 -->
+                        <div class="hidden duration-500 ease-in-out !bg-[#3F70ED] dark:!bg-[#7655fa]" data-carousel-item>
+                            <img src="{{ ASSETS_URL }}/images/carousel/Slide5TPB.png" class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                        </div>
+                    </div>
+                    <!-- Slider indicators -->
+                    <div class="absolute z-30 flex dark:bg-slate-600 bg-[#3F70ED] bg-opacity-25 dark:bg-opacity-25 rounded-full p-1 
+                    transition-transform duration-200 -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+                        <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
+                        <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
+                        <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
+                        <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
+                        <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 5" data-carousel-slide-to="4"></button>
+                    </div>
+                    <!-- Slider controls -->
+                    <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+                        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                            </svg>
+                            <span class="sr-only">Previous</span>
+                        </span>
+                    </button>
+                    <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+                        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                            </svg>
+                            <span class="sr-only">Next</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Card Container (Form) -->
+        <div class="relative card__container w-full 2xl:col-span-6 order-2 2xl:order-2 flex flex-col">
+
+            <div class="card relative p-3 2xl:p-12 rounded-xl w-11/12 2xl:w-10/12 bg-white dark:!bg-gray-900 2xl:dark:!bg-gray-800 text-gray-900 dark:text-gray-200">
+                <div class="header text-center pb-12">
+                    <h1 class="text-3xl font-bold">Sign Up</h1>
+                    <p class="text-[#8D8D8D] dark:text-gray-400">Create an account to get started.</p>
+                </div>
+
+                <form action="/register" method="POST" class="flex flex-col">
+                    <div class="grid grid-cols-1 2xl:grid-cols-12 2xl:space-x-4">
+                        <span class="flex flex-col mb-5 col-span-6">
+                            <label class="input__box font-semibold" for="first_name">First Name</label>
+                            <input type="text" name="first_name" placeholder="First Name" class="p-2 border border-gray-300 
+                            dark:!border-gray-600 rounded w-full bg-white dark:bg-gray-700 text-gray-900 dark:!text-gray-200
+                            transition-colors duration-150 focus:dark:bg-gray-600 focus:bg-gray-100">
+                        </span>
+            
+                        <div class="flex flex-col mb-5 col-span-6">
+                            <label class="input__box font-semibold" for="last_name">Last Name</label>
+                            <input type="text" name="last_name" placeholder="Last Name" class="p-2 border border-gray-300 
+                            dark:!border-gray-600 rounded w-full bg-white dark:bg-gray-700 text-gray-900 dark:!text-gray-200
+                            transition-colors duration-150 focus:dark:bg-gray-600 focus:bg-gray-100">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col mb-5">
+                        <label class="input__box font-semibold" for="email">Email</label>
+                        <div class="flex">
+                            <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 border-e-0 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                                </svg>
+                            </span>
+                            <input type="email" name="email_address" placeholder="Email" class="p-2 border 
+                            border-gray-300 dark:!border-gray-600 !rounded-none !rounded-e-lg w-full 
+                            bg-white dark:bg-gray-700 text-gray-900 dark:!text-gray-200
+                            transition-colors duration-150 focus:dark:bg-gray-600 focus:bg-gray-100">
+                        </div>
+                    </div>
+        
+                    <div class="grid grid-cols-1 2xl:grid-cols-12 2xl:space-x-4">
+                        <div class="flex flex-col mb-5 col-span-6">
+                            <label class="input__box font-semibold" for="contact">Contact</label>
+                            <input type="text" name="contact_no" placeholder="Contact Number" class="p-2 border 
+                            border-gray-300 dark:!border-gray-600 rounded w-full bg-white 
+                            dark:bg-gray-700 text-gray-900 dark:!text-gray-200
+                            transition-colors duration-150 focus:dark:bg-gray-600 focus:bg-gray-100">
+                        </div>
+
+                        <div class="flex flex-col mb-5 col-span-6">
+                            <label class="input__box font-semibold" for="gender">Select gender</label>
+                            <select id="gender" name="gender" class="bg-white border border-gray-300 
+                            text-gray-900 text-sm rounded-lg
+                            block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                            transition-colors duration-150 focus:dark:bg-gray-600 focus:bg-gray-100">
+                                <option disabled selected>Choose a gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 2xl:grid-cols-12 2xl:space-x-4">
+                        <div class="flex flex-col mb-5 col-span-6">
+                            <label class="input__box font-semibold" for="contact">Username</label>
+                            <div class="flex">
+                                <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 border-e-0 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                                    </svg>
+                                </span>
+                                <input type="text" name="username" id="website-admin" class="!rounded-none !rounded-e-lg 
+                                border-gray-300 dark:!border-gray-600 text-gray-900 block flex-1 min-w-0 w-full text-sm p-2.5 
+                                dark:bg-gray-700  dark:placeholder-gray-400 dark:!text-white
+                                transition-colors duration-150 focus:dark:bg-gray-600 focus:bg-gray-100" placeholder="kaizen">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col mb-5 col-span-6">
+                            <label class="input__box font-semibold" for="role">Select role</label>
+                            <select id="role" name="role" class="bg-white border border-gray-300 
+                            text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 
+                            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                            transition-colors duration-150 focus:dark:bg-gray-600 focus:bg-gray-100">
+                                <option disabled selected>Choose a role</option>
+                                <option value="administrator">Administrator</option>
+                                <option value="inventory_manager">Inventory Manager</option>
+                                <option value="finance_manager">Finance Manager</option>
+                                <option value="hr_manager">HR Manager</option>
+                                <option value="staff">Staff</option>
+                            </select>
+                        </div>
+                    </div>
+        
+                    <div class="grid grid-cols-1 2xl:grid-cols-12 2xl:space-x-4">
+                        <div class="flex flex-col mb-5 col-span-6">
+                            <label class="input__box font-semibold" for="password">Password</label>
+                            <div class="relative">
+                                <input type="password" name="password" id="password" placeholder="Password" class="p-2 border 
+                                border-gray-300 dark:!border-gray-600 rounded w-full bg-white dark:bg-gray-700 text-gray-900 dark:!text-gray-200
+                                transition-colors duration-150 focus:dark:bg-gray-600 focus:bg-gray-100">
+                                <span id="togglePassword" class="eye__container absolute right-5 top-2.5 cursor-pointer disabled opacity-50">
+                                    <i class="fa-solid fa-eye-slash dark:!text-gray-200"></i>
+                                </span>
+                            </div>
+                        </div>
+            
+                        <div class="flex flex-col mb-10 col-span-6">
+                            <label class="input__box font-semibold" for="confirm_password">Confirm Password</label>
+                            <div class="relative">
+                                <input type="password" name="confirm_password" id="password_confirm" placeholder="Confirm Password" class="p-2 border 
+                                border-gray-300 dark:!border-gray-600 rounded w-full bg-white dark:bg-gray-700 text-gray-900 dark:!text-gray-200
+                                transition-colors duration-150 focus:dark:bg-gray-600 focus:bg-gray-100">
+                                <span id="togglePassword_confirm" class="eye__container absolute right-5 top-2.5 cursor-pointer disabled opacity-50">
+                                    <i class="fa-solid fa-eye-slash dark:!text-gray-200"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <button type="submit" class="font-bold text-lg bg-[#3F70ED] dark:bg-[#7655fa] hover:bg-[#5384ff] dark:hover:bg-[#6b46c1] ease-linear duration-200 text-white hover:text-[#c8d8fd] mb-8">Sign Up</button>
+                </form>
+
+                <div class="line__separator flex justify-between items-center">
+                    <div class="line"></div>
+                    <div id="or__separator">OR</div>
+                    <div class="line"></div>
+                </div>
+
+                <div class="oauth__container grid grid-cols-1 gap-3 place-items-center 2xl:flex 2xl:justify-evenly mt-5">
+                    <div class="oauth__login flex border dark:!border-gray-600 ">
+                        <div class="oauth__icon">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+                                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                                <path fill="none" d="M0 0h48v48H0z"></path>
+                            </svg>
+                        </div>
+                        <span class="oauth__button__contents font-semibold">Sign up with Google</span>
+                    </div>
+
+                    <div class="oauth__login flex border dark:!border-gray-600 ">
+                        <div class="oauth__icon">
+                            <img class="object-cover" src="{{ ASSETS_URL }}/images/Pfizer__logo_oauth.png">
+                        </div>
+                        <span class="oauth__button__contents font-semibold">Sign up with Pfizer</span>
+                    </div>
+                </div>
+
+                <div class="text-center mt-2 lg:mt-5">
+                    <p class="text-sm font-medium">Already have an account? <a href="/login" class="link__underline_hover text-[#3F70ED] dark:text-[#7655fa] ">Sign In</a></p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Theme Button -->
+    <button class="theme__btn fixed bottom-4 right-4 bg-[#3F70ED] dark:bg-[#7655fa] hover:bg-[#5384ff] dark:hover:bg-[#6b46c1] transition-all duration-200 text-white font-semibold p-2 rounded-full shadow-lg">
+        <?xml version="1.0" encoding="iso-8859-1"?>
+        <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+        <svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
+            <circle style="fill:#263A7A;" cx="256" cy="256" r="256" />
+            <path style="fill:#121149;" d="M274.253,511.345c101.633-7.161,186.878-73.642,221.344-165.036L238.411,89.122l-101.36,62.869
+        	l-32.754,168.943l28.389,48.843L274.253,511.345z" />
+            <path style="fill:#FFC61B;" d="M305.778,341.333c-74.619,0-135.111-60.492-135.111-135.111c0-50.079,27.267-93.762,67.744-117.1
+        	C154.009,97.914,88.207,169.27,88.207,256c0,92.67,75.124,167.793,167.793,167.793c86.73,0,158.086-65.803,166.878-150.204
+        	C399.539,314.066,355.857,341.333,305.778,341.333z" />
+            <path style="fill:#EAA22F;" d="M305.778,341.333c-37.017,0-70.546-14.898-94.949-39.012l-72.894,72.894
+        	c30.318,30.027,72.023,48.578,118.065,48.578c86.73,0,158.086-65.803,166.878-150.204
+        	C399.539,314.066,355.857,341.333,305.778,341.333z" />
+        </svg>
+    </button>
+
+    <script src="{{ ASSETS_URL }}/js/registration.js"></script>
+    <script src="{{ ASSETS_URL }}/js/outTheme.js"></script>
+    <script src="{{ ASSETS_URL }}/js/localStorage.js"></script>
+
+    <!-- Carousel & Dropdown -->
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>

@@ -10,6 +10,7 @@ use Twig\Environment;
 
 // Controllers
 use App\Controllers\LoginController;
+use App\Controllers\RegistrationController;
 use App\Controllers\DashboardController;
 use App\Controllers\SettingsController;
 use App\Controllers\PurchaseController;
@@ -23,6 +24,7 @@ try {
     $twig = new Environment($loader);
 
     $loginController = new LoginController($twig);
+    $registrationController = new RegistrationController($twig);
     $dashboardController = new DashboardController($twig);
     $settingsController = new SettingsController($twig);
     $purchaseController = new PurchaseController($twig);
@@ -46,6 +48,16 @@ try {
     $router->respond('GET', '/logout', function() use ($loginController) {
         AuthMiddleware::checkAuth();
         $loginController->logout();
+    });
+
+    // Registration Page [GET]
+    $router->respond('GET', '/registration', function() use ($registrationController) {
+        $registrationController->display();
+    });
+
+    // Registration Page [POST]
+    $router->respond('POST', '/register', function() use ($registrationController) {
+        $registrationController->register();
     });
 
     // Dashboard Page [GET]
