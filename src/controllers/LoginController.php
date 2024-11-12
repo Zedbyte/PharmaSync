@@ -23,6 +23,12 @@ class LoginController extends BaseController
             header("Location: /dashboard");
             exit();
         }
+        if (isset($_SESSION['login_error'])) {    
+            $error = $_SESSION['login_error'];
+            $this->renderLoginPageError($error);
+            // Clear the errors from session after they are displayed
+            unset($_SESSION['login_error']);
+        }
         echo $this->twig->render('login.html.twig', ['ASSETS_URL' => ASSETS_URL]);
     }
 
@@ -49,10 +55,14 @@ class LoginController extends BaseController
                     header("Location: /dashboard");
                     exit();
                 } else {
-                    $this->renderLoginPageError('Invalid email or password');
+                    $_SESSION['login_error'] = "Invalid email or password";
+                    header('Location: /login');
+                    exit;
                 }
             } else {
-                $this->renderLoginPageError('Please enter both email and password');
+                $_SESSION['login_error'] = "Please enter both email and password";
+                header('Location: /login');
+                exit;
             }
         } else {
             header("Location: /login");
