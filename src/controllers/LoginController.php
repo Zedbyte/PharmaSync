@@ -28,6 +28,7 @@ class LoginController extends BaseController
             $this->renderLoginPageError($error);
             // Clear the errors from session after they are displayed
             unset($_SESSION['login_error']);
+            exit;
         }
         echo $this->twig->render('login.html.twig', ['ASSETS_URL' => ASSETS_URL]);
     }
