@@ -1,0 +1,51 @@
+{% extends 'root.twig' %}
+
+{% block title %}
+    Order List
+{% endblock %}
+
+{% block headers %}
+    <!-- <link rel="stylesheet" href="{{ ASSETS_URL }}/css/purchase/purchase-list.css"> -->
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/link.css">
+    <!-- <link rel="stylesheet" href="{{ ASSETS_URL }}/css/purchase/view-purchase.css"> -->
+    <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block panel_title %}
+    Order List
+{% endblock %}
+
+{% set paths = [
+    { 'name': 'Dashboard', 'url': '/dashboard' },
+    { 'name': 'Order List', 'url': '/order-list' }
+] %}
+
+{% block body %}
+
+    {% if errors %}
+        <div class="error-container bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 fixed top-0 left-0 right-0 z-[999] transition-all duration-300"
+            role="alert">
+            <p class="font-bold">Warning</p>
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <section class="purchase__list_container_head grid grid-cols-1 md:grid-cols-12">
+        <div class="col-span-6">
+            <h1 class="text-red-500">Order</h1>
+        </div>
+    </section>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{{ ASSETS_URL }}/js/calendarTheme.js"></script>
+
+{% endblock %}

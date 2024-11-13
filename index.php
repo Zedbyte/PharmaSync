@@ -14,6 +14,7 @@ use App\Controllers\RegistrationController;
 use App\Controllers\DashboardController;
 use App\Controllers\SettingsController;
 use App\Controllers\PurchaseController;
+use App\Controllers\OrderController;
 use \App\Middleware\AuthMiddleware;
 
 try {
@@ -28,6 +29,7 @@ try {
     $dashboardController = new DashboardController($twig);
     $settingsController = new SettingsController($twig);
     $purchaseController = new PurchaseController($twig);
+    $orderController = new OrderController($twig);
 
     // Landing Page
     $router->respond('GET', '/', function() use ($loginController) {
@@ -130,6 +132,13 @@ try {
     $router->respond('POST', '/update-purchase-status', function() use ($purchaseController) {
         AuthMiddleware::checkAuth();
         $purchaseController->updatePurchaseStatus();
+    });
+
+
+    // Order Page [GET]
+    $router->respond('GET', '/order-list', function() use ($orderController) {
+        AuthMiddleware::checkAuth();
+        $orderController->display();
     });
     
     $router->dispatch();
