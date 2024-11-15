@@ -62,9 +62,9 @@
                             <select id="material-type" name="material_type[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
                                 <option value="" disabled>Select Material Type</option>
                                 <option value="raw" {% if material.material_type == 'raw' %}selected{% endif %}>Raw Material</option>
-                                <option value="medicine" {% if material.material_type == 'medicine' %}selected{% endif %}>Medicine</option>
                                 <option value="packaging" {% if material.material_type == 'packaging' %}selected{% endif %}>Packaging Material</option>
-                                <option value="equipment" {% if material.material_type == 'equipment' %}selected{% endif %}>Equipment</option>
+                                <option value="auxiliary" {% if material.material_type == 'auxiliary' %}selected{% endif %}>Auxiliary Material</option>
+                                <option value="intermediate" {% if material.material_type == 'intermediate' %}selected{% endif %}>Intermediate Material</option>                                
                             </select>
                         </div>
 
