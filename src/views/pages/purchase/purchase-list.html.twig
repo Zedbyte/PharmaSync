@@ -359,10 +359,10 @@
                             </td>
                             <td class="md:px-6 md:py-4 px-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ purchase.date_of_purchase }}</td>
                             <td class="md:px-6 md:py-4">{{ purchase.vendor_name }}</td>
-                            <td class="md:px-6 md:py-4">{{ purchase.material_types | title }}</td>
-                            <td class="md:px-6 md:py-4">{{ purchase.material_count  }}</td>
+                            <td class="px-10 md:px-6 md:py-4">{{ purchase.material_types | title }}</td>
+                            <td class="md:px-6 md:py-4 text-center md:text-start">{{ purchase.material_count  }}</td>
                             <td class="md:px-6 md:py-4">${{ purchase.total_cost | number_format(2) }}</td>
-                            <td class="md:px-6 md:py-4">
+                            <td class="md:px-6 md:py-4 px-10 ">
                                 <form method="post" action="/update-purchase-status">
                                     <select name="status" onchange="this.form.submit()" class="rounded-full text-xs 
                                     md:block md:w-10/12 text-center p-1 md:p-0 md:py-1 text-white
@@ -422,7 +422,7 @@
                                     </span>
                                 </span>
                             </td> -->
-                            <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap">
+                            <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap justify-center">
                                 <button 
                                 onclick="updatePurchasePanel(this)"
                                 data-id="{{ purchase.purchase_id }}" 
