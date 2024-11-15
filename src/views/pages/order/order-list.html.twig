@@ -7,6 +7,7 @@
 {% block headers %}
     <!-- <link rel="stylesheet" href="{{ ASSETS_URL }}/css/purchase/purchase-list.css"> -->
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/link.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/scrollbar.css">
     <!-- <link rel="stylesheet" href="{{ ASSETS_URL }}/css/purchase/view-purchase.css"> -->
     <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
 {% endblock %}
@@ -34,7 +35,7 @@
         </div>
     {% endif %}
 
-    <section class="order__list_container_head grid grid-cols-6 lg:grid-cols-10 gap-5 h-32">
+    <section class="order__list_container_head grid grid-cols-6 lg:grid-cols-10 gap-5">
         <div class="col-span-3 lg:col-span-2 border dark:border-slate-500 border-gray-300  rounded-xl px-5 py-3 text-gray-800 dark:text-[#fdfdfd] bg-white dark:bg-slate-600">
             <span class="flex items-center space-x-2 mb-4">
                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -105,6 +106,149 @@
             </span>
         </div>
     </section>
+
+    <section class="order__list_container_content mt-8 flex flex-col h-full">
+        <form class="flex-grow flex flex-col">
+            <div class="py-4 pl-4 flex justify-between space-x-5">
+                <ul class="scrollbar__thin flex space-x-5 overflow-x-auto items-center w-5/12 2xl:w-9/12">
+                    <li class="hover:text-[#3280c9] dark:hover:text-[#7655fa] transition-color duration-150 text-nowrap
+                    border-x dark:border-gray-600 border-gray-300 px-4">
+                        <a href="#" class="link__underline_hover">
+                            <i class="fa-solid fa-border-all"></i>
+                            All
+                        </a>
+                    </li>
+                    <li class="hover:text-[#3280c9] dark:hover:text-[#7655fa] transition-color duration-150 text-nowrap">
+                        <a href="#" class="link__underline_hover">
+                            <i class="fa-solid fa-money-bill"></i>
+                            Unpaid
+                        </a>
+                    </li>
+                    <li class="hover:text-[#3280c9] dark:hover:text-[#7655fa] transition-color duration-150 text-nowrap
+                    border-x dark:border-gray-600 border-gray-300 px-4">
+                        <a href="#" class="link__underline_hover">
+                            <i class="fa-solid fa-truck"></i>
+                            Need to ship
+                        </a>
+                    </li>
+                    <li class="hover:text-[#3280c9] dark:hover:text-[#7655fa] transition-color duration-150 text-nowrap">
+                        <a href="#" class="link__underline_hover">
+                            <i class="fa-solid fa-envelope-circle-check"></i>
+                            Sent
+                        </a>
+                    </li>
+                    <li class="hover:text-[#3280c9] dark:hover:text-[#7655fa] transition-color duration-150 text-nowrap
+                    border-x dark:border-gray-600 border-gray-300 px-4">
+                        <a href="#" class="link__underline_hover">
+                            <i class="fa-solid fa-list-check"></i>
+                            Completed
+                        </a>
+                    </li>
+                    <li class="hover:text-[#3280c9] dark:hover:text-[#7655fa] transition-color duration-150 text-nowrap
+                    border-r dark:border-gray-600 border-gray-300 pr-4">
+                        <a href="#" class="link__underline_hover">
+                            <i class="fa-solid fa-hand-holding-hand"></i>   
+                            Returns
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="relative flex justify-end md:block w-6/12 2xl:w-3/12">
+                    <button class="absolute w-7 inset-y-0 end-3 md:start-0 flex items-center ps-3">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </button>
+                    <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 
+                    text-sm rounded-lg block w-full p-2.5
+                    transition-all duration-200
+                    focus:bg-gray-200 dark:focus:bg-slate-600
+                    outline-none h-11 min-h-11
+                    dark:bg-slate-500 dark:border-slate-800 ps-8
+                    dark:placeholder-gray-400 dark:text-white
+                    placeholder-transparent md:placeholder-gray-500" placeholder="Search order here">
+                </div>
+            </div>
+    
+            <div class="h-full p-6 rounded-lg dark:border-slate-800 bg-gray-50 border border-gray-300 dark:bg-slate-500 flex-grow">
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="p-4">
+                                    <div class="flex items-center">
+                                        <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Order ID
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Customer
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Date
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Product Count
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Total Cost
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Payment Status
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Order Status
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="w-4 p-4">
+                                    <div class="flex items-center">
+                                        <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                                    </div>
+                                </td>
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    Apple MacBook Pro 17"
+                                </th>
+                                <td class="px-6 py-4">
+                                    Silver
+                                </td>
+                                <td class="px-6 py-4">
+                                    Laptop
+                                </td>
+                                <td class="px-6 py-4">
+                                    Yes
+                                </td>
+                                <td class="px-6 py-4">
+                                    Yes
+                                </td>
+                                <td class="px-6 py-4">
+                                    $2999
+                                </td>
+                                <td class="px-6 py-4">
+                                    3.0 lb.
+                                </td>
+                                <td class="flex items-center px-6 py-4">
+                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">Remove</a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </section>
+    
 
 
 {% endblock %}
