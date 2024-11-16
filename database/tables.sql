@@ -67,3 +67,35 @@ CREATE TABLE `suppliers` (
     UNIQUE KEY `email` (`email`),
     UNIQUE KEY `contact_no` (`contact_no`)
 )
+
+CREATE TABLE `orders` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `date` date NOT NULL,
+    `product_count` int(11) NOT NULL,
+    `total_cost` double NOT NULL,
+    `payment_status` varchar(255) NOT NULL,
+    `order_status` varchar(255) NOT NULL,
+    `customer_id` int(11) NOT NULL,
+    PRIMARY KEY (`id`)
+) 
+
+CREATE TABLE `medicines` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) NOT NULL,
+    `type` varchar(255) NOT NULL,
+    `composition` varchar(255) NOT NULL,
+    `therapeutic_class` varchar(255) NOT NULL,
+    `regulatory_class` varchar(255) NOT NULL,
+    `manufacturing_details` varchar(255) NOT NULL,
+    `formulation_id` int(11) NOT NULL,
+    PRIMARY KEY (`id`)
+) 
+
+CREATE TABLE `order_medicine` (
+    `order_id` int(11) NOT NULL,
+    `purchase_id` int(11) NOT NULL,
+    `quantity` int(11) NOT NULL,
+    `unit_price` double NOT NULL,
+    `total_price` double NOT NULL,
+    PRIMARY KEY (`order_id`, `purchase_id`)
+)

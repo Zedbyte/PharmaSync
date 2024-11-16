@@ -109,7 +109,7 @@
     <section class="order__list_container_content mt-8 flex flex-col h-full">
         <form class="flex-grow flex flex-col">
             <div class="flex justify-between items-end space-x-5">
-                <ul class="tabbed__nav scrollbar__thin flex space-x-5 overflow-x-auto items-center w-5/12 2xl:w-9/12">
+                <ul class="tabbed__nav scrollbar__thin flex space-x-5 overflow-x-auto items-center w-5/12 2xl:w-7/12">
                     <li class="hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap text-gray-700 dark:text-white
                     group border-x border-t border-transparent tab-item">
                         <a href="#" class="font-medium flex items-center px-4 py-2">
@@ -160,20 +160,31 @@
                     </li>
                 </ul>
 
-                <div class="relative flex justify-end md:block w-6/12 2xl:w-3/12 mb-3">
-                    <button class="absolute w-7 inset-y-0 end-3 md:start-0 flex items-center ps-3">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                        </svg>
-                    </button>
-                    <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 
-                    text-sm rounded-lg block w-full p-2.5
-                    transition-all duration-200
-                    focus:bg-gray-200 dark:focus:bg-slate-600
-                    outline-none h-11 min-h-11
-                    dark:bg-slate-500 dark:border-slate-800 ps-8
-                    dark:placeholder-gray-400 dark:text-white
-                    placeholder-transparent md:placeholder-gray-500" placeholder="Search order here">
+                <div class="grid grid-cols-1 2xl:grid-cols-12 w-6/12 2xl:w-5/12 mb-3">
+                    <div class="relative order-2 2xl:order-1 col-span-8">
+                        <button class="absolute w-7 inset-y-0 end-3 md:start-0 flex items-center ps-3">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
+                        </button>
+                        <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 
+                        text-sm rounded-lg block w-full p-2.5
+                        transition-all duration-200
+                        focus:bg-gray-200 dark:focus:bg-slate-600
+                        outline-none h-11 min-h-11
+                        dark:bg-slate-500 dark:border-slate-800 ps-8
+                        dark:placeholder-gray-400 dark:text-white
+                        placeholder-transparent md:placeholder-gray-500" placeholder="Search order here">
+                    </div>
+    
+                    <div class="order-1 mb-3 2xl:mb-0 2xl:order-2 col-span-4 place-self-end">
+                        <button onclick="addOrderTogglePanel()" class="bg-[#2998FF] hover:bg-[#3280c9]  
+                        dark:bg-[#7655fa] dark:hover:bg-[#8162fa] transition-all duration-200 text-white 
+                        rounded-lg px-3 py-2.5 flex justify-center items-center text-nowrap">
+                            <ion-icon name="add-outline" class="add__icon dark:text-[#fdfdfd] mr-2"></ion-icon>    
+                            Add Order
+                        </button>
+                    </div>
                 </div>
             </div>
     
