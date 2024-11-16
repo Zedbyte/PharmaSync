@@ -7,7 +7,8 @@
     position: absolute; 
     bottom: -2px; 
     left: 0; 
-    width: 0; 
+    width: 0;
+    bottom: 0; /* Ensure the underline is within the li element */ 
     height: 1px;
     background-color: currentColor; 
     transition: width 0.3s ease; 

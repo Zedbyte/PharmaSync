@@ -1,0 +1,35 @@
+/* Tabbed Navigation Styles */
+.tab-item {
+    background-color: #f9fafb; /* Tailwind's bg-gray-50 equivalent */
+    border: 1px solid #d1d5db; /* Tailwind's border-gray-300 equivalent */
+    border-bottom: none; /* To create the tab effect */
+    border-radius: 0.5rem 0.5rem 0 0; /* Tailwind's rounded-t-lg equivalent */
+}
+
+.dark .tab-item {
+    background-color: #64748b; /* Tailwind's dark:bg-slate-500equivalent */
+    border: 1px solid #1E293B; /* Tailwind's dark:border-slate-800 equivalent */
+    border-bottom: none; /* To create the tab effect */
+    border-radius: 0.5rem 0.5rem 0 0; /* Tailwind's rounded-t-lg equivalent */
+}
+
+
+/* .tab-active {
+    background-color: white; /* Highlight active tab 
+    border-color: #3280c9; /* Optional: Accent border for active tab    
+    color: #3280c9; /* Active tab text color 
+} */
+
+/*.tab-active-dark {
+    background-color: #1e293b; /* Tailwind's dark:bg-gray-900 equivalent 
+    border-color: #7655fa; /* Active border color in dark mode 
+    color: #7655fa; /* Active text color in dark mode 
+}*/
+
+.tab-icon {
+    margin-right: 0.5rem; /* Add space between icon and text */
+}
+
+.tab-icon:hover {
+    color: inherit; /* Inherit hover color from parent */
+}

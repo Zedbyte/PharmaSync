@@ -5,10 +5,9 @@
 {% endblock %}
 
 {% block headers %}
-    <!-- <link rel="stylesheet" href="{{ ASSETS_URL }}/css/purchase/purchase-list.css"> -->
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/order/tabbed-nav.css">
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/link.css">
     <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/scrollbar.css">
-    <!-- <link rel="stylesheet" href="{{ ASSETS_URL }}/css/purchase/view-purchase.css"> -->
     <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
 {% endblock %}
 
@@ -109,51 +108,59 @@
 
     <section class="order__list_container_content mt-8 flex flex-col h-full">
         <form class="flex-grow flex flex-col">
-            <div class="py-4 pl-4 flex justify-between space-x-5">
-                <ul class="scrollbar__thin flex space-x-5 overflow-x-auto items-center w-5/12 2xl:w-9/12">
-                    <li class="hover:text-[#3280c9] dark:hover:text-[#7655fa] transition-color duration-150 text-nowrap
-                    border-x dark:border-gray-600 border-gray-300 px-4">
-                        <a href="#" class="link__underline_hover">
-                            <i class="fa-solid fa-border-all"></i>
+            <div class="flex justify-between items-end space-x-5">
+                <ul class="tabbed__nav scrollbar__thin flex space-x-5 overflow-x-auto items-center w-5/12 2xl:w-9/12">
+                    <li class="hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap
+                    group border-x border-t border-transparent tab-item">
+                        <a href="#" class="font-medium flex items-center px-4 py-2">
+                            <i class="fa-solid fa-border-all text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
+                            tab-icon"></i>
                             All
                         </a>
                     </li>
-                    <li class="hover:text-[#3280c9] dark:hover:text-[#7655fa] transition-color duration-150 text-nowrap">
-                        <a href="#" class="link__underline_hover">
-                            <i class="fa-solid fa-money-bill"></i>
+                    <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap 
+                    group border-x border-t border-transparent">
+                        <a href="#" class="font-medium flex items-center px-4 py-2">
+                            <i class="fa-solid fa-dollar-sign text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
+                            tab-icon"></i>
                             Unpaid
                         </a>
                     </li>
-                    <li class="hover:text-[#3280c9] dark:hover:text-[#7655fa] transition-color duration-150 text-nowrap
-                    border-x dark:border-gray-600 border-gray-300 px-4">
-                        <a href="#" class="link__underline_hover">
-                            <i class="fa-solid fa-truck"></i>
+                    <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap
+                    group border-x border-t border-transparent">
+                        <a href="#" class="font-medium flex items-center px-4 py-2">
+                            <i class="fa-regular fa-paper-plane text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
+                            tab-icon"></i>
                             Need to ship
                         </a>
                     </li>
-                    <li class="hover:text-[#3280c9] dark:hover:text-[#7655fa] transition-color duration-150 text-nowrap">
-                        <a href="#" class="link__underline_hover">
-                            <i class="fa-solid fa-envelope-circle-check"></i>
+                    <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap 
+                    group border-x border-t border-transparent">
+                        <a href="#" class="font-medium flex items-center px-4 py-2">
+                            <i class="fa-regular fa-envelope text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
+                            tab-icon"></i>
                             Sent
                         </a>
                     </li>
-                    <li class="hover:text-[#3280c9] dark:hover:text-[#7655fa] transition-color duration-150 text-nowrap
-                    border-x dark:border-gray-600 border-gray-300 px-4">
-                        <a href="#" class="link__underline_hover">
-                            <i class="fa-solid fa-list-check"></i>
+                    <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap
+                    group border-x border-t border-transparent">
+                        <a href="#" class="font-medium flex items-center px-4 py-2">
+                            <i class="fa-solid fa-list-check text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
+                            tab-icon"></i>
                             Completed
                         </a>
                     </li>
-                    <li class="hover:text-[#3280c9] dark:hover:text-[#7655fa] transition-color duration-150 text-nowrap
-                    border-r dark:border-gray-600 border-gray-300 pr-4">
-                        <a href="#" class="link__underline_hover">
-                            <i class="fa-solid fa-hand-holding-hand"></i>   
+                    <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap
+                    group border-x border-t border-transparent">
+                        <a href="#" class=" font-medium flex items-center px-4 py-2">
+                            <i class="fa-solid fa-arrow-right-arrow-left text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
+                            tab-icon"></i>   
                             Returns
                         </a>
                     </li>
                 </ul>
 
-                <div class="relative flex justify-end md:block w-6/12 2xl:w-3/12">
+                <div class="relative flex justify-end md:block w-6/12 2xl:w-3/12 mb-3">
                     <button class="absolute w-7 inset-y-0 end-3 md:start-0 flex items-center ps-3">
                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -170,11 +177,11 @@
                 </div>
             </div>
     
-            <div class="h-full p-6 rounded-lg dark:border-slate-800 bg-gray-50 border border-gray-300 dark:bg-slate-500 flex-grow">
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div class="h-full p-6 rounded-b-lg border-x border-b border-t-0 dark:border-slate-800 bg-gray-50 border-gray-300 dark:bg-slate-500 flex-grow">
+                <div class="w-full max-h-[27rem] overflow-y-auto border border-gray-300 dark:border-gray-700 rounded-lg">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
+                        <thead class="relative text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr class="sticky top-0 bg-white dark:bg-gray-700">
                                 <th scope="col" class="p-4">
                                     <div class="flex items-center">
                                         <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -255,7 +262,8 @@
 
 
 {% block scripts %}
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="{{ ASSETS_URL }}/js/calendarTheme.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{{ ASSETS_URL }}/js/calendarTheme.js"></script> -->
+    <script src="{{ ASSETS_URL }}/js/order/tabbedNavigation.js"></script>
 
 {% endblock %}
