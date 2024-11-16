@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\OrderMedicine;
 use \Exception;
 
 require_once __DIR__ . '/../../config/config.php';
@@ -17,9 +18,22 @@ class OrderController extends BaseController {
     public function __construct($twig) {
         parent::__construct();
         $this->twig = $twig;
-        //$this->db = returnDBCon(new PurchaseMaterial()); // Initialize DB connection once
+        $this->db = returnDBCon(new OrderMedicine()); // Initialize DB connection once
     }
-    public function display() {
-        echo $this->twig->render('order-list.html.twig', ['ASSETS_URL' => ASSETS_URL]);
+
+    public function display($errors = []) {
+        // if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errors)) {
+
+        // }
+
+        $orderMedicineObject = new OrderMedicine();
+        $orderMedicineData = $orderMedicineObject->getAllOrderMedicines();
+
+        // var_dump($orderMedicineData);exit;
+
+        echo $this->twig->render('order-list.html.twig', [
+            'ASSETS_URL' => ASSETS_URL,
+            'orderMedicines' => $orderMedicineData
+        ]);
     }
 }

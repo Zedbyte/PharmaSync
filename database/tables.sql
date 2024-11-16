@@ -68,6 +68,17 @@ CREATE TABLE `suppliers` (
     UNIQUE KEY `contact_no` (`contact_no`)
 )
 
+CREATE TABLE `customers` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) NOT NULL,
+    `email` varchar(255) NOT NULL,
+    `address` varchar(255) NOT NULL,
+    `contact_no` varchar(50) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `email` (`email`),
+    UNIQUE KEY `contact_no` (`contact_no`)
+)
+
 CREATE TABLE `orders` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `date` date NOT NULL,
@@ -76,8 +87,10 @@ CREATE TABLE `orders` (
     `payment_status` varchar(255) NOT NULL,
     `order_status` varchar(255) NOT NULL,
     `customer_id` int(11) NOT NULL,
-    PRIMARY KEY (`id`)
-) 
+    PRIMARY KEY (`id`),
+    KEY `customer_id` (`customer_id`),
+    CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE NO ACTION
+)
 
 CREATE TABLE `medicines` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -93,9 +106,12 @@ CREATE TABLE `medicines` (
 
 CREATE TABLE `order_medicine` (
     `order_id` int(11) NOT NULL,
-    `purchase_id` int(11) NOT NULL,
+    `medicine_id` int(11) NOT NULL,
     `quantity` int(11) NOT NULL,
     `unit_price` double NOT NULL,
     `total_price` double NOT NULL,
-    PRIMARY KEY (`order_id`, `purchase_id`)
+    PRIMARY KEY (`order_id`, `medicine_id`),
+    KEY `medicine_id` (`medicine_id`),
+    CONSTRAINT `order_medicine_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE NO ACTION,
+    CONSTRAINT `order_medicine_ibfk_2` FOREIGN KEY (`medicine_id`) REFERENCES `medicines` (`id`)
 )

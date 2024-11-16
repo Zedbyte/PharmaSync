@@ -1,0 +1,151 @@
+<div class="h-full w-full px-8 py-6">
+    <div class="flex justify-between mb-6">
+        <h2 class="text-2xl font-semibold">Add Order</h2>
+        <button onclick="addOrderTogglePanel()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-all duration-150">
+            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>                
+        </button>
+    </div>
+
+    <!-- Order Information Section -->
+    <form action="/add-order" method="post" class="h-full space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label for="order-date" class="block text-sm font-medium">Order Date</label>
+                <input type="text" id="order-date" name="order_date" placeholder="28 Jun, 2022 - 10:00"
+                class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-blue-400 
+                dark:focus:border-blue-500 dark:bg-gray-700 px-4" onfocus="(this.type='date')" onblur="(this.type='text')" >
+            </div>
+
+            <div>
+                <label for="customer" class="block text-sm font-medium">Customer</label>
+                <select id="customer" name="customer" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    <option value="" disabled selected>Select Customer</option>
+                    <option value="new">Add New Customer</option>
+                    <!-- {% for supplier in suppliers %}
+                        <option value="{{ supplier.id }}">{{ supplier.name }}</option>
+                    {% endfor %} -->
+                </select>
+            </div>
+
+            <div>
+                <label for="payment_status" class="block text-sm font-medium">Payment Status</label>
+                <select id="payment_status" name="payment_status" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    <option value="" selected disabled>Select Payment Status</option>
+                    <option value="paid">Paid</option>
+                    <option value="pending">Pending</option>
+                    <option value="failed">Failed</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="order_status" class="block text-sm font-medium">Order Status</label>
+                <select id="order_status" name="order_status" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    <option value="" selected disabled>Select Order Status</option>
+                    <option value="processing">Processing</option>
+                    <option value="completed">Completed</option>
+                    <option value="backordered">Backordered</option>
+                    <option value="failed">Failed</option>
+                    <option value="canceled">Canceled</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Items Section -->
+        <div class="border-t border-gray-300 dark:border-gray-600 mt-6 pt-6">
+            <h3 class="text-xl font-semibold mb-6">Product in Order</h3>
+
+            <div id="items__container" class="space-y-6">
+                <div class="item__template relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 border-b border-gray-300 dark:border-gray-600 pb-6">
+                    <div>
+                        <label for="medicine-type" class="block text-sm font-medium">Medicine Type</label>
+                        <select id="medicine-type" name="medicine_type[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                            <option value="" selected disabled>Select Medicine Type</option>
+                            <option value="tablet">Tablet</option>
+                            <option value="injection">Injection</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="medicine-name" class="block text-sm font-medium">Medicine Name</label>
+                        <input type="text" id="medicine-name" name="medicine_name[]" placeholder="Paracetamol"
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    </div>
+
+                    <div class="absolute right-0 top-[-4px] mb-4">
+                        <button onclick="removeItem(event)" class="remove-button hidden bg-red-500 hover:bg-red-600 text-white px-2 py-2 rounded transition-all duration-150  items-center space-x-1"> 
+                            <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/>
+                            </svg>  
+                            <p class="text-sm">Remove</p>
+                        </button>
+                    </div>
+
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <label for="composition" class="block text-sm font-medium">Composition</label>
+                        <input type="text" id="composition" name="composition[]" placeholder="used to treat mild to moderate pain."
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    </div>
+
+                    <div>
+                        <label for="quantity" class="block text-sm font-medium">Quantity</label>
+                        <input type="number" id="quantity" name="quantity[]" placeholder="1"
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    </div>
+
+                    <div>
+                        <label for="unit-price" class="block text-sm font-medium">Unit Price</label>
+                        <input type="number" id="unit-price" name="unit_price[]" placeholder="1" step="any"
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    </div>
+
+                    <!-- <div>
+                        <label for="batch-number" class="block text-sm font-medium">Batch Number</label>
+                        <input type="text" id="batch-number" name="batch_number[]" placeholder="307002"
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    </div>
+
+                    <div>
+                        <label for="expiry-date" class="block text-sm font-medium">Expiry Date</label>
+                        <input type="text" id="expiry-date" name="expiry_date[]" placeholder="28 Jun, 2022 - 10:00" 
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4"
+                        onfocus="(this.type='date')" onblur="(this.type='text')" >
+                    </div> -->
+
+                    <!-- Quality Control -->
+                    <!-- <div>
+                        <label for="qc-status" class="block text-sm font-medium">QC Status</label>
+                        <select id="qc-status" name="qc_status[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                            <option value="" selected disabled>Select QC Status</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="inspection-date" class="block text-sm font-medium">Inspection Date</label>
+                        <input type="text" id="inspection-date" name="inspection_date[]" placeholder="28 Jun, 2022 - 10:00" 
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4"
+                        onfocus="(this.type='date')" onblur="(this.type='text')" >
+                    </div>
+
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <label for="qc-notes" class="block text-sm font-medium">QC Notes</label>
+                        <textarea id="qc-notes" name="qc_notes[]" placeholder="QC review pending for new material purchase; details to follow upon inspection."
+                        class="mt-1 block w-full h-24 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4 py-2" ></textarea>
+                    </div> -->
+                </div>
+            </div>
+
+            <button type="button" onclick="addNewItem()" class="transition-all duration-150 mt-4 px-4 py-2 text-white bg-[#2998FF] dark:bg-[#7655fa] rounded-lg hover:bg-opacity-80">Add Another Item</button>
+        </div>
+
+        <!-- Save and Reset Buttons -->
+        <div class="flex justify-end gap-4 mt-6 pb-6">
+            <button type="reset" class="transition-all duration-150 px-6 py-2 rounded-lg bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-700">Reset</button>
+            <button type="submit" class="transition-all duration-150 px-6 py-2 text-white bg-[#2998FF] dark:bg-[#7655fa] rounded-lg hover:bg-opacity-80">Save</button>
+        </div>
+    </form>
+</div>
