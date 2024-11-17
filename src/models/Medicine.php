@@ -112,4 +112,21 @@ class Medicine extends BaseModel
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
+
+    public function getAllMedicinesByType($type)
+    {   
+        if (empty($type)) $type='%';
+
+        $sql = "SELECT * FROM `medicines` WHERE `type` LIKE :type ORDER BY name";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->bindValue(':type', $type, PDO::PARAM_STR);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
 }

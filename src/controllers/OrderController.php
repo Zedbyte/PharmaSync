@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\OrderMedicine;
+use App\Models\Medicine;
 use \Exception;
 
 require_once __DIR__ . '/../../config/config.php';
@@ -29,11 +30,26 @@ class OrderController extends BaseController {
         $orderMedicineObject = new OrderMedicine();
         $orderMedicineData = $orderMedicineObject->getAllOrderMedicines();
 
-        // var_dump($orderMedicineData);exit;
-
         echo $this->twig->render('order-list.html.twig', [
             'ASSETS_URL' => ASSETS_URL,
             'orderMedicines' => $orderMedicineData
         ]);
+    }
+
+    public function medicineList($type) {
+
+        $medicineObject = new Medicine();
+        $medicineData = $medicineObject->getAllMedicinesByType($type);
+
+        
+    
+        header('Content-Type: application/json');
+        echo json_encode($medicineData);
+        exit;
+
+        // echo $this->twig->render('add-order.html.twig', [
+        //     'purchaseData' => $purchaseData,
+        //     'suppliers' => $supplierData
+        // ]);
     }
 }

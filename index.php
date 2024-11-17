@@ -140,6 +140,13 @@ try {
         AuthMiddleware::checkAuth();
         $orderController->display();
     });
+
+    // Order Page [GET]
+    $router->respond('GET', '/order-list/t/medicine/[:type]', function($request) use ($orderController) {
+        AuthMiddleware::checkAuth();
+        $type = $request->param('type');
+        $orderController->medicineList($type);
+    });
     
     $router->dispatch();
 
