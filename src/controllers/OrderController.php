@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Models\OrderMedicine;
 use App\Models\Medicine;
+use App\Models\Batch;
+use App\Models\MedicineBatch;
 use \Exception;
 
 require_once __DIR__ . '/../../config/config.php';
@@ -32,7 +34,7 @@ class OrderController extends BaseController {
 
         echo $this->twig->render('order-list.html.twig', [
             'ASSETS_URL' => ASSETS_URL,
-            'orderMedicines' => $orderMedicineData
+            'orderMedicines' => $orderMedicineData,
         ]);
     }
 
@@ -41,15 +43,17 @@ class OrderController extends BaseController {
         $medicineObject = new Medicine();
         $medicineData = $medicineObject->getAllMedicinesByType($type);
 
-        
-    
         header('Content-Type: application/json');
         echo json_encode($medicineData);
         exit;
+    }
 
-        // echo $this->twig->render('add-order.html.twig', [
-        //     'purchaseData' => $purchaseData,
-        //     'suppliers' => $supplierData
-        // ]);
+    public function batchList($medicine_id) {
+        $batchObject = new MedicineBatch();
+        $batchData = $batchObject->getMedicineBatches($medicine_id);
+
+        header('Content-Type: application/json');
+        echo json_encode($batchData);
+        exit;
     }
 }

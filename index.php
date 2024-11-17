@@ -141,11 +141,19 @@ try {
         $orderController->display();
     });
 
-    // Order Page [GET]
-    $router->respond('GET', '/order-list/t/medicine/[:type]', function($request) use ($orderController) {
+    // Order Page Medicine Name By Type [GET]
+    $router->respond('GET', '/order-list/medicines', function($request) use ($orderController) {
         AuthMiddleware::checkAuth();
-        $type = $request->param('type');
+        // $type = $request->param('type');
+        $type = $_GET['type'] ?? null;
         $orderController->medicineList($type);
+    });
+
+    // Order Page Batch Number by Medicine ID [GET]
+    $router->respond('GET', '/order-list/medicines/[:medicine_id]/batches', function($request) use ($orderController) {
+        AuthMiddleware::checkAuth();
+        $medicine_id = $request->param('medicine_id');
+        $orderController->batchList($medicine_id);
     });
     
     $router->dispatch();
