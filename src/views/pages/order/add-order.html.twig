@@ -23,9 +23,9 @@
                 <select id="customer" name="customer" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
                     <option value="" disabled selected>Select Customer</option>
                     <option value="new">Add New Customer</option>
-                    <!-- {% for supplier in suppliers %}
-                        <option value="{{ supplier.id }}">{{ supplier.name }}</option>
-                    {% endfor %} -->
+                    {% for customer in customers %}
+                        <option value="{{ customer.id }}">{{ customer.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
 
@@ -85,7 +85,7 @@
 
                     <div>
                         <label for="batch-number" class="block text-sm font-medium">Batch Number</label>
-                        <select id="batch-number-id" number="batch_number[]" class="batch-number mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                        <select id="batch-number-id" name="batch_number[]" class="batch-number mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
                             <option value="" selected disabled>Select Batch Number</option>
                         </select>
                         <p id="batch-number-error" class="mt-2 text-sm text-red-500 hidden">Please select a valid batch number.</p>
