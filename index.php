@@ -163,6 +163,20 @@ try {
         $batch_id = $request->param('batch_id');
         $orderController->medicineBatchData($medicine_id, $batch_id);
     });
+
+    // Add Order Panel [POST]
+    $router->respond('POST', '/add-order', function($request) use ($orderController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $orderController->addOrderMedicine($data);
+    });
+
+    // Add Order Panel [GET]
+    $router->respond('GET', '/add-order', function($request) use ($orderController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $orderController->addOrderMedicine($data);
+    });
     
     $router->dispatch();
 

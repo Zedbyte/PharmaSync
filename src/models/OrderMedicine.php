@@ -16,16 +16,18 @@ class OrderMedicine extends BaseModel
         $sql = "INSERT INTO `order_medicine` 
                 SET
                     `order_id` = :order_id,
-                    `purchase_id` = :purchase_id,
+                    `medicine_id` = :medicine_id,
                     `quantity` = :quantity,
+                    `unit_price` = :unit_price,
                     `total_price` = :total_price";
 
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute([
                 'order_id' => $data['order_id'],
-                'purchase_id' => $data['purchase_id'],
+                'medicine_id' => $data['medicine_id'],
                 'quantity' => $data['quantity'],
+                'unit_price' => $data['unit_price'],
                 'total_price' => $data['total_price']
             ]);
 
@@ -43,7 +45,7 @@ class OrderMedicine extends BaseModel
                     `quantity` = :quantity,
                     `total_price` = :total_price
                 WHERE `order_id` = :order_id 
-                AND `purchase_id` = :purchase_id";
+                AND `medicine_id` = :medicine_id";
 
         try {
             $statement = $this->db->prepare($sql);
@@ -51,7 +53,7 @@ class OrderMedicine extends BaseModel
                 'quantity' => $data['quantity'],
                 'total_price' => $data['total_price'],
                 'order_id' => $data['order_id'],
-                'purchase_id' => $data['purchase_id']
+                'medicine_id' => $data['medicine_id']
             ]);
 
             return true;
@@ -66,12 +68,12 @@ class OrderMedicine extends BaseModel
         // Check if the record already exists
         $sql = "SELECT COUNT(*) FROM `order_medicine` 
                 WHERE `order_id` = :order_id 
-                AND `purchase_id` = :purchase_id";
+                AND `medicine_id` = :medicine_id";
 
         $statement = $this->db->prepare($sql);
         $statement->execute([
             'order_id' => $data['order_id'],
-            'purchase_id' => $data['purchase_id']
+            'medicine_id' => $data['medicine_id']
         ]);
 
         $recordExists = $statement->fetchColumn() > 0;
@@ -88,13 +90,13 @@ class OrderMedicine extends BaseModel
     {
         $sql = "DELETE FROM `order_medicine` 
                 WHERE `order_id` = :order_id 
-                AND `purchase_id` = :purchase_id";
+                AND `medicine_id` = :medicine_id";
 
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute([
                 'order_id' => $data['order_id'],
-                'purchase_id' => $data['purchase_id']
+                'medicine_id' => $data['medicine_id']
             ]);
 
             return $statement->rowCount() > 0; // Returns true if a row was deleted
@@ -104,17 +106,17 @@ class OrderMedicine extends BaseModel
         }
     }
 
-    public function getOrderMedicine($orderId, $purchaseId)
+    public function getOrderMedicine($orderId, $medicineId)
     {
         $sql = "SELECT * FROM `order_medicine` 
                 WHERE `order_id` = :order_id 
-                AND `purchase_id` = :purchase_id";
+                AND `medicine_id` = :medicine_id";
 
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute([
                 'order_id' => $orderId,
-                'purchase_id' => $purchaseId
+                'medicine_id' => $medicineId
             ]);
 
             return $statement->fetch(PDO::FETCH_ASSOC);

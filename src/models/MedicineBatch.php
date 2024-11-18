@@ -49,6 +49,34 @@ class MedicineBatch extends BaseModel
         }
     }
 
+    public function decreaseStockLevel($medicineId, $batchId, $quantity)
+    {   
+
+        $sql = "UPDATE `medicine_batch` 
+                SET `stock_level` = `stock_level` - :quantity 
+                WHERE medicine_id = :medicine_id AND 
+                batch_id = :batch_id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'quantity' => $quantity,
+                'batch_id' => $batchId,
+                'medicine_id' => $medicineId
+            ]);
+
+            if ($statement->rowCount() === 0) {
+                throw new Exception("No rows were updated. Invalid batch ID or insufficient stock.");
+            }
+
+            return true;
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+
     public function getMedicineBatches($medicineId)
     {
         $sql = "SELECT * FROM `medicine_batch` 
