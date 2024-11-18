@@ -364,13 +364,13 @@
                             <td class="md:px-6 md:py-4">${{ purchase.total_cost | number_format(2) }}</td>
                             <td class="md:px-6 md:py-4 px-10 ">
                                 <form method="post" action="/update-purchase-status">
-                                    <select name="status" onchange="this.form.submit()" class="rounded-full text-xs 
-                                    md:block md:w-11/12 text-center p-1 md:p-0 md:py-1 text-white
-                                            {% if purchase.status|upper == 'COMPLETED' %} dark:bg-green-700 bg-green-400
-                                        {% elseif purchase.status|upper == 'PENDING' %} dark:bg-yellow-600 bg-yellow-400
-                                        {% elseif purchase.status|upper == 'FAILED' %} dark:bg-red-700 bg-red-400
-                                        {% elseif purchase.status|upper == 'CANCELED' %} dark:bg-gray-700 bg-gray-400
-                                        {% elseif purchase.status|upper == 'BACKORDERED' %} dark:bg-orange-700 bg-orange-400
+                                    <select name="status" onchange="this.form.submit()" class="rounded-md text-xs 
+                                    md:block md:w-9/12 text-center p-1 md:p-0 md:py-1 text-white
+                                            {% if purchase.status|upper == 'COMPLETED' %} dark:bg-green-800 bg-green-400
+                                        {% elseif purchase.status|upper == 'PENDING' %} dark:bg-yellow-700 bg-yellow-400
+                                        {% elseif purchase.status|upper == 'FAILED' %} dark:bg-red-800 bg-red-400
+                                        {% elseif purchase.status|upper == 'CANCELED' %} dark:bg-gray-800 bg-gray-400
+                                        {% elseif purchase.status|upper == 'BACKORDERED' %} dark:bg-orange-800 bg-orange-400
                                         {% else %} bg-blue-500 {% endif %}
                                     ">
                                         <option value="completed" {% if purchase.status == 'completed' %}selected{% endif %}>Completed</option>
@@ -427,7 +427,7 @@
                                 onclick="updatePurchasePanel(this)"
                                 data-id="{{ purchase.purchase_id }}" 
                                 class="text-blue-400 
-                                dark:text-blue-500 
+                                dark:text-blue-700 
                                 hover:text-blue-800 text-xs md:text-base transition-all duration-200">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
@@ -436,7 +436,7 @@
                                 onclick="openDeleteModal(this)" 
                                 data-id="{{ purchase.purchase_id }}" 
                                 data-material-count="{{ purchase.material_count }}" 
-                                class="text-red-400 hover:text-red-800 dark:text-red-500 
+                                class="text-red-400 hover:text-red-800 dark:text-red-700 
                                 text-xs md:text-base transition-all duration-200">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
@@ -444,7 +444,7 @@
                                 <button 
                                 onclick="viewPurchasePanel(this)" 
                                 data-id="{{ purchase.purchase_id }}" 
-                                class="text-green-400 hover:text-green-800 dark:text-green-500 
+                                class="text-green-400 hover:text-green-800 dark:text-green-700 
                                 dark:hover:text-green-700 text-xs md:text-base transition-all duration-200">
                                     <i class="fa-solid fa-circle-info"></i>
                                 </button>
