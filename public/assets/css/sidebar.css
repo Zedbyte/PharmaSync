@@ -120,6 +120,16 @@
   color: var(--hover-text);
 }
 
+.active-light {
+    background-color: var(--hover-primary);
+    color: var(--hover-text);
+}
+
+.dark .active-light {
+    background-color: var(--dark-hover-primary);
+    color: #fdfdfd;
+}
+
 .nav__link_button {
     width: 100%;
 }
