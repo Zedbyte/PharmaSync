@@ -56,4 +56,35 @@ class OrderController extends BaseController {
         echo json_encode($batchData);
         exit;
     }
+
+    public function medicineBatchData($medicine_id, $batch_id) {
+        try {
+            $batchObject = new MedicineBatch();
+            $batchData = $batchObject->getMedicineBatchData($medicine_id, $batch_id);
+    
+            if (!$batchData) {
+                throw new Exception('Batch data not found');
+            }
+    
+            $medicineObject = new Medicine();
+            $medicineData = $medicineObject->getMedicine($medicine_id);
+    
+            if (!$medicineData) {
+                throw new Exception('Medicine data not found');
+            }
+    
+            $response = [
+                'stock_level' => $batchData[0]['stock_level'],
+                'expiry_date' => $batchData[0]['expiry_date'],
+                'medicine_data' => $medicineData,
+            ];
+
+            header('Content-Type: application/json');
+            echo json_encode($response);
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+        exit;
+    }
 }

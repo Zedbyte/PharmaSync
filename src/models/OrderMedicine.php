@@ -18,7 +18,6 @@ class OrderMedicine extends BaseModel
                     `order_id` = :order_id,
                     `purchase_id` = :purchase_id,
                     `quantity` = :quantity,
-                    `unit_price` = :unit_price,
                     `total_price` = :total_price";
 
         try {
@@ -27,7 +26,6 @@ class OrderMedicine extends BaseModel
                 'order_id' => $data['order_id'],
                 'purchase_id' => $data['purchase_id'],
                 'quantity' => $data['quantity'],
-                'unit_price' => $data['unit_price'],
                 'total_price' => $data['total_price']
             ]);
 
@@ -43,7 +41,6 @@ class OrderMedicine extends BaseModel
         $sql = "UPDATE `order_medicine` 
                 SET
                     `quantity` = :quantity,
-                    `unit_price` = :unit_price,
                     `total_price` = :total_price
                 WHERE `order_id` = :order_id 
                 AND `purchase_id` = :purchase_id";
@@ -52,7 +49,6 @@ class OrderMedicine extends BaseModel
             $statement = $this->db->prepare($sql);
             $statement->execute([
                 'quantity' => $data['quantity'],
-                'unit_price' => $data['unit_price'],
                 'total_price' => $data['total_price'],
                 'order_id' => $data['order_id'],
                 'purchase_id' => $data['purchase_id']

@@ -21,6 +21,7 @@ class Medicine extends BaseModel
                     `therapeutic_class` = :therapeutic_class,
                     `regulatory_class` = :regulatory_class,
                     `manufacturing_details` = :manufacturing_details,
+                    'unit_price' = :unit_price,
                     `formulation_id` = :formulation_id";
 
         try {
@@ -32,7 +33,8 @@ class Medicine extends BaseModel
                 'therapeutic_class' => $data['therapeutic_class'],
                 'regulatory_class' => $data['regulatory_class'],
                 'manufacturing_details' => $data['manufacturing_details'],
-                'formulation_id' => $data['formulation_id']
+                'unit_price' => $data['unit_price'],
+                'formulation_id' => $data['formulation_id'],
             ]);
 
             return $this->db->lastInsertId();
@@ -52,7 +54,8 @@ class Medicine extends BaseModel
                     `therapeutic_class` = :therapeutic_class,
                     `regulatory_class` = :regulatory_class,
                     `manufacturing_details` = :manufacturing_details,
-                    `formulation_id` = :formulation_id
+                    `unit_price` = :unit_price
+                    `formulation_id` = :formulation_id,
                 WHERE `id` = :id";
 
         try {
@@ -64,6 +67,7 @@ class Medicine extends BaseModel
                 'therapeutic_class' => $data['therapeutic_class'],
                 'regulatory_class' => $data['regulatory_class'],
                 'manufacturing_details' => $data['manufacturing_details'],
+                'unit_price' => $data['unit_price'],
                 'formulation_id' => $data['formulation_id'],
                 'id' => $medicineId
             ]);

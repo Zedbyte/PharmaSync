@@ -92,23 +92,23 @@ CREATE TABLE `orders` (
     CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE NO ACTION
 )
 
-CREATE TABLE `medicines` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `name` varchar(255) NOT NULL,
-    `type` varchar(255) NOT NULL,
-    `composition` varchar(255) NOT NULL,
-    `therapeutic_class` varchar(255) NOT NULL,
-    `regulatory_class` varchar(255) NOT NULL,
-    `manufacturing_details` varchar(255) NOT NULL,
-    `formulation_id` int(11) NOT NULL,
-    PRIMARY KEY (`id`)
+CREATE TABLE medicines (
+    id int(11) NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    type varchar(255) NOT NULL,
+    composition varchar(255) NOT NULL,
+    therapeutic_class varchar(255) NOT NULL,
+    regulatory_class varchar(255) NOT NULL,
+    manufacturing_details varchar(255) NOT NULL,
+    formulation_id int(11) NOT NULL,
+    unit_price double NOT NULL,
+    PRIMARY KEY (id)
 ) 
 
 CREATE TABLE `order_medicine` (
     `order_id` int(11) NOT NULL,
     `medicine_id` int(11) NOT NULL,
     `quantity` int(11) NOT NULL,
-    `unit_price` double NOT NULL,
     `total_price` double NOT NULL,
     PRIMARY KEY (`order_id`, `medicine_id`),
     KEY `medicine_id` (`medicine_id`),
@@ -119,14 +119,14 @@ CREATE TABLE `order_medicine` (
 CREATE TABLE `batches` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `production_date` date NOT NULL,
-    `expiry_date` date NOT NULL,
-    `quantity` int(11) NOT NULL,
     PRIMARY KEY (`id`)
 ) 
 
 CREATE TABLE `medicine_batch` (
     `medicine_id` int(11) NOT NULL,
     `batch_id` int(11) NOT NULL,
+    `stock_level` int(11) NOT NULL,
+    `expiry_date` date NOT NULL,
     KEY `medicine_id` (`medicine_id`),
     KEY `batches_id` (`batch_id`),
     CONSTRAINT `medicine_batch_ibfk_1` FOREIGN KEY (`medicine_id`) REFERENCES `medicines` (`id`) ON DELETE NO ACTION,
@@ -142,8 +142,7 @@ CREATE TABLE `inventories` (
 CREATE TABLE `inventories_batch` (
     `inventory_id` int(11) NOT NULL,
     `batch_id` int(11) NOT NULL,
-    `stock_level` int(11) NOT NULL,
-    PRIMARY KEY (`inventory_id`, `batch_id`),
+    PRIMARY KEY (`inventory_id`,`batch_id`),
     KEY `batch_id` (`batch_id`),
     CONSTRAINT `inventories_batch_ibfk_1` FOREIGN KEY (`inventory_id`) REFERENCES `inventories` (`id`) ON DELETE NO ACTION,
     CONSTRAINT `inventories_batch_ibfk_2` FOREIGN KEY (`batch_id`) REFERENCES `batches` (`id`) ON DELETE NO ACTION

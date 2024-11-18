@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
             // Populate the "Batch Number" dropdown with the fetched data
             batches.forEach(batch => {
                 const option = document.createElement("option");
-                option.value = batch.id; // Adjust based on your data structure
-                option.textContent = "PHS-" + batch.batch_id; // Adjust based on your data structure
+                option.value = batch.batch_id; // Adjust based on your data structure
+                option.textContent = "PHS-BATCH-" + batch.batch_id; // Adjust based on your data structure
 
                 batchNumberSelect.appendChild(option);
             });

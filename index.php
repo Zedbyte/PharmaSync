@@ -155,6 +155,14 @@ try {
         $medicine_id = $request->param('medicine_id');
         $orderController->batchList($medicine_id);
     });
+
+    // Order Page Batch Number by Medicine ID [GET]
+    $router->respond('GET', '/order-list/medicines/[:medicine_id]/batches/[:batch_id]', function($request) use ($orderController) {
+        AuthMiddleware::checkAuth();
+        $medicine_id = $request->param('medicine_id');
+        $batch_id = $request->param('batch_id');
+        $orderController->medicineBatchData($medicine_id, $batch_id);
+    });
     
     $router->dispatch();
 

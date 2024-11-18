@@ -79,4 +79,25 @@ class MedicineBatch extends BaseModel
         }
     }
 
+
+    public function getMedicineBatchData($medicineId, $batchId)
+    {
+        $sql = "SELECT * FROM `medicine_batch`
+                WHERE `medicine_id` = :medicine_id 
+                AND `batch_id` = :batch_id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'medicine_id' => $medicineId,
+                'batch_id' => $batchId
+            ]);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+
 }

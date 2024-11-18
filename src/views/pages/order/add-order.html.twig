@@ -88,6 +88,7 @@
                         <select id="batch-number-id" number="batch_number[]" class="batch-number mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
                             <option value="" selected disabled>Select Batch Number</option>
                         </select>
+                        <p id="batch-number-error" class="mt-2 text-sm text-red-500 hidden">Please select a valid batch number.</p>
                     </div>
 
                     <div class="absolute right-0 top-[-15px] mb-4">
@@ -100,222 +101,77 @@
                     </div>
 
                     <div>
-                        <label for="quantity" class="block text-sm font-medium">Quantity</label>
-                        <input type="number" id="quantity-id" name="quantity[]" placeholder="1"
+                        <label for="quantity" class="text-sm font-medium flex justify-between">Quantity 
+                            <span class="">
+                                <small class="stock-level text-gray-500 dark:text-gray-200">In Stock: ?</small>
+                            </span>
+                        </label>
+                        <input type="number" id="quantity-id" name="quantity[]" placeholder="1" min="1" max="1"
                         class="quantity mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
                     </div>
 
-                    <!-- <div class="md:col-span-2 lg:col-span-3">
-                        <label for="composition" class="block text-sm font-medium">Composition</label>
-                        <input type="text" id="composition" name="composition[]" placeholder="used to treat mild to moderate pain."
-                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
-                    </div> -->
-
-
-                    <!-- <div>
-                        <label for="unit-price" class="block text-sm font-medium">Unit Price</label>
-                        <input type="number" id="unit-price" name="unit_price[]" placeholder="1" step="any"
-                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
-                    </div> -->
-
-                    <!-- <div>
-                        <label for="batch-number" class="block text-sm font-medium">Batch Number</label>
-                        <input type="text" id="batch-number" name="batch_number[]" placeholder="307002"
-                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    <div class="col-span-2  p-6 bg-slate-200 dark:bg-slate-600 rounded-lg shadow-sm my-6 overflow-x-auto" id="product_summary">
+            
+                        <div class="grid grid-cols-2 items-center">
+                            <div>
+                                <!--  Company logo  -->
+                                <h1 class="font-bold">Product Summary</h1>
+                            </div>
+                        </div>
+                    
+                        <!-- Invoice Items -->
+                        <div class="product-summary -mx-4 mt-8 flow-root sm:mx-0">
+                            <table class="min-w-full">
+                                <colgroup>
+                                    <col class="w-full sm:w-1/2">
+                                    <col class="sm:w-1/6">
+                                    <col class="sm:w-1/6">
+                                    <col class="sm:w-1/6">
+                                </colgroup>
+                                <thead class="border-b border-gray-300 text-gray-900 dark:text-gray-100 ">
+                                    <tr>
+                                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100  sm:pl-0">Items
+                                        </th>
+                                        <th scope="col"
+                                            class="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100  sm:table-cell">Expiration Date
+                                        </th>
+                                        <th scope="col"
+                                            class="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100  sm:table-cell">Unit Price
+                                        </th>
+                                        <th scope="col" class="py-3.5 pl-3 pr-4 text-right text-sm font-semibold text-gray-900 dark:text-gray-100  sm:pr-0">
+                                            Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-gray-200">
+                                        <td class="max-w-0 py-5 pl-4 pr-3 text-sm sm:pl-0">
+                                            <div class="font-medium text-gray-900 dark:text-white ">-</div>
+                                            <div class="mt-1 truncate text-gray-500 dark:text-gray-100 ">-</div>
+                                        </td>
+                                        <td class="hidden px-3 py-5 text-right text-sm text-gray-500 dark:text-gray-100  sm:table-cell">-</td>
+                                        <td class="hidden px-3 py-5 text-right text-sm text-gray-500 dark:text-gray-100  sm:table-cell">-</td>
+                                        <td class="py-5 pl-3 pr-4 text-right text-sm text-gray-500 dark:text-gray-100  sm:pr-0">-</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row" colspan="3"
+                                            class="hidden pl-4 pr-3 pt-4 text-right text-sm font-semibold text-gray-900 dark:text-white  sm:table-cell sm:pl-0">
+                                            Total</th>
+                                        <th scope="row" class="pl-6 pr-3 pt-4 text-left text-sm font-semibold text-gray-900 dark:text-white sm:hidden">Total
+                                        </th>
+                                        <td class="pl-3 pr-4 pt-4 text-right text-sm font-semibold text-gray-900 dark:text-white sm:pr-0">-</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
-
-                    <div>
-                        <label for="expiry-date" class="block text-sm font-medium">Expiry Date</label>
-                        <input type="text" id="expiry-date" name="expiry_date[]" placeholder="28 Jun, 2022 - 10:00" 
-                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4"
-                        onfocus="(this.type='date')" onblur="(this.type='text')" >
-                    </div> -->
-
-                    <!-- Quality Control -->
-                    <!-- <div>
-                        <label for="qc-status" class="block text-sm font-medium">QC Status</label>
-                        <select id="qc-status" name="qc_status[]" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
-                            <option value="" selected disabled>Select QC Status</option>
-                            <option value="approved">Approved</option>
-                            <option value="rejected">Rejected</option>
-                            <option value="pending">Pending</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="inspection-date" class="block text-sm font-medium">Inspection Date</label>
-                        <input type="text" id="inspection-date" name="inspection_date[]" placeholder="28 Jun, 2022 - 10:00" 
-                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4"
-                        onfocus="(this.type='date')" onblur="(this.type='text')" >
-                    </div>
-
-                    <div class="md:col-span-2 lg:col-span-3">
-                        <label for="qc-notes" class="block text-sm font-medium">QC Notes</label>
-                        <textarea id="qc-notes" name="qc_notes[]" placeholder="QC review pending for new material purchase; details to follow upon inspection."
-                        class="mt-1 block w-full h-24 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4 py-2" ></textarea>
-                    </div> -->
                 </div>
             </div>
 
             
             <button type="button" onclick="addNewItem()" class="transition-all duration-150 mt-4 px-4 py-2 text-white bg-[#2998FF] dark:bg-[#7655fa] rounded-lg hover:bg-opacity-80">Add Another Item</button>
             
-            <!-- <div class="col-span-3 bg-slate-200 dark:bg-slate-600 p-5 rounded-lg mt-4">
-                <h1 class="text-xl font-semibold mb-6">Order Summary</h1>
-
-
-            </div> -->
-
-            <div class="col-span-3 mx-auto p-6 bg-slate-200 dark:bg-slate-600 rounded shadow-sm my-6" id="invoice">
-            
-                <div class="grid grid-cols-2 items-center">
-                    <div>
-                        <!--  Company logo  -->
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" alt="company-logo"
-                            height="100" width="100">
-                    </div>
-            
-                    <div class="text-right">
-                        <p>
-                            Tailwind Inc.
-                        </p>
-                        <p class="text-gray-500 dark:text-gray-100 text-sm">
-                            sales@tailwindcss.com
-                        </p>
-                        <p class="text-gray-500 dark:text-gray-100  text-sm mt-1">
-                            +41-442341232
-                        </p>
-                        <p class="text-gray-500 dark:text-gray-100  text-sm mt-1">
-                            VAT: 8657671212
-                        </p>
-                    </div>
-                </div>
-            
-                <!-- Client info -->
-                <div class="grid grid-cols-2 items-center mt-8">
-                    <div>
-                        <p class="font-bold text-gray-800 dark:text-gray-100">
-                            Bill to :
-                        </p>
-                        <p class="text-gray-500 dark:text-gray-100 ">
-                            Laravel LLC.
-                            <br />
-                            102, San-Fransico, CA, USA
-                        </p>
-                        <p class="text-gray-500 dark:text-gray-100 ">
-                            info@laravel.com
-                        </p>
-                    </div>
-            
-                    <div class="text-right">
-                        <p class="">
-                            Invoice number:
-                            <span class="text-gray-500 dark:text-gray-100 ">INV-2023786123</span>
-                        </p>
-                        <p>
-                            Invoice date: <span class="text-gray-500 dark:text-gray-100 ">03/07/2023</span>
-                            <br />
-                            Due date: <span class="text-gray-500 dark:text-gray-100 ">31/07/2023</span>
-                        </p>
-                    </div>
-                </div>
-            
-                <!-- Invoice Items -->
-                <div class="-mx-4 mt-8 flow-root sm:mx-0">
-                    <table class="min-w-full">
-                        <colgroup>
-                            <col class="w-full sm:w-1/2">
-                            <col class="sm:w-1/6">
-                            <col class="sm:w-1/6">
-                            <col class="sm:w-1/6">
-                        </colgroup>
-                        <thead class="border-b border-gray-300 text-gray-900 dark:text-gray-100 ">
-                            <tr>
-                                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100  sm:pl-0">Items
-                                </th>
-                                <th scope="col"
-                                    class="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100  sm:table-cell">Quantity
-                                </th>
-                                <th scope="col"
-                                    class="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100  sm:table-cell">Price
-                                </th>
-                                <th scope="col" class="py-3.5 pl-3 pr-4 text-right text-sm font-semibold text-gray-900 dark:text-gray-100  sm:pr-0">
-                                    Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b border-gray-200">
-                                <td class="max-w-0 py-5 pl-4 pr-3 text-sm sm:pl-0">
-                                    <div class="font-medium text-gray-900 dark:text-white ">E-commerce Platform</div>
-                                    <div class="mt-1 truncate text-gray-500 dark:text-gray-100 ">Laravel based e-commerce platform.</div>
-                                </td>
-                                <td class="hidden px-3 py-5 text-right text-sm text-gray-500 dark:text-gray-100  sm:table-cell">500.0</td>
-                                <td class="hidden px-3 py-5 text-right text-sm text-gray-500 dark:text-gray-100  sm:table-cell">$100.00</td>
-                                <td class="py-5 pl-3 pr-4 text-right text-sm text-gray-500 dark:text-gray-100  sm:pr-0">$5,000.00</td>
-                            </tr>
-            
-                            <tr class="border-b border-gray-200">
-                                <td class="max-w-0 py-5 pl-4 pr-3 text-sm sm:pl-0">
-                                    <div class="font-medium text-gray-900 dark:text-white ">Frontend Design</div>
-                                    <div class="mt-1 truncate text-gray-500 dark:text-gray-100 ">Frontend design using Vue.js and Tailwind CSS.</div>
-                                </td>
-                                <td class="hidden px-3 py-5 text-right text-sm text-gray-500  dark:text-gray-100 sm:table-cell">500.0</td>
-                                <td class="hidden px-3 py-5 text-right text-sm text-gray-500  dark:text-gray-100 sm:table-cell">$100.00</td>
-                                <td class="py-5 pl-3 pr-4 text-right text-sm text-gray-500  dark:text-gray-100 sm:pr-0">$5,000.00</td>
-                            </tr>
-                            <tr class="border-b border-gray-200">
-                                <td class="max-w-0 py-5 pl-4 pr-3 text-sm sm:pl-0">
-                                    <div class="font-medium text-gray-900 dark:text-white ">Shop SEO</div>
-                                    <div class="mt-1 truncate text-gray-500 dark:text-gray-100 ">Website SEO and Social Media marketing.</div>
-                                </td>
-                                <td class="hidden px-3 py-5 text-right text-sm text-gray-500 dark:text-gray-100  sm:table-cell">50.0</td>
-                                <td class="hidden px-3 py-5 text-right text-sm text-gray-500 dark:text-gray-100  sm:table-cell">$100.00</td>
-                                <td class="py-5 pl-3 pr-4 text-right text-sm text-gray-500 dark:text-gray-100  sm:pr-0">$500.00</td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th scope="row" colspan="3"
-                                    class="hidden pl-4 pr-3 pt-6 text-right text-sm font-normal text-gray-500 dark:text-gray-100  sm:table-cell sm:pl-0">
-                                    Subtotal</th>
-                                <th scope="row" class="pl-6 pr-3 pt-6 text-left text-sm font-normal text-gray-500 dark:text-gray-100  sm:hidden">
-                                    Subtotal</th>
-                                <td class="pl-3 pr-6 pt-6 text-right text-sm text-gray-500 dark:text-gray-100  sm:pr-0">$10,500.00</td>
-                            </tr>
-                            <tr>
-                                <th scope="row" colspan="3"
-                                    class="hidden pl-4 pr-3 pt-4 text-right text-sm font-normal text-gray-500 dark:text-gray-100  sm:table-cell sm:pl-0">
-                                    Tax</th>
-                                <th scope="row" class="pl-6 pr-3 pt-4 text-left text-sm font-normal text-gray-500 dark:text-gray-100  sm:hidden">Tax
-                                </th>
-                                <td class="pl-3 pr-6 pt-4 text-right text-sm text-gray-500 dark:text-gray-100  sm:pr-0">$1,050.00</td>
-                            </tr>
-                            <tr>
-                                <th scope="row" colspan="3"
-                                    class="hidden pl-4 pr-3 pt-4 text-right text-sm font-normal text-gray-500 dark:text-gray-100  sm:table-cell sm:pl-0">
-                                    Discount</th>
-                                <th scope="row" class="pl-6 pr-3 pt-4 text-left text-sm font-normal text-gray-500 dark:text-gray-100  sm:hidden">
-                                    Discount</th>
-                                <td class="pl-3 pr-6 pt-4 text-right text-sm text-gray-500 dark:text-gray-100  sm:pr-0">- 10%</td>
-                            </tr>
-                            <tr>
-                                <th scope="row" colspan="3"
-                                    class="hidden pl-4 pr-3 pt-4 text-right text-sm font-semibold text-gray-900 dark:text-white  sm:table-cell sm:pl-0">
-                                    Total</th>
-                                <th scope="row" class="pl-6 pr-3 pt-4 text-left text-sm font-semibold text-gray-900 dark:text-white sm:hidden">Total
-                                </th>
-                                <td class="pl-3 pr-4 pt-4 text-right text-sm font-semibold text-gray-900 dark:text-white sm:pr-0">$11,550.00</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            
-                <!--  Footer  -->
-                <div class="border-t-2 pt-4 text-xs text-gray-500 dark:text-gray-100 text-center mt-16">
-                    If you have any inquiries, contact Mr. Mark Jerome Santos.
-                </div>
-            
-            </div>
         </div>
 
         <!-- Save and Reset Buttons -->
