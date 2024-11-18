@@ -92,7 +92,7 @@ CREATE TABLE `orders` (
     CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE NO ACTION
 )
 
-CREATE TABLE medicines (
+CREATE TABLE `medicines` (
     id int(11) NOT NULL AUTO_INCREMENT,
     name varchar(255) NOT NULL,
     type varchar(255) NOT NULL,
