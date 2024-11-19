@@ -109,12 +109,14 @@ CREATE TABLE `order_medicine` (
     `order_id` int(11) NOT NULL,
     `medicine_id` int(11) NOT NULL,
     `quantity` int(11) NOT NULL,
+    `unit_price` double NOT NULL,
     `total_price` double NOT NULL,
-    PRIMARY KEY (`order_id`, `medicine_id`),
-    KEY `medicine_id` (`medicine_id`),
+    `batch_id` int(11) NOT NULL,
+    PRIMARY KEY (`order_id`,`medicine_id`),
+    KEY `order_medicine_ibfk_2` (`medicine_id`),
     CONSTRAINT `order_medicine_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE NO ACTION,
-    CONSTRAINT `order_medicine_ibfk_2` FOREIGN KEY (`medicine_id`) REFERENCES `medicines` (`id`)
-)
+    CONSTRAINT `order_medicine_ibfk_2` FOREIGN KEY (`medicine_id`) REFERENCES `medicines` (`id`) ON DELETE NO ACTION
+) 
 
 CREATE TABLE `batches` (
     `id` int(11) NOT NULL AUTO_INCREMENT,

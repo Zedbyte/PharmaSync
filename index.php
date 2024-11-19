@@ -178,6 +178,12 @@ try {
         $orderController->addOrderMedicine($data);
     });
 
+    // View Order Panel [GET]
+    $router->respond('GET', '/view-order/[i:orderID]', function($orderID) use ($orderController) {
+        AuthMiddleware::checkAuth();
+        $data = $orderID->params();
+        $orderController->viewOrder($data);
+    });
 
     // Delete Order [POST]
     $router->respond('POST', '/delete-order/[i:orderID]', function($request) use ($orderController) {

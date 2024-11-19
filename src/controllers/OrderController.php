@@ -45,6 +45,17 @@ class OrderController extends BaseController {
         ]);
     }
 
+    public function viewOrder($data) {
+
+        $orderMedicineObject = new OrderMedicine();
+
+        $orderData = $orderMedicineObject->getOrderData($data[1]);
+        
+        echo $this->twig->render('view-order.html.twig', [
+            'orderData' => $orderData
+        ]);
+    }
+
     public function deleteOrder($orderID) {
         $orderMedicineObject = new OrderMedicine();
 
@@ -86,7 +97,8 @@ class OrderController extends BaseController {
                         'medicine_id' => $medicineID,
                         'quantity' => $quantity,
                         'unit_price' => $unitPrice,
-                        'total_price' => $totalPrice
+                        'total_price' => $totalPrice,
+                        'batch_id' => $batchNumber
                     ]);
     
                     // Step 3: Update stock level in `medicine_batch`

@@ -19,7 +19,8 @@ class OrderMedicine extends BaseModel
                     `medicine_id` = :medicine_id,
                     `quantity` = :quantity,
                     `unit_price` = :unit_price,
-                    `total_price` = :total_price";
+                    `total_price` = :total_price,
+                    `batch_id` = :batch_id";
 
         try {
             $statement = $this->db->prepare($sql);
@@ -28,7 +29,8 @@ class OrderMedicine extends BaseModel
                 'medicine_id' => $data['medicine_id'],
                 'quantity' => $data['quantity'],
                 'unit_price' => $data['unit_price'],
-                'total_price' => $data['total_price']
+                'total_price' => $data['total_price'],
+                'batch_id' => $data['batch_id']
             ]);
 
             return true;
@@ -140,11 +142,68 @@ class OrderMedicine extends BaseModel
         FROM 
             orders o
         INNER JOIN 
-            customers c ON o.customer_id = c.id
+            customers c ON o.customer_id = c.id 
+        ORDER BY date DESC
         ";
 
         try {
             $statement = $this->db->query($sql);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+
+    public function getOrderData($orderID)
+    {
+        $sql = "SELECT 
+                o.id AS order_id,
+                o.date AS order_date,
+                o.product_count,
+                o.total_cost AS order_total_cost,
+                o.payment_status,
+                o.order_status,
+                c.id AS customer_id,
+                c.name AS customer_name,
+                c.email AS customer_email,
+                c.address AS customer_address,
+                c.contact_no AS customer_contact_no,
+                om.medicine_id,
+                om.quantity AS ordered_quantity,
+                om.total_price AS medicine_total_price,
+                om.batch_id AS batch_id,
+                m.name AS medicine_name,
+                m.type AS medicine_type,
+                m.composition,
+                m.therapeutic_class,
+                m.regulatory_class,
+                m.manufacturing_details,
+                m.formulation_id,
+                m.unit_price AS medicine_unit_price,
+                mb.expiry_date AS batch_expiry_date,
+                b.id AS batch_id,
+                b.production_date
+            FROM 
+                orders o
+            JOIN 
+                customers c ON o.customer_id = c.id
+            JOIN 
+                order_medicine om ON o.id = om.order_id
+            JOIN 
+                medicines m ON om.medicine_id = m.id
+            JOIN 
+                medicine_batch mb ON om.batch_id = mb.batch_id
+                AND om.medicine_id = mb.medicine_id
+            JOIN 
+                batches b ON mb.batch_id = b.id
+            WHERE 
+                o.id = :order_id";
+    
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute(['order_id' => $orderID]);
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log($e->getMessage());

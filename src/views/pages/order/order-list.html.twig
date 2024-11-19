@@ -123,6 +123,12 @@
         {% include 'delete-order-modal.html.twig' %}
     </div>
 
+    <!-- View Panel -->
+    <div id="viewOrderPanel" class="fixed right-0 top-0 w-full xl:w-1/2 h-full bg-white 
+    dark:bg-gray-800 transform translate-x-full transition-transform duration-300 shadow-lg z-50 overflow-y-auto">
+        {% include 'view-order.html.twig' %}
+    </div>
+
 
 
     <section class="order__list_container_content mt-8 flex flex-col h-full">
@@ -338,6 +344,7 @@
     <script src="{{ ASSETS_URL }}/js/order/addRemoveMedicine.js"></script>
     <script src="{{ ASSETS_URL }}/js/order/updateProductSummary.js"></script>
     <script src="{{ ASSETS_URL }}/js/order/openDeleteModal.js"></script>
+    <script src="{{ ASSETS_URL }}/js/order/viewOrderPanel.js"></script>
 
 
 {% endblock %}
