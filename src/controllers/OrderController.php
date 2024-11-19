@@ -37,10 +37,26 @@ class OrderController extends BaseController {
         $orderMedicineObject = new OrderMedicine();
         $orderMedicineData = $orderMedicineObject->getAllOrderMedicines();
 
+        $orderObject = new Order();
+        $ordersCount = $orderObject->getOrdersCount();
+        $fulfilledOrdersCount = $orderObject->getFulfilledOrdersCount();
+        $paidOrdersCount = $orderObject->getPaidOrdersCount();
+        $unpaidOrdersCount = $orderObject->getUnpaidOrdersCount();
+        $monthlyRevenue = $orderObject->getMonthlyRevenue();
+
+        $ordersData = [
+            'ordersCount' => $ordersCount,
+            'fulfilledOrdersCount' => $fulfilledOrdersCount,
+            'paidOrdersCount' => $paidOrdersCount,
+            'monthlyRevenue' => $monthlyRevenue,
+            'unpaidOrdersCount' => $unpaidOrdersCount
+        ];
+
         echo $this->twig->render('order-list.html.twig', [
             'ASSETS_URL' => ASSETS_URL,
             'orderMedicines' => $orderMedicineData,
             'customers' => $customerData,
+            'ordersData' => $ordersData,
             'errors' => $errors
         ]);
     }
