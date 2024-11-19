@@ -177,6 +177,14 @@ try {
         $data = $request->params();
         $orderController->addOrderMedicine($data);
     });
+
+
+    // Delete Order [POST]
+    $router->respond('POST', '/delete-order/[i:orderID]', function($request) use ($orderController) {
+        AuthMiddleware::checkAuth();
+        $orderID = $request->param('orderID');
+        $orderController->deleteOrder($orderID);
+    });
     
     $router->dispatch();
 

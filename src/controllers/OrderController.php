@@ -45,6 +45,14 @@ class OrderController extends BaseController {
         ]);
     }
 
+    public function deleteOrder($orderID) {
+        $orderMedicineObject = new OrderMedicine();
+
+        $orderMedicineData = $orderMedicineObject->deleteOrderData($orderID);
+        
+        header('Location: /purchase-list');
+    }
+
     public function addOrderMedicine($data) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errors)) {
             $errors = $this->validateOrderData($data);

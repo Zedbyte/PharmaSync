@@ -152,4 +152,33 @@ class OrderMedicine extends BaseModel
         }
     }
 
+
+    public function deleteOrderData($orderID)
+    {
+        try {
+            // Start a transaction
+            $this->db->beginTransaction();
+
+            // Delete related records from order_medicine first
+            $sqlDeleteOrderMedicine = "DELETE FROM order_medicine WHERE order_id = :order_id";
+            $statementOM = $this->db->prepare($sqlDeleteOrderMedicine);
+            $statementOM->execute(['order_id' => $orderID]);
+
+            // Delete the order record
+            $sqlDeleteOrder = "DELETE FROM orders WHERE id = :order_id";
+            $statementOM = $this->db->prepare($sqlDeleteOrder);
+            $statementOM->execute(['order_id' => $orderID]);
+
+            // Commit the transaction
+            $this->db->commit();
+            return $statementOM->rowCount(); // Returns the number of deleted rows from purchases
+
+        } catch (PDOException $e) {
+            // Rollback the transaction on error
+            $this->db->rollBack();
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
 }

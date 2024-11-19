@@ -118,6 +118,11 @@
         {% include 'add-order.html.twig' %}
     </div>
 
+    <!-- Delete Modal -->
+    <div id="deleteOrderModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
+        {% include 'delete-order-modal.html.twig' %}
+    </div>
+
 
 
     <section class="order__list_container_content mt-8 flex flex-col h-full">
@@ -249,7 +254,7 @@
                                     Order Status
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Action
+                                    Actions
                                 </th>
                             </tr>
                         </thead>
@@ -283,9 +288,32 @@
                                     <td class="px-6 py-4">
                                         {{ order.order_status | title }}
                                     </td>
-                                    <td class="flex items-center px-6 py-4">
-                                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                        <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">Remove</a>
+                                    <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap justify-center items-center">
+                                        <button 
+                                        onclick="updateOrderPanel(this)"
+                                        data-id="{{ order.order_id }}" 
+                                        class="text-blue-400 
+                                        dark:text-blue-700 
+                                        hover:text-blue-800 text-xs md:text-base transition-all duration-200">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        
+                                        <button 
+                                        onclick="openDeleteModal(this)" 
+                                        data-id="{{ order.order_id }}" 
+                                        data-material-count="{{ order.product_count }}" 
+                                        class="text-red-400 hover:text-red-800 dark:text-red-700 
+                                        text-xs md:text-base transition-all duration-200">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+
+                                        <button 
+                                        onclick="viewOrderPanel(this)" 
+                                        data-id="{{ order.order_id }}" 
+                                        class="text-green-400 hover:text-green-800 dark:text-green-700 
+                                        dark:hover:text-green-700 text-xs md:text-base transition-all duration-200">
+                                            <i class="fa-solid fa-circle-info"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -309,6 +337,7 @@
     <script src="{{ ASSETS_URL }}/js/order/addOrderUpdateMedList.js"></script>
     <script src="{{ ASSETS_URL }}/js/order/addRemoveMedicine.js"></script>
     <script src="{{ ASSETS_URL }}/js/order/updateProductSummary.js"></script>
+    <script src="{{ ASSETS_URL }}/js/order/openDeleteModal.js"></script>
 
 
 {% endblock %}
