@@ -141,6 +141,12 @@ try {
         $orderController->display();
     });
 
+    // Order List Filter Update [POST]
+    $router->respond('POST', '/order-list/filter', function() use ($orderController) {
+        AuthMiddleware::checkAuth();
+        $orderController->display();
+    });
+
     // Order Page Medicine Name By Type [GET]
     $router->respond('GET', '/order-list/medicines', function($request) use ($orderController) {
         AuthMiddleware::checkAuth();

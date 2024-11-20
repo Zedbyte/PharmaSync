@@ -27,15 +27,27 @@ class OrderController extends BaseController {
     }
 
     public function display($errors = []) {
-        // if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errors)) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errors)) {
+            // Extract the value from POST, e.g., the selected tab
+            $selectedTab = $_POST['selectedTab'] ?? null;
 
-        // }
+            // Build the query parameters
+            $queryParams = array_filter([
+                'tab' => $selectedTab, // Add the selected tab
+            ]);
+
+            // Redirect to the new URL with the query string
+            header('Location: /order-list?' . http_build_query($queryParams));
+            exit;
+        }
+
+        $status = $_GET['tab'] ?? 'all'; 
 
         $customerObject = new Customer();
         $customerData = $customerObject->getAllCustomers();
 
         $orderMedicineObject = new OrderMedicine();
-        $orderMedicineData = $orderMedicineObject->getAllOrderMedicines();
+        $orderMedicineData = $orderMedicineObject->getAllOrderMedicines($status);
 
         $orderObject = new Order();
         $ordersCount = $orderObject->getOrdersCount();

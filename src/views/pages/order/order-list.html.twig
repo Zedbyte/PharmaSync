@@ -144,56 +144,58 @@
     <section class="order__list_container_content mt-8 flex flex-col h-full">
         <div class="flex-grow flex flex-col">
             <div class="flex justify-between items-end space-x-5">
-                <ul class="tabbed__nav scrollbar__thin flex space-x-5 overflow-x-auto items-center w-5/12 2xl:w-7/12">
-                    <li class="hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap text-gray-700 dark:text-white
-                    group border-x border-t border-transparent tab-item">
-                        <a href="#" class="font-medium flex items-center px-4 py-2">
-                            <i class="fa-solid fa-border-all text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
-                            tab-icon"></i>
-                            All
-                        </a>
-                    </li>
-                    <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap text-gray-700 dark:text-white
-                    group border-x border-t border-transparent">
-                        <a href="#" class="font-medium flex items-center px-4 py-2">
-                            <i class="fa-solid fa-dollar-sign text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
-                            tab-icon"></i>
-                            Unpaid
-                        </a>
-                    </li>
-                    <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap text-gray-700 dark:text-white
-                    group border-x border-t border-transparent">
-                        <a href="#" class="font-medium flex items-center px-4 py-2">
-                            <i class="fa-regular fa-paper-plane text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
-                            tab-icon"></i>
-                            Need to ship
-                        </a>
-                    </li>
-                    <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap text-gray-700 dark:text-white
-                    group border-x border-t border-transparent">
-                        <a href="#" class="font-medium flex items-center px-4 py-2">
-                            <i class="fa-regular fa-envelope text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
-                            tab-icon"></i>
-                            Sent
-                        </a>
-                    </li>
-                    <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap text-gray-700 dark:text-white
-                    group border-x border-t border-transparent">
-                        <a href="#" class="font-medium flex items-center px-4 py-2">
-                            <i class="fa-solid fa-list-check text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
-                            tab-icon"></i>
-                            Completed
-                        </a>
-                    </li>
-                    <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap text-gray-700 dark:text-white
-                    group border-x border-t border-transparent">
-                        <a href="#" class=" font-medium flex items-center px-4 py-2">
-                            <i class="fa-solid fa-arrow-right-arrow-left text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
-                            tab-icon"></i>   
-                            Returns
-                        </a>
-                    </li>
-                </ul>
+                <form action="" method="post" class="tabbed-nav-form w-5/12 2xl:w-7/12">
+                    <ul class="tabbed__nav scrollbar__thin flex space-x-5 overflow-x-auto items-center">
+                        <li class="hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap text-gray-700 dark:text-white
+                        group border-x border-t border-transparent tab-item" data-value="all">
+                            <a href="#" class="font-medium flex items-center px-4 py-2">
+                                <i class="fa-solid fa-border-all text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
+                                tab-icon"></i>
+                                All
+                            </a>
+                        </li>
+                        <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap text-gray-700 dark:text-white
+                        group border-x border-t border-transparent" data-value="pending">
+                            <a href="#" class="font-medium flex items-center px-4 py-2">
+                                <i class="fa-solid fa-dollar-sign text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
+                                tab-icon"></i>
+                                Unpaid
+                            </a>
+                        </li>
+                        <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap text-gray-700 dark:text-white
+                        group border-x border-t border-transparent" data-value="processing">
+                            <a href="#" class="font-medium flex items-center px-4 py-2">
+                                <i class="fa-regular fa-paper-plane text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
+                                tab-icon"></i>
+                                Processing
+                            </a>
+                        </li>
+                        <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap text-gray-700 dark:text-white
+                        group border-x border-t border-transparent" data-value="backordered">
+                            <a href="#" class="font-medium flex items-center px-4 py-2">
+                                <i class="fa-regular fa-envelope text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
+                                tab-icon"></i>
+                                Backordered
+                            </a>
+                        </li>
+                        <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap text-gray-700 dark:text-white
+                        group border-x border-t border-transparent" data-value="completed">
+                            <a href="#" class="font-medium flex items-center px-4 py-2">
+                                <i class="fa-solid fa-list-check text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
+                                tab-icon"></i>
+                                Completed
+                            </a>
+                        </li>
+                        <li class="link__underline_hover hover:text-[#3280c9] dark:hover:text-[#b5a4f7] transition-color duration-150 text-nowrap text-gray-700 dark:text-white
+                        group border-x border-t border-transparent" data-value="failed">
+                            <a href="#" class=" font-medium flex items-center px-4 py-2">
+                                <i class="fa-solid fa-arrow-right-arrow-left text-gray-500 dark:text-gray-300 group-hover:text-[#3280c9] dark:group-hover:text-[#b5a4f7]
+                                tab-icon"></i>   
+                                Failed
+                            </a>
+                        </li>
+                    </ul>
+                </form>
 
                 <div class="flex justify-end w-6/12 2xl:w-5/12 mb-3">
                     <div class="mb-3 2xl:mb-0">
@@ -349,6 +351,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{{ ASSETS_URL }}/js/order/calendarThemeOrder.js"></script>
     <script src="{{ ASSETS_URL }}/js/order/tabbedNavigation.js"></script>
+    <script src="{{ ASSETS_URL }}/js/order/tabbedNavFormSubmission.js"></script>
     <script src="{{ ASSETS_URL }}/js/order/addOrderPanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/order/addOrderUpdateMedList.js"></script>
     <script src="{{ ASSETS_URL }}/js/order/addRemoveMedicine.js"></script>

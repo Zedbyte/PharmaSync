@@ -128,26 +128,46 @@ class OrderMedicine extends BaseModel
         }
     }
 
-    public function getAllOrderMedicines()
+    public function getAllOrderMedicines($status)
     {
+        // SQL query with dynamic filtering
         $sql = "
-        SELECT 
-            o.id AS order_id,
-            c.name AS customer_name,
-            o.date AS date_of_order,
-            o.product_count AS product_count,
-            o.total_cost AS total_cost,
-            o.payment_status AS payment_status,
-            o.order_status AS order_status
-        FROM 
-            orders o
-        INNER JOIN 
-            customers c ON o.customer_id = c.id 
-        ORDER BY date DESC
+            SELECT 
+                o.id AS order_id,
+                c.name AS customer_name,
+                o.date AS date_of_order,
+                o.product_count AS product_count,
+                o.total_cost AS total_cost,
+                o.payment_status AS payment_status,
+                o.order_status AS order_status
+            FROM 
+                orders o
+            INNER JOIN 
+                customers c ON o.customer_id = c.id
+            WHERE 
+                (
+                    :status = 'all'
+                    OR (:status = 'pending' AND o.payment_status = 'pending')
+                    OR (:status = 'processing' AND o.order_status = 'processing')
+                    OR (:status = 'backordered' AND o.order_status = 'backordered')
+                    OR (:status = 'completed' AND o.order_status = 'completed')
+                    OR (:status = 'failed' AND (o.payment_status = 'failed' OR o.order_status = 'failed'))
+                )
+            ORDER BY 
+                o.date DESC
         ";
-
+    
         try {
-            $statement = $this->db->query($sql);
+            // Prepare the SQL statement
+            $statement = $this->db->prepare($sql);
+    
+            // Bind the `status` parameter to the query
+            $statement->bindValue(':status', $status, PDO::PARAM_STR);
+    
+            // Execute the query
+            $statement->execute();
+    
+            // Fetch all matching records
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log($e->getMessage());
