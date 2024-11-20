@@ -191,6 +191,20 @@ try {
         $orderController->viewOrder($data);
     });
 
+    // Update Order [POST]
+    $router->respond('POST', '/update-order/[i:orderID]', function($orderID) use ($orderController) {
+        AuthMiddleware::checkAuth();
+        $data = $orderID->params();
+        $orderController->updateOrder($data);
+    });
+
+    // Update Order [GET]
+    $router->respond('GET', '/update-order/[i:orderID]', function($orderID) use ($orderController) {
+        AuthMiddleware::checkAuth();
+        $data = $orderID->params();
+        $orderController->updateOrder($data);
+    });
+
     // Delete Order [POST]
     $router->respond('POST', '/delete-order/[i:orderID]', function($request) use ($orderController) {
         AuthMiddleware::checkAuth();

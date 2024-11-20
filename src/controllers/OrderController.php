@@ -92,6 +92,35 @@ class OrderController extends BaseController {
         header('Location: /purchase-list');
     }
 
+    public function updateOrder($data) {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            echo json_encode($data);
+            exit;
+        }
+
+
+        $orderMedicineObject = new OrderMedicine();
+        $customerObject = new Customer();
+
+        $customerData = $customerObject->getAllCustomers();
+        $orderData = $orderMedicineObject->getOrderData($data[1]);
+
+        $medicineBatchObject = new MedicineBatch();
+        foreach ($orderData as &$order) {
+            $medicineId = $order["medicine_id"];
+            $batchId = $order["batch_id"];
+        
+            // Fetch stock level for each medicine and add it to the array
+            $order["stock_level"] = $medicineBatchObject->getMedicineBatchStock($medicineId, $batchId)["stock_level"];
+        }
+
+        echo $this->twig->render('update-order.html.twig', [
+            'orderData' => $orderData,
+            'customers' => $customerData
+        ]);
+    }
+
     public function addOrderMedicine($data) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errors)) {
             $errors = $this->validateOrderData($data);

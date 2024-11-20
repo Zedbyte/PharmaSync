@@ -128,6 +128,12 @@
         {% include 'add-order.html.twig' %}
     </div>
 
+    <!-- Update Panel -->
+    <div id="updateOrderPanel" class="fixed right-0 top-0 w-full xl:w-1/2 h-full bg-white 
+    dark:bg-gray-800 transform translate-x-full transition-transform duration-300 shadow-lg z-50 overflow-y-auto">
+        {% include 'update-order.html.twig' %}
+    </div>
+
     <!-- Delete Modal -->
     <div id="deleteOrderModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
         {% include 'delete-order-modal.html.twig' %}
@@ -310,7 +316,7 @@
                                         <button 
                                         onclick="updateOrderPanel(this)"
                                         data-id="{{ order.order_id }}" 
-                                        class="text-blue-400 
+                                        class="showUpdateOrderPanel text-blue-400 
                                         dark:text-blue-700 
                                         hover:text-blue-800 text-xs md:text-base transition-all duration-200">
                                             <i class="fa-solid fa-pen-to-square"></i>
@@ -358,6 +364,9 @@
     <script src="{{ ASSETS_URL }}/js/order/updateProductSummary.js"></script>
     <script src="{{ ASSETS_URL }}/js/order/openDeleteModal.js"></script>
     <script src="{{ ASSETS_URL }}/js/order/viewOrderPanel.js"></script>
+    <script src="{{ ASSETS_URL }}/js/order/updateOrderPanel.js"></script>
+    <script src="{{ ASSETS_URL }}/js/order/addMedicineUpdateOrder.js"></script>
+    <script src="{{ ASSETS_URL }}/js/order/updateOrderProductSummaryAndSelection.js"></script>
 
 
 {% endblock %}

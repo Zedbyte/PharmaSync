@@ -1,0 +1,199 @@
+<div class="h-full w-full px-8 py-6" id="updateOrderPanel">
+    <div class="flex justify-between mb-6">
+        <h2 class="text-2xl font-semibold">Update Order</h2>
+        <button onclick="updateClosePanel()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-all duration-150">
+            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>                
+        </button>
+    </div>
+
+    <!-- Order Information Section -->
+    <form action="" method="post" class="update__form h-full space-y-6">
+
+        <input type="hidden" name="order_id" value="{{ orderData[0].order_id }}">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label for="order-date" class="block text-sm font-medium">Order Date</label>
+                <input type="text" id="order-date" name="order_date" placeholder="28 Jun, 2022 - 10:00"
+                class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-blue-400 
+                dark:focus:border-blue-500 dark:bg-gray-700 px-4" onfocus="(this.type='date')" onblur="(this.type='text')" 
+                value="{{ orderData[0].order_date }}">
+            </div>
+
+            <div>
+                <label for="customer" class="block text-sm font-medium">Customer</label>
+                <select id="customer" name="customer" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    <option value="" disabled selected>Select Customer</option>
+                    <option value="new">Add New Customer</option>
+                    {% for customer in customers %}
+                        <option value="{{ customer.id }}" 
+                            {% if customer.id == orderData[0].customer_id %} selected {% endif %}>
+                            {{ customer.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="payment_status" class="block text-sm font-medium">Payment Status</label>
+                <select id="payment_status" name="payment_status" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    <option value="" disabled>Select Payment Status</option>
+                    <option value="paid" {% if orderData[0].payment_status == "paid" %} selected {% endif %}>Paid</option>
+                    <option value="pending" {% if orderData[0].payment_status == "pending" %} selected {% endif %}>Pending</option>
+                    <option value="failed" {% if orderData[0].payment_status == "failed" %} selected {% endif %}>Failed</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="order_status" class="block text-sm font-medium">Order Status</label>
+                <select id="order_status" name="order_status" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    <option value="" disabled>Select Order Status</option>
+                    <option value="processing" {% if orderData[0].order_status == "processing" %} selected {% endif %}>Processing</option>
+                    <option value="completed" {% if orderData[0].order_status == "completed" %} selected {% endif %}>Completed</option>
+                    <option value="backordered" {% if orderData[0].order_status == "backordered" %} selected {% endif %}>Backordered</option>
+                    <option value="failed" {% if orderData[0].order_status == "failed" %} selected {% endif %}>Failed</option>
+                    <option value="canceled" {% if orderData[0].order_status == "canceled" %} selected {% endif %}>Canceled</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Items Section -->
+        <div class="border-t border-gray-300 dark:border-gray-600 mt-6 pt-6">
+            <h3 class="text-xl font-semibold mb-6">Product in Order</h3>
+
+            <div id="items__container_update" class="space-y-6">
+
+                {% for medicine in orderData %}
+                    <div class="item__template_update relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 border-b border-gray-300 dark:border-gray-600 py-6">
+                        
+                        <input type="hidden" name="medicine_id[]" value="{{ medicine.medicine_id }}">
+
+                        <div>
+                            <label for="medicine-type-type" class="block text-sm font-medium">Medicine Type</label>
+                            <select id="medicine-type-id" name="medicine_type[]" class="medicine-type-update mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                                <option value="" disabled>Select Medicine Type</option>
+                                <option value="%">All</option>
+                                <option value="liquid" {% if medicine.medicine_type|lower == "liquid" %} selected {% endif %}>Liquid</option>
+                                <option value="tablet" {% if medicine.medicine_type|lower == "tablet" %} selected {% endif %}>Tablet</option>
+                                <option value="capsule" {% if medicine.medicine_type|lower == "capsule" %} selected {% endif %}>Capsule</option>
+                                <option value="topical" {% if medicine.medicine_type|lower == "topical" %} selected {% endif %}>Topical Medicine</option>
+                                <option value="suppository" {% if medicine.medicine_type|lower == "suppository" %} selected {% endif %}>Suppository</option>
+                                <option value="drops" {% if medicine.medicine_type|lower == "drops" %} selected {% endif %}>Drops</option>
+                                <option value="inhaler" {% if medicine.medicine_type|lower == "inhaler" %} selected {% endif %}>Inhaler</option>
+                                <option value="injection" {% if medicine.medicine_type|lower == "injection" %} selected {% endif %}>Injection</option>
+                                <option value="implant_patch" {% if medicine.medicine_type|lower == "implant_patch" %} selected {% endif %}>Implant or Patch</option>
+                                <option value="buccal_sublingual" {% if medicine.medicine_type|lower == "buccal_sublingual" %} selected {% endif %}>Buccal or Sublingual</option>  
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="medicine-name" class="block text-sm font-medium">Medicine Name</label>
+                            <select id="medicine-name-id" name="medicine_name[]" class="medicine-name-update mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                                <option value="" disabled>Select Medicine Name</option>
+                                <option value="{{ medicine.medicine_id }}" selected>{{ medicine.medicine_name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="batch-number" class="block text-sm font-medium">Batch Number</label>
+                            <select id="batch-number-id" name="batch_number[]" class="batch-number-update mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                                <option value="" disabled>Select Batch Number</option>
+                                <option value="{{ medicine.batch_id }}" selected>PHS-BATCH-{{ medicine.batch_id }}</option>
+                            </select>
+                            <p id="batch-number-error-update" class="mt-2 text-sm text-red-500 hidden">Please select a valid batch number.</p>
+                        </div>
+
+                        <div class="absolute right-0 top-[-15px] mb-4">
+                            <button onclick="removeItemUpdate(event)" class="remove-button-update hidden bg-red-500 hover:bg-red-600 text-white px-2 py-2 rounded transition-all duration-150  items-center space-x-1"> 
+                                <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/>
+                                </svg>  
+                                <p class="text-sm">Remove</p>
+                            </button>
+                        </div>
+
+                        <div>
+                            <label for="quantity" class="text-sm font-medium flex justify-between">Quantity 
+                                <span class="">
+                                    <small class="stock-level-update text-gray-500 dark:text-gray-200">In Stock: {{ medicine.stock_level }}</small>
+                                </span>
+                            </label>
+                            <input type="number" id="quantity-id" name="quantity[]" placeholder="1" min="1" max="{{ medicine.stock_level }}"
+                            class="quantity-update mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" 
+                            value="{{ medicine.ordered_quantity }}">
+                        </div>
+
+                        <div class="col-span-2  p-6 bg-slate-200 dark:bg-slate-600 rounded-lg shadow-sm my-6 overflow-x-auto" id="product_summary-update">
+                
+                            <div class="grid grid-cols-2 items-center">
+                                <div>
+                                    <!--  Company logo  -->
+                                    <h1 class="font-bold">Product Summary</h1>
+                                </div>
+                            </div>
+                        
+                            <!-- Invoice Items -->
+                            <div class="product-summary -mx-4 mt-8 flow-root sm:mx-0">
+                                <table class="min-w-full">
+                                    <colgroup>
+                                        <col class="w-full sm:w-1/2">
+                                        <col class="sm:w-1/6">
+                                        <col class="sm:w-1/6">
+                                        <col class="sm:w-1/6">
+                                    </colgroup>
+                                    <thead class="border-b border-gray-300 text-gray-900 dark:text-gray-100 ">
+                                        <tr>
+                                            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100  sm:pl-0">Items
+                                            </th>
+                                            <th scope="col"
+                                                class="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100  sm:table-cell">Expiration Date
+                                            </th>
+                                            <th scope="col"
+                                                class="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100  sm:table-cell">Unit Price
+                                            </th>
+                                            <th scope="col" class="py-3.5 pl-3 pr-4 text-right text-sm font-semibold text-gray-900 dark:text-gray-100  sm:pr-0">
+                                                Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b border-gray-200">
+                                            <td class="max-w-0 py-5 pl-4 pr-3 text-sm sm:pl-0">
+                                                <div class="font-medium text-gray-900 dark:text-white ">{{ medicine.medicine_id }}</div>
+                                                <div class="mt-1 truncate text-gray-500 dark:text-gray-100 ">{{ medicine.composition }}</div>
+                                            </td>
+                                            <td class="hidden px-3 py-5 text-right text-sm text-gray-500 dark:text-gray-100  sm:table-cell">{{ medicine.batch_expiry_date }}</td>
+                                            <td class="hidden px-3 py-5 text-right text-sm text-gray-500 dark:text-gray-100  sm:table-cell">{{ medicine.medicine_unit_price }}</td>
+                                            <td class="py-5 pl-3 pr-4 text-right text-sm text-gray-500 dark:text-gray-100  sm:pr-0">{{ medicine.medicine_total_price }}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th scope="row" colspan="3"
+                                                class="hidden pl-4 pr-3 pt-4 text-right text-sm font-semibold text-gray-900 dark:text-white  sm:table-cell sm:pl-0">
+                                                Total</th>
+                                            <th scope="row" class="pl-6 pr-3 pt-4 text-left text-sm font-semibold text-gray-900 dark:text-white sm:hidden">Total
+                                            </th>
+                                            <td class="pl-3 pr-4 pt-4 text-right text-sm font-semibold text-gray-900 dark:text-white sm:pr-0">-</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            
+            <button type="button" onclick="addNewItemUpdate()" class="transition-all duration-150 mt-4 px-4 py-2 text-white bg-[#2998FF] dark:bg-[#7655fa] rounded-lg hover:bg-opacity-80">Add Another Item</button>
+            
+        </div>
+
+        <!-- Save and Reset Buttons -->
+        <div class="flex justify-end gap-4 mt-6 pb-6">
+            <button type="reset" class="transition-all duration-150 px-6 py-2 rounded-lg bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-700">Reset</button>
+            <button type="submit" class="transition-all duration-150 px-6 py-2 text-white bg-[#2998FF] dark:bg-[#7655fa] rounded-lg hover:bg-opacity-80">Save</button>
+        </div>
+    </form>
+</div>

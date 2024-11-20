@@ -1776,6 +1776,11 @@ video {
   color: rgb(0 207 254 / var(--tw-text-opacity));
 }
 
+.text-\[\#2998FF\] {
+  --tw-text-opacity: 1;
+  color: rgb(41 152 255 / var(--tw-text-opacity));
+}
+
 .text-\[\#2e2e2e\] {
   --tw-text-opacity: 1;
   color: rgb(46 46 46 / var(--tw-text-opacity));
@@ -1846,6 +1851,11 @@ video {
   color: rgb(74 222 128 / var(--tw-text-opacity));
 }
 
+.text-green-500 {
+  --tw-text-opacity: 1;
+  color: rgb(34 197 94 / var(--tw-text-opacity));
+}
+
 .text-orange-700 {
   --tw-text-opacity: 1;
   color: rgb(194 65 12 / var(--tw-text-opacity));
@@ -1871,33 +1881,9 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.text-green-500 {
-  --tw-text-opacity: 1;
-  color: rgb(34 197 94 / var(--tw-text-opacity));
-}
-
 .text-yellow-500 {
   --tw-text-opacity: 1;
   color: rgb(234 179 8 / var(--tw-text-opacity));
-}
-
-.text-\[\#7655fa\] {
-  --tw-text-opacity: 1;
-  color: rgb(118 85 250 / var(--tw-text-opacity));
-}
-
-.text-\[\] {
-  color: ;
-}
-
-.text-\[\#D1F7FF\] {
-  --tw-text-opacity: 1;
-  color: rgb(209 247 255 / var(--tw-text-opacity));
-}
-
-.text-\[\#2998FF\] {
-  --tw-text-opacity: 1;
-  color: rgb(41 152 255 / var(--tw-text-opacity));
 }
 
 .placeholder-transparent::-moz-placeholder {
@@ -2736,6 +2722,11 @@ video {
   color: rgb(118 85 250 / var(--tw-text-opacity));
 }
 
+.dark\:text-\[\#9279f8\]:where(.dark, .dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(146 121 248 / var(--tw-text-opacity));
+}
+
 .dark\:text-\[\#fdfdfd\]:where(.dark, .dark *) {
   --tw-text-opacity: 1;
   color: rgb(253 253 253 / var(--tw-text-opacity));
@@ -2804,16 +2795,6 @@ video {
 .dark\:text-white:where(.dark, .dark *) {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.dark\:text-\[\#8c70fc\]:where(.dark, .dark *) {
-  --tw-text-opacity: 1;
-  color: rgb(140 112 252 / var(--tw-text-opacity));
-}
-
-.dark\:text-\[\#9279f8\]:where(.dark, .dark *) {
-  --tw-text-opacity: 1;
-  color: rgb(146 121 248 / var(--tw-text-opacity));
 }
 
 .dark\:placeholder-gray-400:where(.dark, .dark *)::-moz-placeholder {

@@ -133,4 +133,18 @@ class Medicine extends BaseModel
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
+
+    public function getMedicineUnitPrice($id)
+    {
+        $sql = "SELECT unit_price FROM `medicines` WHERE `id` = :id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute(['id' => $id]);
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
 }
