@@ -35,10 +35,9 @@ function handleUpdateSubmission(event) {
     })
     .then(response => response.json())
     .then(result => {
-
-        console.log(result); return;
+        // console.log(result);return;
         
-
+        
         if (!result.success && result.errors) {
             // Find or create the error container
             let errorContainer = document.querySelector('.error-container');

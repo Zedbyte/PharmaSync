@@ -143,6 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Handle medicine type change
             medicineTypeSelect.addEventListener("change", () => {
+                medicineNameSelect.innerHTML = '<option value="" selected disabled>Select Batch Number</option>';
                 fetchMedicineNames(medicineNameSelect, batchNumberSelect, medicineTypeSelect.value);
             });
 
@@ -203,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const orderId = event.currentTarget.dataset.id;
 
             // Optionally, load data specific to the order
-            console.log("Order ID:", orderId);
+            // console.log("Order ID:", orderId);
 
             // Display the update panel
             updatePanel.classList.remove("hidden");

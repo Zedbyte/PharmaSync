@@ -76,6 +76,26 @@ class MedicineBatch extends BaseModel
         }
     }
 
+    public function adjustStockLevel($medicineID, $batchID, $adjustment)
+    {
+        // Adjustment can be positive (increase) or negative (decrease)
+        $sql = "UPDATE `medicine_batch` 
+                SET `stock_level` = `stock_level` + :adjustment 
+                WHERE `medicine_id` = :medicine_id 
+                AND `batch_id` = :batch_id";
+
+        $statement = $this->db->prepare($sql);
+        $statement->execute([
+            'adjustment' => $adjustment,
+            'medicine_id' => $medicineID,
+            'batch_id' => $batchID
+        ]);
+
+        // Check if the update was successful
+        return $statement->rowCount() > 0;
+    }
+
+
 
     public function getMedicineBatches($medicineId)
     {

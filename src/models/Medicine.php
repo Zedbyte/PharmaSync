@@ -140,7 +140,8 @@ class Medicine extends BaseModel
 
         try {
             $statement = $this->db->prepare($sql);
-            $statement->execute(['id' => $id]);
+            $statement->bindParam(':id', $id, PDO::PARAM_INT);
+            $statement->execute();
             return $statement->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log($e->getMessage());

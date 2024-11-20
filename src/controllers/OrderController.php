@@ -95,8 +95,144 @@ class OrderController extends BaseController {
     public function updateOrder($data) {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            echo json_encode($data);
-            exit;
+            $errors = $this->validateUpdatedOrderData($data);
+
+            if (!empty($errors)) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => $errors]);
+                return;
+            }
+            
+        
+            try {
+                $this->db->beginTransaction();
+        
+                $orderID = $data['order_id'];
+                $orderObject = new Order();
+                
+                if (count($data['quantity']) !== count($data['medicine_id'])) {
+                    throw new Exception("Mismatch between quantity and medicine IDs");
+                }
+                
+                $medicineObject = new Medicine();
+                $totalCost = 0;
+                
+                foreach ($data['quantity'] as $index => $quantity) {
+                    $medicineID = $data['medicine_name'][$index];
+                    $unitPrice = $medicineObject->getMedicineUnitPrice($medicineID)["unit_price"];
+                    $totalCost += (int) $quantity * $unitPrice;
+                }
+                
+                
+                
+                $orderObject->update($data['orderID'], [
+                    'date' => $data['order_date'],
+                    'product_count' => count($data['medicine_name']),
+                    'total_cost' => $totalCost,
+                    'payment_status' => $data['payment_status'],
+                    'order_status' => $data['order_status'],
+                    'customer_id' => $data['customer'],
+                ]);
+
+                
+                
+                $orderMedicineObject = new OrderMedicine();
+                $medicineBatchObject = new MedicineBatch();
+                
+                $updatedMedicineIDs = [];
+                foreach ($data['medicine_name'] as $index => $medicineID) {
+                    $batchID = $data['batch_number'][$index];
+                    $updatedMedicineIDs[] = "{$medicineID}_{$batchID}";
+                }
+                
+                // Construct existing medicine identifiers (medicine_id + batch_id)
+                $existingMedicineIDs = [];
+                foreach ($orderMedicineObject->getMedicineAndBatchIdsByOrder($orderID) as $medicine) {
+                    $existingMedicineIDs[] = "{$medicine['medicine_id']}_{$medicine['batch_id']}";
+                }
+                
+                // Find removed medicines
+                $removedMedicineIDs = array_diff($existingMedicineIDs, $updatedMedicineIDs);
+                // header('Content-Type: application/json');
+                // echo json_encode(["removed" => $removedMedicineIDs]);
+                // exit;
+
+            
+                
+                // Remove medicines that were deleted by the user and update stock levels
+                foreach ($removedMedicineIDs as $medicineBatchKey) {
+                    // Split composite key into medicine_id and batch_id
+                    list($medicineID, $batchID) = explode('_', $medicineBatchKey);
+                
+                    // Get the quantity for stock adjustment
+                    $quantity = $orderMedicineObject->getQuantity($orderID, $medicineID, $batchID);
+                
+                    // Adjust stock levels
+                    $medicineBatchObject->adjustStockLevel($medicineID, $batchID, $quantity);
+                
+                    // Delete the record
+                    $orderMedicineObject->delete([
+                        'order_id' => $orderID,
+                        'medicine_id' => $medicineID,
+                        'batch_id' => $batchID
+                    ]);
+                }
+
+                
+                foreach ($data['medicine_name'] as $index => $medicineName) {
+                    $medicineID = $data['medicine_name'][$index] ?? null;
+                    $batchID = $data['batch_number'][$index];
+                    $quantity = $data['quantity'][$index];
+                
+                    if ($medicineID) {
+                        // Check if this medicine and batch combination already exists
+                        $existingOrderMedicine = $orderMedicineObject->getOrderMedicine($orderID, $medicineID, $batchID);
+                
+                        if ($existingOrderMedicine) {
+                            // Update existing record
+                            $previousQuantity = $existingOrderMedicine['quantity'];
+                            $quantityDifference = $quantity - $previousQuantity;
+                
+                            // Update stock levels for the batch
+                            $medicineBatchObject->adjustStockLevel($medicineID, $batchID, -$quantityDifference);
+                
+                            // Update the order_medicine record
+                            $orderMedicineObject->update([
+                                'order_id' => $orderID,
+                                'medicine_id' => $medicineID,
+                                'batch_id' => $batchID,
+                                'quantity' => $quantity,
+                                'unit_price' => $medicineObject->getMedicineUnitPrice($medicineID)['unit_price'],
+                                'total_price' => $quantity * $medicineObject->getMedicineUnitPrice($medicineID)['unit_price'],
+                            ]);
+                        } else {
+                            // Insert new record for this medicine and batch combination
+                            $medicineBatchObject->adjustStockLevel($medicineID, $batchID, -$quantity);
+                
+                            $orderMedicineObject->updateOrInsert([
+                                'order_id' => $orderID,
+                                'medicine_id' => $medicineID,
+                                'batch_id' => $batchID,
+                                'quantity' => $quantity,
+                                'unit_price' => $medicineObject->getMedicineUnitPrice($medicineID)['unit_price'],
+                                'total_price' => $quantity * $medicineObject->getMedicineUnitPrice($medicineID)['unit_price'],
+                            ]);
+                        }
+                    }
+                }
+                
+        
+                $this->db->commit();
+                header('Content-Type: application/json');
+                echo json_encode(['success' => true]);
+                return;
+            } catch (Exception $e) {
+                $this->db->rollBack();
+                error_log($e->getMessage());
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => ["Failed to update the order."]]);
+                return;
+            }
         }
 
 
@@ -268,6 +404,69 @@ class OrderController extends BaseController {
         }
         exit;
     }
+
+
+    private function validateUpdatedOrderData($data) {
+        $errors = [];
+    
+        // Validate required fields for order data
+        if (empty($data['order_date']) || empty($data['customer'])) {
+            $errors[] = "Order date and customer are required.";
+        }
+    
+        // Validate order date
+        if (!empty($data['order_date'])) {
+            $order_date = str_replace(' - ', ' ', $data['order_date']);
+            if (!strtotime($order_date)) {
+                $errors[] = "Order date is invalid.";
+            }
+        }
+    
+        // Validate payment status
+        if (empty($data['payment_status'])) {
+            $errors[] = "Payment status is required.";
+        } elseif (!in_array($data['payment_status'], ['paid', 'unpaid', 'failed'], true)) {
+            $errors[] = "Payment status must be 'paid', 'unpaid', or 'failed'.";
+        }
+    
+        // Validate order status
+        if (empty($data['order_status'])) {
+            $errors[] = "Order status is required.";
+        }
+    
+        // Validate each medicine's data
+        foreach ($data['medicine_name'] as $index => $medicineName) {
+            // Check if required fields are provided for each medicine entry
+            if (empty($medicineName)) {
+                $errors[] = "Medicine name for item " . ($index + 1) . " is required.";
+            }
+    
+            if (empty($data['quantity'][$index])) {
+                $errors[] = "Quantity for item " . ($index + 1) . " is required.";
+            }
+    
+            if (empty($data['batch_number'][$index])) {
+                $errors[] = "Batch number for item " . ($index + 1) . " is required.";
+            }
+    
+            // Validate quantity (must be numeric and positive)
+            if (isset($data['quantity'][$index]) && $data['quantity'][$index] !== '') {
+                if (!is_numeric($data['quantity'][$index]) || $data['quantity'][$index] <= 0) {
+                    $errors[] = "Quantity for item " . ($index + 1) . " must be a positive number.";
+                }
+            }
+    
+            // Validate medicine type
+            if (isset($data['medicine_type'][$index]) && !empty($data['medicine_type'][$index])) {
+                if (!in_array($data['medicine_type'][$index], ['tablet', 'capsule', 'syrup', '%'], true)) {
+                    $errors[] = "Medicine type for item " . ($index + 1) . " is invalid.";
+                }
+            }
+        }
+    
+        return $errors;
+    }
+    
 
     private function validateOrderData($data)
     {

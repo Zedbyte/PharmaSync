@@ -45,9 +45,11 @@ class OrderMedicine extends BaseModel
         $sql = "UPDATE `order_medicine` 
                 SET
                     `quantity` = :quantity,
-                    `total_price` = :total_price
+                    `total_price` = :total_price,
+                    `batch_id` = :batch_id
                 WHERE `order_id` = :order_id 
-                AND `medicine_id` = :medicine_id";
+                AND `medicine_id` = :medicine_id
+                AND `batch_id` = :batch_id";
 
         try {
             $statement = $this->db->prepare($sql);
@@ -55,7 +57,8 @@ class OrderMedicine extends BaseModel
                 'quantity' => $data['quantity'],
                 'total_price' => $data['total_price'],
                 'order_id' => $data['order_id'],
-                'medicine_id' => $data['medicine_id']
+                'medicine_id' => $data['medicine_id'],
+                'batch_id' => $data['batch_id']
             ]);
 
             return true;
@@ -70,12 +73,14 @@ class OrderMedicine extends BaseModel
         // Check if the record already exists
         $sql = "SELECT COUNT(*) FROM `order_medicine` 
                 WHERE `order_id` = :order_id 
-                AND `medicine_id` = :medicine_id";
+                AND `medicine_id` = :medicine_id
+                AND `batch_id` = :batch_id";
 
         $statement = $this->db->prepare($sql);
         $statement->execute([
             'order_id' => $data['order_id'],
-            'medicine_id' => $data['medicine_id']
+            'medicine_id' => $data['medicine_id'],
+            'batch_id' => $data['batch_id']
         ]);
 
         $recordExists = $statement->fetchColumn() > 0;
@@ -92,13 +97,15 @@ class OrderMedicine extends BaseModel
     {
         $sql = "DELETE FROM `order_medicine` 
                 WHERE `order_id` = :order_id 
-                AND `medicine_id` = :medicine_id";
+                AND `medicine_id` = :medicine_id
+                AND `batch_id` = :batch_id";
 
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute([
                 'order_id' => $data['order_id'],
-                'medicine_id' => $data['medicine_id']
+                'medicine_id' => $data['medicine_id'],
+                'batch_id' => $data['batch_id']
             ]);
 
             return $statement->rowCount() > 0; // Returns true if a row was deleted
@@ -108,17 +115,19 @@ class OrderMedicine extends BaseModel
         }
     }
 
-    public function getOrderMedicine($orderId, $medicineId)
+    public function getOrderMedicine($orderId, $medicineId, $batchId)
     {
         $sql = "SELECT * FROM `order_medicine` 
                 WHERE `order_id` = :order_id 
-                AND `medicine_id` = :medicine_id";
+                AND `medicine_id` = :medicine_id
+                AND `batch_id` = :batch_id";
 
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute([
                 'order_id' => $orderId,
-                'medicine_id' => $medicineId
+                'medicine_id' => $medicineId,
+                'batch_id' => $batchId
             ]);
 
             return $statement->fetch(PDO::FETCH_ASSOC);
@@ -259,5 +268,111 @@ class OrderMedicine extends BaseModel
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
+
+    public function getMedicineIdsByOrder($orderID)
+    {
+        try {
+            $sql = "SELECT `medicine_id` 
+                FROM `order_medicine` 
+                WHERE `order_id` = :order_id";
+    
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'order_id' => $orderID
+            ]);
+    
+            return $statement->fetchAll(PDO::FETCH_COLUMN); // Returns an array of medicine IDs
+        }
+        catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getMedicineAndBatchIdsByOrder($orderID)
+    {
+        try {
+            $sql = "SELECT medicine_id, batch_id
+                FROM `order_medicine` 
+                WHERE `order_id` = :order_id";
+    
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'order_id' => $orderID
+            ]);
+    
+            return $statement->fetchAll(PDO::FETCH_ASSOC); // Returns an array of medicine IDs
+        }
+        catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getBatchId($orderID, $medicineID)
+    {
+        try {
+            $sql = "SELECT `batch_id` 
+            FROM `order_medicine` 
+            WHERE `order_id` = :order_id
+            AND `medicine_id` = :medicine_id";
+            
+
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'order_id' => $orderID,
+                'medicine_id' => $medicineID
+            ]);
+
+            return $statement->fetchColumn(); // Returns the batch ID or false if not found
+        }
+        catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getQuantity($orderID, $medicineID, $batchID)
+    {
+        try {
+            $sql = "SELECT `quantity` 
+            FROM `order_medicine` 
+            WHERE `order_id` = :order_id 
+            AND `medicine_id` = :medicine_id
+            AND `batch_id` = :batch_id";
+
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'order_id' => $orderID,
+                'medicine_id' => $medicineID,
+                'batch_id' => $batchID
+            ]);
+
+            return $statement->fetchColumn(); // Returns the quantity or false if not found
+        }
+        catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getPreviousQuantity($orderID, $medicineID)
+    {
+        $sql = "SELECT `quantity` 
+                FROM `order_medicine` 
+                WHERE `order_id` = :order_id 
+                AND `medicine_id` = :medicine_id";
+
+        $statement = $this->db->prepare($sql);
+        $statement->execute([
+            'order_id' => $orderID,
+            'medicine_id' => $medicineID
+        ]);
+
+        return $statement->fetchColumn(); // Returns the previous quantity or false if not found
+    }
+
+
+
 
 }
