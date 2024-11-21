@@ -376,7 +376,7 @@
                                             {% if purchase.status|upper == 'COMPLETED' %} dark:bg-green-800 bg-green-400
                                         {% elseif purchase.status|upper == 'PENDING' %} dark:bg-yellow-700 bg-yellow-400
                                         {% elseif purchase.status|upper == 'FAILED' %} dark:bg-red-800 bg-red-400
-                                        {% elseif purchase.status|upper == 'CANCELED' %} dark:bg-gray-800 bg-gray-400
+                                        {% elseif purchase.status|upper == 'CANCELED' %} dark:bg-gray-600 bg-gray-400
                                         {% elseif purchase.status|upper == 'BACKORDERED' %} dark:bg-orange-800 bg-orange-400
                                         {% else %} bg-blue-500 {% endif %}
                                     ">
