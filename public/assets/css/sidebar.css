@@ -130,6 +130,18 @@
     color: #fdfdfd;
 }
 
+.nav__link_subitem.active-light {
+    background-color: transparent;
+    color: var(--hover-text) !important;
+    text-decoration: underline;
+}
+
+.dark .nav__link_subitem.active-light {
+    background-color: transparent;
+    color: #7655fa !important;
+    text-decoration: underline;
+}
+
 .nav__link_button {
     width: 100%;
 }

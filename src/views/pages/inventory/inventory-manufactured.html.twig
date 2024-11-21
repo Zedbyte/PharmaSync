@@ -1,0 +1,280 @@
+{% extends 'root.twig' %}
+
+{% block title %}
+    Inventory
+{% endblock %}
+
+{% block headers %}
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/link.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/scrollbar.css">
+    <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block panel_title %}
+    Manufactured
+{% endblock %}
+
+{% set paths = [
+    { 'name': 'Dashboard', 'url': '/dashboard' },
+    { 'name': 'Inventory' },
+    { 'name': 'Manufactured', 'url': '/inventory/manufactured' }
+] %}
+
+{% block body %}
+
+    {% if errors %}
+        <div class="error-container bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 fixed top-0 left-0 right-0 z-[999] transition-all duration-300"
+            role="alert">
+            <p class="font-bold">Warning</p>
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <section class="order__list_container_head grid sm:grid-cols-6 lg:grid-cols-12 gap-5">
+        <div class="col-span-3 lg:col-span-3 border dark:border-slate-500 border-gray-300  rounded-xl px-5 py-3 text-gray-700 dark:text-[#fdfdfd] bg-white dark:bg-slate-600">
+            <span class="flex items-center space-x-2 mb-4">
+                <svg class="w-6 h-6 text-gray-700 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M4.857 3A1.857 1.857 0 0 0 3 4.857v4.286C3 10.169 3.831 11 4.857 11h4.286A1.857 1.857 0 0 0 11 9.143V4.857A1.857 1.857 0 0 0 9.143 3H4.857Zm10 0A1.857 1.857 0 0 0 13 4.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 9.143V4.857A1.857 1.857 0 0 0 19.143 3h-4.286Zm-10 10A1.857 1.857 0 0 0 3 14.857v4.286C3 20.169 3.831 21 4.857 21h4.286A1.857 1.857 0 0 0 11 19.143v-4.286A1.857 1.857 0 0 0 9.143 13H4.857Zm10 0A1.857 1.857 0 0 0 13 14.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 19.143v-4.286A1.857 1.857 0 0 0 19.143 13h-4.286Z" clip-rule="evenodd"/>
+                </svg>
+                <h1 class="font-semibold text-sm 2xl:text-base">Total Products</h1>
+            </span>
+
+            <span class="text-end">
+                <h1 class="font-semibold text-sm text-slate-500 dark:text-gray-300">This Month</h1>
+                <h1 class="font-semibold text-2xl text-[#2998FF] dark:text-[#9279f8]">50</h1>
+            </span>
+        </div>
+
+        <div class="col-span-3 lg:col-span-3 border dark:border-slate-500 border-gray-300  rounded-xl px-5 py-3 text-gray-700 dark:text-[#fdfdfd] bg-white dark:bg-slate-600">
+            <span class="flex items-center space-x-2 mb-4">
+                <svg class="w-6 h-6 text-gray-700 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
+                </svg>
+                <h1 class="font-semibold text-sm 2xl:text-base">Out of Stock</h1>
+            </span>
+
+            <span class="text-end">
+                <h1 class="font-semibold text-sm text-slate-500 dark:text-gray-300">Current</h1>
+                <h1 class="font-semibold text-2xl">50</h1>
+            </span>
+        </div>
+
+        <div class="col-span-3 lg:col-span-3 border dark:border-slate-500 border-gray-300  rounded-xl px-5 py-3 text-gray-700 dark:text-[#fdfdfd] bg-white dark:bg-slate-600">
+            <span class="flex items-center space-x-2 mb-4">
+                <svg class="w-6 h-6 text-gray-700 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M10 5a2 2 0 0 0-2 2v3h2.4A7.48 7.48 0 0 0 8 15.5a7.48 7.48 0 0 0 2.4 5.5H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1V7a4 4 0 1 1 8 0v1.15a7.446 7.446 0 0 0-1.943.685A.999.999 0 0 1 12 8.5V7a2 2 0 0 0-2-2Z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M10 15.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0Zm6.5-1.5a1 1 0 1 0-2 0v1.5a1 1 0 0 0 .293.707l1 1a1 1 0 0 0 1.414-1.414l-.707-.707V14Z" clip-rule="evenodd"/>
+                </svg>
+                <h1 class="font-semibold text-sm 2xl:text-base">Expiring Soon</h1>
+            </span>
+
+            <span class="text-end">
+                <h1 class="font-semibold text-sm text-slate-500 dark:text-gray-300">Current</h1>
+                <h1 class="font-semibold text-2xl text-green-500">50</h1>
+            </span>
+        </div>
+
+        <div class="col-span-3 lg:col-span-3 border dark:border-slate-500 border-gray-300  rounded-xl px-5 py-3 text-gray-700 dark:text-[#fdfdfd] bg-white dark:bg-slate-600">
+            <span class="flex items-center space-x-2 mb-4">
+                <svg class="w-6 h-6 text-gray-700 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" clip-rule="evenodd"/>
+                </svg>
+                <h1 class="font-semibold text-sm 2xl:text-base">N</h1>
+            </span>
+
+            <span class="text-end">
+                <h1 class="font-semibold text-sm text-slate-500 dark:text-gray-300">This Month</h1>
+                <h1 class="font-semibold text-2xl">50</h1>
+            </span>
+        </div>
+    </section>
+
+
+
+    <!-- Background Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+
+    <!-- Sliding Panel -->
+    <!-- <div id="addOrderPanel" class="fixed right-0 top-0 w-full xl:w-1/2 h-full bg-white 
+    dark:bg-gray-800 transform translate-x-full transition-transform duration-300 shadow-lg z-50 overflow-y-auto">
+        
+    </div> -->
+
+    <!-- Update Panel -->
+    <!-- <div id="updateOrderPanel" class="fixed right-0 top-0 w-full xl:w-1/2 h-full bg-white 
+    dark:bg-gray-800 transform translate-x-full transition-transform duration-300 shadow-lg z-50 overflow-y-auto">
+        
+    </div> -->
+
+    <!-- Delete Modal -->
+    <!-- <div id="deleteOrderModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
+        
+    </div> -->
+
+    <!-- View Panel -->
+    <!-- <div id="viewOrderPanel" class="fixed right-0 top-0 w-full xl:w-1/2 h-full bg-white 
+    dark:bg-gray-800 transform translate-x-full transition-transform duration-300 shadow-lg z-50 overflow-y-auto">
+        
+    </div> -->
+
+
+
+    <section class="order__list_container_content mt-8 flex flex-col h-full">
+        <div class="flex-grow flex flex-col">
+            <div class="flex justify-between items-end space-x-5 pb-3">
+
+                <div class="flex justify-start sm:w-auto w-6/12 h-full">
+                    <div class="relative mb-3 2xl:mb-0">
+                        <form id="searchForm" class="filter-form" action="" method="post">
+                            <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                            </div>
+                            <input type="text" id="table-search"  name="purchase_search"
+                            class="block w-full md:w-80 p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 
+                            focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 
+                            dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="search for a medicine" 
+                            {% if (purchase_search) %}
+                                value="{{ purchase_search }}"
+                            {% endif %}>
+                        </form>
+                    </div>
+
+                    <div class="flex justify-center sm:justify-end sm:w-auto">
+                        <!-- Export Button -->
+                        <a href="/export-purchase" class="flex items-center">
+                            <button class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 
+                            focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 ml-5 
+                            dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                                <ion-icon name="arrow-down-outline" class="add__icon text-gray-500 dark:text-gray-400 mr-2"></ion-icon>    
+                                <span class="hidden sm:inline">Export Data</span>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="flex justify-end w-6/12">
+                    <div class="mb-3 2xl:mb-0">
+                        <button onclick="addOrderTogglePanel()" class="bg-[#2998FF] hover:bg-[#3280c9]  
+                        dark:bg-[#7655fa] dark:hover:bg-[#8162fa] transition-all duration-200 text-white 
+                        rounded-lg px-3 py-2.5 flex justify-center items-center text-nowrap">
+                            <ion-icon name="add-outline" class="add__icon dark:text-[#fdfdfd] mr-2"></ion-icon>    
+                            Add Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="h-full p-6 rounded-b-lg border-x border-b border-t-0 dark:border-slate-800 bg-gray-50 border-gray-300 dark:bg-slate-500 flex-grow">
+
+                <div class="w-full max-h-[24rem] overflow-y-auto border border-gray-300 dark:border-gray-700 rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="relative text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr class="sticky top-0 bg-white dark:bg-gray-700">
+                                <th scope="col" class="p-4">
+                                    <div class="flex items-center">
+                                        <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    ID
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Medicine
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Type
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Batch Details
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Rack
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for medicine in medicineData %}
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="w-4 p-4">
+                                        <div class="flex items-center">
+                                            <input id="{{ medicine.id }}" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                                        </div>
+                                    </td>
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ medicine.id }}
+                                    </th>
+                                    <td class="px-6 py-4">
+                                        {{ medicine.name }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ medicine.type }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {% for batch in medicine.batches %}
+                                            <div>
+                                                Batch ID: {{ batch.id }} <br/> 
+                                                Expiry Date: {{ batch.expiry_date }} <br/>
+                                                Stock Leve: {{ batch.stock_level }}
+                                            </div>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        Rack
+                                    </td>
+                                    <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap justify-center items-center">
+                                        <button 
+                                        onclick="updateOrderPanel(this)"
+                                        data-id="{{ order.order_id }}" 
+                                        class="showUpdateOrderPanel text-blue-400 
+                                        dark:text-blue-700 
+                                        hover:text-blue-800 text-xs md:text-base transition-all duration-200">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        
+                                        <button 
+                                        onclick="openDeleteModal(this)" 
+                                        data-id="{{ order.order_id }}" 
+                                        data-material-count="{{ order.product_count }}" 
+                                        class="text-red-400 hover:text-red-800 dark:text-red-700 
+                                        text-xs md:text-base transition-all duration-200">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+
+                                        <button 
+                                        onclick="viewOrderPanel(this)" 
+                                        data-id="{{ order.order_id }}" 
+                                        class="text-green-400 hover:text-green-800 dark:text-green-700 
+                                        dark:hover:text-green-700 text-xs md:text-base transition-all duration-200">
+                                            <i class="fa-solid fa-circle-info"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{{ ASSETS_URL }}/js/order/calendarThemeOrder.js"></script>
+
+
+{% endblock %}

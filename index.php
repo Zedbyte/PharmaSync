@@ -15,6 +15,7 @@ use App\Controllers\DashboardController;
 use App\Controllers\SettingsController;
 use App\Controllers\PurchaseController;
 use App\Controllers\OrderController;
+use App\Controllers\ManufacturedController;
 use \App\Middleware\AuthMiddleware;
 
 try {
@@ -30,6 +31,7 @@ try {
     $settingsController = new SettingsController($twig);
     $purchaseController = new PurchaseController($twig);
     $orderController = new OrderController($twig);
+    $manufacturedController = new ManufacturedController($twig);
 
     // Landing Page
     $router->respond('GET', '/', function() use ($loginController) {
@@ -73,6 +75,12 @@ try {
         AuthMiddleware::checkAuth();
         $settingsController->display();
     });
+
+    /** 
+     * 
+     *  PURCHASES
+     * 
+    */
 
     // Purchase Page [GET]
     $router->respond('GET', '/purchase-list', function() use ($purchaseController) {
@@ -134,6 +142,11 @@ try {
         $purchaseController->updatePurchaseStatus();
     });
 
+    /**
+     * 
+     * ORDERS
+     * 
+     */
 
     // Order Page [GET]
     $router->respond('GET', '/order-list', function() use ($orderController) {
@@ -222,6 +235,18 @@ try {
     $router->respond('POST', '/update-order/payment/status', function() use ($orderController) {
         AuthMiddleware::checkAuth();
         $orderController->updateOrderPaymentStatus();
+    });
+
+    /**
+     * 
+     * INVENTORY
+     * 
+     */
+
+    // Inventory Page [GET]
+    $router->respond('GET', '/inventory/manufactured', function() use ($manufacturedController) {
+    AuthMiddleware::checkAuth();
+    $manufacturedController->display();
     });
 
     $router->dispatch();
