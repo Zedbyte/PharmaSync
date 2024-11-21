@@ -307,10 +307,23 @@
                                         ${{ order.total_cost }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ order.payment_status | title }}
+                                        <form method="post" action="/update-order/payment/status">
+                                            <select name="payment_status" onchange="this.form.submit()" 
+                                                class="rounded-md text-xs text-center p-1 md:p-0 md:py-1 text-white 
+                                                {% if order.payment_status|upper == 'PAID' %} dark:bg-green-800 bg-green-400
+                                                {% elseif order.payment_status|upper == 'PENDING' %} dark:bg-yellow-700 bg-yellow-400
+                                                {% elseif order.payment_status|upper == 'FAILED' %} dark:bg-red-800 bg-red-400
+                                                {% else %} bg-blue-500 {% endif %}
+                                            ">
+                                                <option value="paid" {% if order.payment_status == 'paid' %}selected{% endif %}>Paid</option>
+                                                <option value="pending" {% if order.payment_status == 'pending' %}selected{% endif %}>Pending</option>
+                                                <option value="failed" {% if order.payment_status == 'failed' %}selected{% endif %}>Failed</option>
+                                            </select>
+                                            <input type="hidden" name="order_id" value="{{ order.order_id }}">
+                                        </form>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <form method="post" action="/update-order-status">
+                                        <form method="post" action="/update-order/status">
                                             <select name="order_status" onchange="this.form.submit()" 
                                                 class="rounded-md text-xs text-center p-1 md:p-0 md:py-1 text-white 
                                                 {% if order.order_status|upper == 'COMPLETED' %} dark:bg-green-800 bg-green-400

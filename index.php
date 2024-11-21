@@ -212,12 +212,18 @@ try {
         $orderController->deleteOrder($orderID);
     });
 
-    // Update Purchase Status [POST]
-    $router->respond('POST', '/update-order-status', function() use ($orderController) {
+    // Update Order Status [POST]
+    $router->respond('POST', '/update-order/status', function() use ($orderController) {
         AuthMiddleware::checkAuth();
         $orderController->updateOrderStatus();
     });
-    
+
+    // Update Order Payment Status [POST]
+    $router->respond('POST', '/update-order/payment/status', function() use ($orderController) {
+        AuthMiddleware::checkAuth();
+        $orderController->updateOrderPaymentStatus();
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {
