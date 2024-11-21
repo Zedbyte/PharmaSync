@@ -211,6 +211,12 @@ try {
         $orderID = $request->param('orderID');
         $orderController->deleteOrder($orderID);
     });
+
+    // Update Purchase Status [POST]
+    $router->respond('POST', '/update-order-status', function() use ($orderController) {
+        AuthMiddleware::checkAuth();
+        $orderController->updateOrderStatus();
+    });
     
     $router->dispatch();
 

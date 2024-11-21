@@ -89,7 +89,7 @@ class OrderController extends BaseController {
 
         $orderMedicineData = $orderMedicineObject->deleteOrderData($orderID);
         
-        header('Location: /purchase-list');
+        header('Location: /order-list');
     }
 
     public function updateOrder($data) {
@@ -403,6 +403,37 @@ class OrderController extends BaseController {
             echo json_encode(['error' => $e->getMessage()]);
         }
         exit;
+    }
+
+    public function updateOrderStatus() { 
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['order_id']) && isset($_POST['order_status'])) {
+                $order_id = (int)$_POST['order_id'];
+                $new_status = trim($_POST['order_status']);
+
+                $orderObject = new Order();
+    
+                // Call the model's updateStatus method
+                try {
+                    $affectedRows = $orderObject->updateOrderStatus($order_id, $new_status);
+    
+                    if ($affectedRows > 0) {
+                        // Redirect or return a success message
+                        header("Location: /order-list");
+                        exit();
+                    } else {
+                        // Handle case where no rows were affected (e.g., invalid order_id)
+                        throw new Exception("Order status update failed.");
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    echo "Error: " . $e->getMessage();
+                }
+            } else {
+                // Handle missing fields in the POST request
+                echo "Error: Missing order ID or order status.";
+            }
+        }
     }
 
 

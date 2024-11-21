@@ -96,6 +96,30 @@ class Order extends BaseModel
         }
     }
 
+    public function updateOrderStatus($order_id, $new_status) {
+        $valid_statuses = ['completed', 'processing', 'failed', 'canceled', 'backordered'];
+
+        if (!in_array(strtolower($new_status), $valid_statuses)) {
+            throw new Exception("Invalid status provided.");
+        }
+
+        $sql = "UPDATE orders SET order_status = :order_status WHERE id = :order_id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->bindParam(':order_status', $new_status, PDO::PARAM_STR);
+            $statement->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+
+            $statement->execute();
+
+            // Optionally, return the number of affected rows if needed
+            return $statement->rowCount();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
     public function getAllOrders()
     {
         $sql = "SELECT * FROM `orders`";

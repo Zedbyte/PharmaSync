@@ -287,7 +287,7 @@
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
                                         <div class="flex items-center">
-                                            <input id="checkbox-{{ order.order_id }}" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <input id="{{ order.order_id }}" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                             <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                                         </div>
                                     </td>
@@ -310,7 +310,24 @@
                                         {{ order.payment_status | title }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ order.order_status | title }}
+                                        <form method="post" action="/update-order-status">
+                                            <select name="order_status" onchange="this.form.submit()" 
+                                                class="rounded-md text-xs text-center p-1 md:p-0 md:py-1 text-white 
+                                                {% if order.order_status|upper == 'COMPLETED' %} dark:bg-green-800 bg-green-400
+                                                {% elseif order.order_status|upper == 'PROCESSING' %} dark:bg-yellow-700 bg-yellow-400
+                                                {% elseif order.order_status|upper == 'FAILED' %} dark:bg-red-800 bg-red-400
+                                                {% elseif order.order_status|upper == 'CANCELED' %} dark:bg-gray-600 bg-gray-300
+                                                {% elseif order.order_status|upper == 'BACKORDERED' %} dark:bg-orange-800 bg-orange-400
+                                                {% else %} bg-yellow-500 {% endif %}
+                                            ">
+                                                <option value="processing" {% if order.order_status == 'processing' %}selected{% endif %}>Processing</option>
+                                                <option value="completed" {% if order.order_status == 'completed' %}selected{% endif %}>Completed</option>
+                                                <option value="failed" {% if order.order_status == 'failed' %}selected{% endif %}>Failed</option>
+                                                <option value="canceled" {% if order.order_status == 'canceled' %}selected{% endif %}>Canceled</option>
+                                                <option value="backordered" {% if order.order_status == 'backordered' %}selected{% endif %}>Backordered</option>
+                                            </select>
+                                            <input type="hidden" name="order_id" value="{{ order.order_id }}">
+                                        </form>
                                     </td>
                                     <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap justify-center items-center">
                                         <button 
