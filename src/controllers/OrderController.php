@@ -497,7 +497,7 @@ class OrderController extends BaseController {
         }
     
         // Validate each medicine's data
-        foreach ($data['medicine_id'] as $index => $medicineName) {
+        foreach ($data['medicine_name'] as $index => $medicineName) {
             // Check if required fields are provided for each medicine entry
             if (empty($medicineName)) {
                 $errors[] = "Medicine name for item " . ($index + 1) . " is required.";

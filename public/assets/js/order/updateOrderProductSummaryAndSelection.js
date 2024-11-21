@@ -127,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const medicineNameSelect = template.querySelector(".medicine-name-update");
             const batchNumberSelect = template.querySelector(".batch-number-update");
             const quantityInput = template.querySelector(".quantity-update");
+            const batchNumberError = template.querySelector("#batch-number-error-update");
 
             if (!medicineTypeSelect || !medicineNameSelect || !batchNumberSelect || !quantityInput) {
                 console.error("Template elements missing.");
@@ -151,6 +152,10 @@ document.addEventListener("DOMContentLoaded", () => {
             medicineNameSelect.addEventListener("change", () => {
                 batchNumberSelect.innerHTML = '<option value="" selected disabled>Select Batch Number</option>';
                 const stockLevelSpan = template.querySelector(".stock-level-update");
+
+                batchNumberError.textContent = 'Please select a batch number for the updated medicine.';
+                batchNumberError.classList.remove('hidden');
+
                 if (stockLevelSpan) stockLevelSpan.textContent = "";
                 fetchBatchNumbers(batchNumberSelect, medicineNameSelect.value);
             });
