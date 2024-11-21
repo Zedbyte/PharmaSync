@@ -336,9 +336,9 @@
                                 <div class="flex items-center">
                                     <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                                    <span class="ml-2">Purchase ID</span>
                                 </div>
                             </th>
+                            <th scope="col" class="px-6 py-3">Purchase ID</th>
                             <th scope="col" class="px-6 py-3">Date</th>
                             <th scope="col" class="px-6 py-3">Vendor</th>
                             <th scope="col" class="px-6 py-3">Material Types</th>
@@ -350,13 +350,20 @@
                     </thead>
                     {% for purchase in purchaseMaterials %}
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td class="md:px-6 md:py-4">
+                            <td class="w-4 p-4">
+                                <div class="flex items-center">
+                                    <input id="{{ purchase.purchase_id }}" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                                </div>
+                            </td>
+                            <!-- <td class="md:px-6 md:py-4">
                                 <div class="flex items-center px-4">
                                     <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     <label class="sr-only">checkbox</label>
                                     <span class="ml-2">{{ purchase.purchase_id }}</span>
                                 </div>
-                            </td>
+                            </td> -->
+                            <td class="md:px-6 md:py-4">{{ purchase.purchase_id }}</td>
                             <td class="md:px-6 md:py-4 px-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ purchase.date_of_purchase }}</td>
                             <td class="md:px-6 md:py-4">{{ purchase.vendor_name }}</td>
                             <td class="px-10 md:px-6 md:py-4">{{ purchase.material_types | title }}</td>
