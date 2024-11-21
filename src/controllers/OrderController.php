@@ -497,7 +497,7 @@ class OrderController extends BaseController {
         }
     
         // Validate each medicine's data
-        foreach ($data['medicine_name'] as $index => $medicineName) {
+        foreach ($data['medicine_id'] as $index => $medicineName) {
             // Check if required fields are provided for each medicine entry
             if (empty($medicineName)) {
                 $errors[] = "Medicine name for item " . ($index + 1) . " is required.";
@@ -568,7 +568,7 @@ class OrderController extends BaseController {
         if (empty($data['medicine_type']) || empty($data['medicine_name']) || empty($data['batch_number']) || empty($data['quantity'])) {
             $errors['items'] = 'All medicine item fields are required.';
         } else {
-            foreach ($data['medicine_type'] as $index => $type) {
+            foreach ($data['quantity'] as $index => $type) {
                 // Medicine Type
                 if (empty($type)) {
                     $errors["medicine_type_{$index}"] = "Medicine type is required for item #" . ($index + 1);
