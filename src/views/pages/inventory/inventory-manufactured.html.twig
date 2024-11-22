@@ -99,10 +99,11 @@
     <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
 
     <!-- Sliding Panel -->
-    <!-- <div id="addOrderPanel" class="fixed right-0 top-0 w-full xl:w-1/2 h-full bg-white 
-    dark:bg-gray-800 transform translate-x-full transition-transform duration-300 shadow-lg z-50 overflow-y-auto">
-        
-    </div> -->
+    <div id="addBatchPanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+    bg-white dark:bg-gray-800 opacity-0 scale-95 transition-all duration-300 shadow-lg z-50 overflow-y-auto hidden 
+    w-full h-full xl:w-1/2 xl:h-auto xl:max-h-[56rem] xl:rounded-lg">
+        {% include 'add-manufactured.html.twig' %}
+    </div>
 
     <!-- Update Panel -->
     <!-- <div id="updateOrderPanel" class="fixed right-0 top-0 w-full xl:w-1/2 h-full bg-white 
@@ -159,19 +160,19 @@
 
                 <div class="flex justify-end w-6/12">
                     <div class="mb-3 2xl:mb-0">
-                        <button onclick="addOrderTogglePanel()" class="bg-[#2998FF] hover:bg-[#3280c9]  
+                        <button onclick="addBatchTogglePanel()" class="bg-[#2998FF] hover:bg-[#3280c9]  
                         dark:bg-[#7655fa] dark:hover:bg-[#8162fa] transition-all duration-200 text-white 
                         rounded-lg px-3 py-2.5 flex justify-center items-center text-nowrap">
                             <ion-icon name="add-outline" class="add__icon dark:text-[#fdfdfd] mr-2"></ion-icon>    
-                            Add Order
+                            Add Batch
                         </button>
                     </div>
                 </div>
             </div>
     
-            <div class="h-full p-6 rounded-b-lg border-x border-b border-t-0 dark:border-slate-800 bg-gray-50 border-gray-300 dark:bg-slate-500 flex-grow">
+            <div class="h-full p-6 rounded-lg border-x border dark:border-slate-800 bg-gray-50 border-gray-300 dark:bg-slate-500 flex-grow">
 
-                <div class="w-full max-h-[24rem] overflow-y-auto border border-gray-300 dark:border-gray-700 rounded-lg">
+                <div class="w-full max-h-[29rem] overflow-y-auto border border-gray-300 dark:border-gray-700 rounded-lg">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="relative text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr class="sticky top-0 bg-white dark:bg-gray-700">
@@ -188,16 +189,19 @@
                                     Medicine
                                 </th>
                                 <th scope="col" class="px-6 py-3">
+                                    Composition
+                                </th>
+                                <th scope="col" class="px-6 py-3">
                                     Type
                                 </th>
                                 <th scope="col" class="px-6 py-3">
+                                    Therapeutic Class
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Regulatory Class
+                                </th>
+                                <th scope="col" class="px-6 py-3">
                                     Batch Details
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Rack
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Actions
                                 </th>
                             </tr>
                         </thead>
@@ -213,50 +217,98 @@
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ medicine.id }}
                                     </th>
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-4 text-gray-900 dark:text-gray-100">
                                         {{ medicine.name }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ medicine.composition }}
                                     </td>
                                     <td class="px-6 py-4">
                                         {{ medicine.type }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {% for batch in medicine.batches %}
-                                            <div>
-                                                Batch ID: {{ batch.id }} <br/> 
-                                                Expiry Date: {{ batch.expiry_date }} <br/>
-                                                Stock Leve: {{ batch.stock_level }}
-                                            </div>
-                                        {% endfor %}
+                                        {{ medicine.therapeutic_class }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        Rack
+                                        {{ medicine.regulatory_class }}
                                     </td>
-                                    <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap justify-center items-center">
-                                        <button 
-                                        onclick="updateOrderPanel(this)"
-                                        data-id="{{ order.order_id }}" 
-                                        class="showUpdateOrderPanel text-blue-400 
-                                        dark:text-blue-700 
-                                        hover:text-blue-800 text-xs md:text-base transition-all duration-200">
-                                            <i class="fa-solid fa-pen-to-square"></i>
+                                    <td class="px-6 py-4">
+                                        <button onclick="toggleDetails('details-{{ medicine.id }}')" 
+                                        class="text-blue-500 hover:underline dark:text-blue-400">
+                                        View Details
                                         </button>
-                                        
-                                        <button 
-                                        onclick="openDeleteModal(this)" 
-                                        data-id="{{ order.order_id }}" 
-                                        data-material-count="{{ order.product_count }}" 
-                                        class="text-red-400 hover:text-red-800 dark:text-red-700 
-                                        text-xs md:text-base transition-all duration-200">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-
-                                        <button 
-                                        onclick="viewOrderPanel(this)" 
-                                        data-id="{{ order.order_id }}" 
-                                        class="text-green-400 hover:text-green-800 dark:text-green-700 
-                                        dark:hover:text-green-700 text-xs md:text-base transition-all duration-200">
-                                            <i class="fa-solid fa-circle-info"></i>
-                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- Batch Details (Hidden by Default) -->
+                                <tr id="details-{{ medicine.id }}" class="hidden">
+                                    <td colspan="8" class="bg-gray-50 p-4 dark:bg-gray-700">
+                                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+                                            <thead>
+                                                <tr>
+                                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
+                                                        Batch ID
+                                                    </th>
+                                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
+                                                        Expiry Date
+                                                    </th>
+                                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
+                                                        Stock Level
+                                                    </th>
+                                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
+                                                        Rack
+                                                    </th>
+                                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-200">
+                                                        Actions
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for batch in medicine.batches %}
+                                                <tr>
+                                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                                        {{ batch.id }}
+                                                    </td>
+                                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                                        {{ batch.expiry_date }}
+                                                    </td>
+                                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                                        {{ batch.stock_level }}
+                                                    </td>
+                                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                                        {{ batch.rack_id }}
+                                                    </td>
+                                                    <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap items-center">
+                                                        <button 
+                                                        onclick="updateOrderPanel(this)"
+                                                        data-id="{{ order.order_id }}" 
+                                                        class="showUpdateOrderPanel text-blue-400 
+                                                        dark:text-blue-700  dark:hover:text-blue-500
+                                                        hover:text-blue-800 text-xs md:text-base transition-all duration-200">
+                                                            <i class="fa-solid fa-pen-to-square"></i>
+                                                        </button>
+                                                        
+                                                        <button 
+                                                        onclick="openDeleteModal(this)" 
+                                                        data-id="{{ order.order_id }}" 
+                                                        data-material-count="{{ order.product_count }}" 
+                                                        class="text-red-400 hover:text-red-800 dark:text-red-700 
+                                                        dark:hover:text-red-500
+                                                        text-xs md:text-base transition-all duration-200">
+                                                            <i class="fa-solid fa-trash"></i>
+                                                        </button>
+                                                        
+                                                        <button 
+                                                        onclick="viewOrderPanel(this)" 
+                                                        data-id="{{ order.order_id }}" 
+                                                        class="text-green-400 hover:text-green-800 dark:text-green-700 
+                                                        dark:hover:text-green-500 text-xs md:text-base transition-all duration-200">
+                                                            <i class="fa-solid fa-circle-info"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -274,7 +326,13 @@
 
 {% block scripts %}
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="{{ ASSETS_URL }}/js/order/calendarThemeOrder.js"></script>
+    <!-- <script src="{{ ASSETS_URL }}/js/inventory/calendarThemeOrder.js"></script> -->
+    <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addBatchTogglePanel.js"></script>
+    <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addRemoveBatch.js"></script>
+    <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addBatchUpdateMedList.js"></script>
+    <script src="{{ ASSETS_URL }}/js/inventory/manufactured/calendarThemeManufactured.js"></script>
+    <script src="{{ ASSETS_URL }}/js/inventory/manufactured/rackDetails.js"></script>
+    <script src="{{ ASSETS_URL }}/js/inventory/manufactured/viewBatchDetails.js"></script>
 
 
 {% endblock %}

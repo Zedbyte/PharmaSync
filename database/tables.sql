@@ -121,6 +121,7 @@ CREATE TABLE `order_medicine` (
 CREATE TABLE `batches` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `production_date` date NOT NULL,
+    `rack_id` int(11) NOT NULL,
     PRIMARY KEY (`id`)
 ) 
 
@@ -135,17 +136,34 @@ CREATE TABLE `medicine_batch` (
     CONSTRAINT `medicine_batch_ibfk_2` FOREIGN KEY (`batch_id`) REFERENCES `batches` (`id`) ON DELETE NO ACTION
 )
 
-CREATE TABLE `inventories` (
+-- CREATE TABLE `inventories` (
+--     `id` int(11) NOT NULL AUTO_INCREMENT,
+--     `rack_id` int(11) NOT NULL,
+--     PRIMARY KEY (`id`)
+-- )
+
+-- CREATE TABLE `inventories_batch` (
+--     `inventory_id` int(11) NOT NULL,
+--     `batch_id` int(11) NOT NULL,
+--     PRIMARY KEY (`inventory_id`,`batch_id`),
+--     KEY `batch_id` (`batch_id`),
+--     CONSTRAINT `inventories_batch_ibfk_1` FOREIGN KEY (`inventory_id`) REFERENCES `inventories` (`id`) ON DELETE NO ACTION,
+--     CONSTRAINT `inventories_batch_ibfk_2` FOREIGN KEY (`batch_id`) REFERENCES `batches` (`id`) ON DELETE NO ACTION
+-- )
+
+CREATE TABLE `racks` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `rack_id` int(11) NOT NULL,
+    `location` varchar(255) NOT NULL,
+    `temperature_controlled` tinyint(4) NOT NULL,
+    `capacity` double NOT NULL,
     PRIMARY KEY (`id`)
 )
 
-CREATE TABLE `inventories_batch` (
-    `inventory_id` int(11) NOT NULL,
+CREATE TABLE `batch_rack` (
+    `rack_id` int(11) NOT NULL,
     `batch_id` int(11) NOT NULL,
-    PRIMARY KEY (`inventory_id`,`batch_id`),
+    PRIMARY KEY (`rack_id`,`batch_id`) USING BTREE,
     KEY `batch_id` (`batch_id`),
-    CONSTRAINT `inventories_batch_ibfk_1` FOREIGN KEY (`inventory_id`) REFERENCES `inventories` (`id`) ON DELETE NO ACTION,
-    CONSTRAINT `inventories_batch_ibfk_2` FOREIGN KEY (`batch_id`) REFERENCES `batches` (`id`) ON DELETE NO ACTION
-)
+    CONSTRAINT `batch_rack_ibfk_1` FOREIGN KEY (`batch_id`) REFERENCES `batches` (`id`) ON DELETE NO ACTION,
+    CONSTRAINT `batch_rack_ibfk_2` FOREIGN KEY (`rack_id`) REFERENCES `racks` (`id`) ON DELETE NO ACTION
+) 

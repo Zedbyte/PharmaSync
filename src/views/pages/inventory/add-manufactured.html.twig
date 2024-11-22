@@ -1,0 +1,107 @@
+<div class="h-full w-full px-8 py-6">
+    <div class="flex justify-between mb-6">
+        <h2 class="text-2xl font-semibold">Add Batch</h2>
+        <button onclick="addBatchTogglePanel()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-all duration-150">
+            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Batch Information Section -->
+    <form action="/add-batch" method="post" class="">
+        <div class="grid grid-cols-10 gap-5">
+            <div class="col-span-5">
+                <label for="production-date" class="block text-sm font-medium">Production Date</label>
+                <input type="text" id="production-date" name="production_date" placeholder="28 Jun, 2022 - 10:00"
+                class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-blue-400 
+                dark:focus:border-blue-500 dark:bg-gray-700 px-4" onfocus="(this.type='date')" onblur="(this.type='text')" >
+            </div>
+
+            <div class="col-span-5">
+                <label for="rack" class="block text-sm font-medium">Rack</label>
+                <select id="rack-id" name="rack[]" class="rack mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    <option value="" selected disabled>Select a Rack</option>
+                    {% for rack in rackData %}
+                        <option value="{{ rack.id }}">{{ rack.id }} - {{ rack.location }}</option>
+                    {% endfor %}
+
+                </select>
+
+                <div class="rack-item flex items-center space-x-3 p-3 rounded-lg mt-5
+                {% if rack.temperature_controlled == 1 %}bg-blue-200 text-blue-800 dark:bg-blue-700 dark:text-blue-100{% else %}
+                bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300{% endif %}">
+                    Please select a rack.
+                </div>
+            </div>
+        </div>
+
+        <!-- Items Section -->
+        <div class="border-t border-gray-300 dark:border-gray-600 mt-6 pt-6">
+            <h3 class="text-xl font-semibold mb-6">Medicine in Batch</h3>
+
+            <div id="items__container" class="space-y-6">
+                <div class="item__template relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 border-b border-gray-300 dark:border-gray-600 py-6">
+
+                    <div>
+                        <label for="medicine-type" class="block text-sm font-medium">Medicine Type</label>
+                        <select id="medicine-type-id" name="medicine_type[]" class="medicine-type mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                            <option value="" selected disabled>Select Medicine Type</option>
+                            <option value="%">All</option>
+                            <option value="liquid">Liquid</option>
+                            <option value="tablet">Tablet</option>
+                            <option value="capsule">Capsule</option>
+                            <option value="topical">Topical Medicine</option>
+                            <option value="suppository">Suppository</option>
+                            <option value="drops">Drops</option>
+                            <option value="inhaler">Inhaler</option>
+                            <option value="injection">Injection</option>
+                            <option value="implant_patch">Implant or Patch</option>
+                            <option value="buccal_sublingual">Buccal or Sublingual</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="medicine-name" class="block text-sm font-medium">Medicine Name</label>
+                        <select id="medicine-name-id" name="medicine_name[]" class="medicine-name mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                            <option value="" selected disabled>Select Medicine Name</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="expiry-date" class="block text-sm font-medium">Expiry Date</label>
+                        <input type="text" id="expiry-date" name="expiry_date[]" placeholder="28 Jun, 2022 - 10:00"
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-blue-400 
+                        dark:focus:border-blue-500 dark:bg-gray-700 px-4" onfocus="(this.type='date')" onblur="(this.type='text')" >
+                    </div>
+
+                    <div>
+                        <label for="stock-level" class="text-sm font-medium flex justify-between">Stock Level 
+                        </label>
+                        <input type="number" id="stock-level-id" name="stock_level[]" placeholder="1" min="1"
+                        class="stock-level mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                    </div>
+
+                    <div class="absolute right-0 top-[-15px] mb-4">
+                        <button onclick="removeItem(event)" class="remove-button hidden bg-red-500 hover:bg-red-600 text-white px-2 py-2 rounded transition-all duration-150  items-center space-x-1"> 
+                            <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/>
+                            </svg>  
+                            <p class="text-sm">Remove</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            
+            <button type="button" onclick="addNewItem()" class="transition-all duration-150 mt-4 px-4 py-2 text-white bg-[#2998FF] dark:bg-[#7655fa] rounded-lg hover:bg-opacity-80">Add Another Item</button>
+            
+        </div>
+
+        <!-- Save and Reset Buttons -->
+        <div class="flex justify-end gap-4 mt-6 pb-6">
+            <button type="reset" class="transition-all duration-150 px-6 py-2 rounded-lg bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-700">Reset</button>
+            <button type="submit" class="transition-all duration-150 px-6 py-2 text-white bg-[#2998FF] dark:bg-[#7655fa] rounded-lg hover:bg-opacity-80">Save</button>
+        </div>
+    </form>
+</div>

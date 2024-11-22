@@ -243,10 +243,29 @@ try {
      * 
      */
 
-    // Inventory Page [GET]
+    // Manufactured Page [GET]
     $router->respond('GET', '/inventory/manufactured', function() use ($manufacturedController) {
-    AuthMiddleware::checkAuth();
-    $manufacturedController->display();
+        AuthMiddleware::checkAuth();
+        $manufacturedController->display();
+    });
+
+    // Add Manufactured Batch [POST]
+    $router->respond('POST', '/add-batch', function() use ($manufacturedController) {
+        AuthMiddleware::checkAuth();
+        $manufacturedController->addBatch();
+    });
+
+    // Add Manufactured Batch [GET]
+    $router->respond('GET', '/add-batch', function() use ($manufacturedController) {
+        AuthMiddleware::checkAuth();
+        $manufacturedController->addBatch();
+    });
+
+    // Get Rack Details [GET]
+    $router->respond('GET', '/rack-details/[i:rackID]', function($request) use ($manufacturedController) {
+        AuthMiddleware::checkAuth();
+        $orderID = $request->param('rackID');
+        $manufacturedController->getRackData($orderID);
     });
 
     $router->dispatch();

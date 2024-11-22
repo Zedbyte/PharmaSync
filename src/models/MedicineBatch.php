@@ -17,13 +17,17 @@ class MedicineBatch extends BaseModel
         $sql = "INSERT INTO `medicine_batch` 
                 SET
                     `medicine_id` = :medicine_id,
-                    `batch_id` = :batch_id";
+                    `batch_id` = :batch_id,
+                    `stock_level` = :stock_level,
+                    `expiry_date` = :expiry_date";
 
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute([
                 'medicine_id' => $data['medicine_id'],
-                'batch_id' => $data['batch_id']
+                'batch_id' => $data['batch_id'],
+                'stock_level' => $data['stock_level'],
+                'expiry_date' => $data['expiry_date']
             ]);
         } catch (PDOException $e) {
             error_log($e->getMessage());

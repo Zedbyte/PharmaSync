@@ -16,15 +16,13 @@ class Batch extends BaseModel
         $sql = "INSERT INTO `batches` 
                 SET
                     `production_date` = :production_date,
-                    `expiry_date` = :expiry_date,
-                    `quantity` = :quantity";
+                    `rack_id` = :rack_id";
 
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute([
                 'production_date' => $data['production_date'],
-                'expiry_date' => $data['expiry_date'],
-                'quantity' => $data['quantity']
+                'rack_id' => $data['rack_id']
             ]);
 
             return $this->db->lastInsertId();
