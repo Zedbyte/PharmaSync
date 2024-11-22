@@ -35,7 +35,7 @@ document.getElementById('rack-id').addEventListener('change', async function () 
         rackItemDiv.className = `rack-item flex items-center space-x-3 p-3 rounded-lg mt-5 ${
         data.rackData.temperature_controlled
             ? 'bg-blue-200 text-blue-800 dark:bg-blue-700 dark:text-blue-100'
-            : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
+            : 'bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-300'
         }`;
     } catch (error) {
         console.error('Error:', error.message);
