@@ -268,6 +268,14 @@ try {
         $manufacturedController->getRackData($orderID);
     });
 
+    // Delete Batch [POST]
+    $router->respond('POST', '/delete-batch/[i:medicineID]/[i:batchID]', function($request) use ($manufacturedController) {
+        AuthMiddleware::checkAuth();
+        $medicineID = $request->param('medicineID');
+        $batchID = $request->param('batchID');
+        $manufacturedController->deleteBatch($medicineID, $batchID);
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {

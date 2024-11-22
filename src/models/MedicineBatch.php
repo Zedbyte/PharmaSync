@@ -37,21 +37,62 @@ class MedicineBatch extends BaseModel
 
     public function delete($medicineId, $batchId)
     {
-        $sql = "DELETE FROM `medicine_batch` 
-                WHERE `medicine_id` = :medicine_id 
-                AND `batch_id` = :batch_id";
-
         try {
-            $statement = $this->db->prepare($sql);
-            $statement->execute([
+            // Start transaction
+            $this->db->beginTransaction();
+    
+            // Delete the medicine-batch association
+            $deleteSql = "DELETE FROM `medicine_batch` 
+                            WHERE `medicine_id` = :medicine_id 
+                            AND `batch_id` = :batch_id";
+            $deleteStmt = $this->db->prepare($deleteSql);
+            $deleteStmt->execute([
                 'medicine_id' => $medicineId,
                 'batch_id' => $batchId
             ]);
+    
+            // Check and delete the batch if no associations remain
+            $this->deleteBatchIfUnused($batchId);
+    
+            // Commit the transaction
+            $this->db->commit();
+    
         } catch (PDOException $e) {
+            // Rollback transaction on failure
+            $this->db->rollBack();
             error_log($e->getMessage());
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
+
+    private function deleteBatchIfUnused($batchId)
+    {
+        try {
+            // Check if the batch still has any remaining associations
+            $checkSql = "SELECT COUNT(*) AS total 
+                            FROM `medicine_batch` 
+                            WHERE `batch_id` = :batch_id";
+            $checkStmt = $this->db->prepare($checkSql);
+            $checkStmt->execute(['batch_id' => $batchId]);
+            $row = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($row && $row['total'] == 0) {
+                // If no associations remain, delete the batch
+                $deleteBatchSql = "DELETE FROM `batches` 
+                                    WHERE `id` = :batch_id";
+                $deleteBatchStmt = $this->db->prepare($deleteBatchSql);
+                $deleteBatchStmt->execute(['batch_id' => $batchId]);
+
+                error_log("Batch $batchId deleted as it has no remaining associations. [from deleteBatchIfUnused()]");
+            } else {
+                error_log("Batch $batchId still has associations and was not deleted. [from deleteBatchIfUnused()]");
+            }
+        } catch (PDOException $e) {
+            error_log("Error checking or deleting batch $batchId: " . $e->getMessage());
+            throw new Exception("Error managing batch $batchId: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
 
     public function decreaseStockLevel($medicineId, $batchId, $quantity)
     {   

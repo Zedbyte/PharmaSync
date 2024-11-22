@@ -93,6 +93,14 @@ class ManufacturedController extends BaseController
         unset($_SESSION['batch_errors']);
     }
 
+    public function deleteBatch($medicineID, $batchID) {
+        $medicineBatchObject = new MedicineBatch();
+        $medicineBatchObject->delete($medicineID, $batchID);
+        
+        header('Location: /inventory/manufactured');
+        exit;
+    }
+
     public function getRackData($id) {
         $rackObject = new Rack();
         $rackData = $rackObject->getRack($id);

@@ -112,9 +112,9 @@
     </div> -->
 
     <!-- Delete Modal -->
-    <!-- <div id="deleteOrderModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
-        
-    </div> -->
+    <div id="deleteBatchModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
+        {% include 'delete-manufactured.html.twig' %}
+    </div>
 
     <!-- View Panel -->
     <!-- <div id="viewOrderPanel" class="fixed right-0 top-0 w-full xl:w-1/2 h-full bg-white 
@@ -289,8 +289,10 @@
                                                         
                                                         <button 
                                                         onclick="openDeleteModal(this)" 
-                                                        data-id="{{ order.order_id }}" 
-                                                        data-material-count="{{ order.product_count }}" 
+                                                        data-batch-id="{{ batch.id }}" 
+                                                        data-batch-stock="{{ batch.stock_level }}"
+                                                        data-medicine-id="{{ medicine.id }}"
+                                                        data-medicine-name="{{ medicine.name }}"
                                                         class="text-red-400 hover:text-red-800 dark:text-red-700 
                                                         dark:hover:text-red-500
                                                         text-xs md:text-base transition-all duration-200">
@@ -333,6 +335,7 @@
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/calendarThemeManufactured.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/rackDetails.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/viewBatchDetails.js"></script>
+    <script src="{{ ASSETS_URL }}/js/inventory/manufactured/openDeleteModal.js"></script>
 
 
 {% endblock %}
