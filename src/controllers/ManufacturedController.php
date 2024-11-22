@@ -41,17 +41,22 @@ class ManufacturedController extends BaseController
         $rackObject = new Rack();
         $rackData = $rackObject->getAllRacks();
 
+        // For Add to Existing Batch
+        $batchObject = new Batch();
+        $batchData = $batchObject->getAllBatches();
+
         echo $this->twig->render('inventory-manufactured.html.twig', [
             'ASSETS_URL' => ASSETS_URL,
             'medicineData' => $medicineData,
             'rackData' => $rackData,
-            'errors' => $errors
+            'errors' => $errors,
+            'batchData_existing' => $batchData
         ]);
     }
 
     public function addBatch() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = $_POST; // Assuming data is coming from the POST request
+            $data = $_POST;
             
             // Validate the data
             $errors = $this->validateBatchData($data);
@@ -93,6 +98,44 @@ class ManufacturedController extends BaseController
         unset($_SESSION['batch_errors']);
     }
 
+    public function addToExistingBatch() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = $_POST;
+    
+            // Validate the data
+            $errors = $this->validateExistingBatchData($data);
+            if (!empty($errors)) {
+                $_SESSION['batch_errors'] = $errors;
+                // Redirect to the same route with GET (to prevent resubmission)
+                header('Location: /add-to-existing-batch');
+                exit;
+            }
+    
+            // Add medicine batch information
+            $medicineBatchObject = new MedicineBatch();
+            foreach ($data['medicine_name'] as $index => $medicineName) {
+                $medicineBatchObject->save([
+                    'medicine_id' => $medicineName,
+                    'batch_id' => $data['batch_number'][0], // Use the existing batch number
+                    'stock_level' => $data['stock_level'][$index],
+                    'expiry_date' => str_replace(' - ', ' ', $data['expiry_date'][$index])
+                ]);
+            }
+    
+            // Redirect to the inventory page or another relevant page
+            header("Location: /inventory/manufactured");
+            exit;
+        }
+    
+        $errors = isset($_SESSION['batch_errors']) ? $_SESSION['batch_errors'] : [];
+    
+        // Render the template with errors, if any
+        $this->display($errors);
+    
+        // Clear the errors from session after they are displayed
+        unset($_SESSION['batch_errors']);
+    }
+
     public function deleteBatch($medicineID, $batchID) {
         $medicineBatchObject = new MedicineBatch();
         $medicineBatchObject->delete($medicineID, $batchID);
@@ -107,6 +150,15 @@ class ManufacturedController extends BaseController
 
         header('Content-Type: application/json');
         echo json_encode(["rackData" => $rackData]);
+        exit;
+    }
+
+    public function getBatchDetails($id) {
+        $batchObject = new Batch();
+        $batchDetails = $batchObject->getBatch($id);
+
+        header('Content-Type: application/json');
+        echo json_encode(["batchDetails" => $batchDetails]);
         exit;
     }
 
@@ -126,6 +178,49 @@ class ManufacturedController extends BaseController
         }
     
         // Validate medicine-related data if the keys exist
+        $medicineNames = $data['medicine_name'] ?? [];
+        $expiryDates = $data['expiry_date'] ?? [];
+        $stockLevels = $data['stock_level'] ?? [];
+    
+        // Ensure all arrays are the same size
+        $itemCount = max(count($medicineNames), count($expiryDates), count($stockLevels));
+    
+        for ($index = 0; $index < $itemCount; $index++) {
+            // Medicine name
+            if (empty($medicineNames[$index] ?? null)) {
+                $errors[] = "Medicine name is required for item " . ($index + 1) . ".";
+            }
+    
+            // Expiry date
+            if (empty($expiryDates[$index] ?? null)) {
+                $errors[] = "Expiry date is required for item " . ($index + 1) . ".";
+            } elseif (!empty($expiryDates[$index] ?? null) && !strtotime(str_replace(' - ', ' ', $expiryDates[$index]))) {
+                $errors[] = "Expiry date is invalid for item " . ($index + 1) . ".";
+            }
+    
+            // Stock level
+            if (empty($stockLevels[$index] ?? null)) {
+                $errors[] = "Stock level is required for item " . ($index + 1) . ".";
+            } elseif (!is_numeric($stockLevels[$index] ?? null) || ($stockLevels[$index] ?? 0) <= 0) {
+                $errors[] = "Stock level must be a positive number for item " . ($index + 1) . ".";
+            }
+        }
+    
+        return $errors;
+    }
+    
+
+    private function validateExistingBatchData($data) {
+        $errors = [];
+        
+        // Validate batch number
+        if (empty($data['batch_number'][0] ?? null)) {
+            $errors[] = "Batch number is required.";
+        } elseif (!is_numeric($data['batch_number'][0])) {
+            $errors[] = "Batch number must be a valid number.";
+        }
+        
+        // Validate medicine-related data
         $medicineNames = $data['medicine_name'] ?? [];
         $expiryDates = $data['expiry_date'] ?? [];
         $stockLevels = $data['stock_level'] ?? [];

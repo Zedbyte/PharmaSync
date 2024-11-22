@@ -70,7 +70,15 @@ class Batch extends BaseModel
 
     public function getBatch($id)
     {
-        $sql = "SELECT * FROM `batches` WHERE `id` = :id";
+        $sql = "SELECT 
+        b.id AS batch_id, 
+        b.production_date, 
+        b.rack_id AS rack_id_fk,  
+        r.id AS rack_id_pk,
+        r.location,
+        r.temperature_controlled
+        FROM batches b JOIN racks r ON b.rack_id = r.id
+        WHERE b.id = :id";
 
         try {
             $statement = $this->db->prepare($sql);

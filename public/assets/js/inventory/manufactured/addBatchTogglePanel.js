@@ -1,5 +1,5 @@
-function addBatchTogglePanel() {
-    const addPanel = document.getElementById("addBatchPanel");
+function addBatchTogglePanel(panel) {
+    const addPanel = document.getElementById(panel);
     const addOverlay = document.getElementById("overlay");
 
     if (addPanel.classList.contains("hidden")) {

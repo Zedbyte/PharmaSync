@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const target = event.target;
 
         if (target.matches(".medicine-type")) {
-            const itemTemplate = target.closest(".item__template");
+            const itemTemplate = target.closest(".item__template") || target.closest(".item__template_existing");
             const medicineNameSelect = itemTemplate.querySelector(".medicine-name");
             fetchMedicineNames(medicineNameSelect, target.value);
         } 

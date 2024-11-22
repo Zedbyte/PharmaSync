@@ -264,8 +264,8 @@ try {
     // Get Rack Details [GET]
     $router->respond('GET', '/rack-details/[i:rackID]', function($request) use ($manufacturedController) {
         AuthMiddleware::checkAuth();
-        $orderID = $request->param('rackID');
-        $manufacturedController->getRackData($orderID);
+        $batchID = $request->param('rackID');
+        $manufacturedController->getRackData($batchID);
     });
 
     // Delete Batch [POST]
@@ -274,6 +274,19 @@ try {
         $medicineID = $request->param('medicineID');
         $batchID = $request->param('batchID');
         $manufacturedController->deleteBatch($medicineID, $batchID);
+    });
+
+    // Get Rack Details [GET]
+    $router->respond('GET', '/batch-details/[i:batchID]', function($request) use ($manufacturedController) {
+        AuthMiddleware::checkAuth();
+        $batchID = $request->param('batchID');
+        $manufacturedController->getBatchDetails($batchID);
+    });
+
+    // Add Manufactured to Existing Batch [POST]
+    $router->respond('POST', '/add-existing-batch', function($request) use ($manufacturedController) {
+        AuthMiddleware::checkAuth();
+        $manufacturedController->addToExistingBatch();
     });
 
     $router->dispatch();
