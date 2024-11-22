@@ -434,7 +434,7 @@
                                 onclick="updatePurchasePanel(this)"
                                 data-id="{{ purchase.purchase_id }}" 
                                 class="text-blue-400 
-                                dark:text-blue-700 
+                                dark:text-blue-700 dark:hover:text-blue-500
                                 hover:text-blue-800 text-xs md:text-base transition-all duration-200">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
@@ -444,6 +444,7 @@
                                 data-id="{{ purchase.purchase_id }}" 
                                 data-material-count="{{ purchase.material_count }}" 
                                 class="text-red-400 hover:text-red-800 dark:text-red-700 
+                                dark:hover:text-red-500
                                 text-xs md:text-base transition-all duration-200">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
@@ -452,7 +453,7 @@
                                 onclick="viewPurchasePanel(this)" 
                                 data-id="{{ purchase.purchase_id }}" 
                                 class="text-green-400 hover:text-green-800 dark:text-green-700 
-                                dark:hover:text-green-700 text-xs md:text-base transition-all duration-200">
+                                dark:hover:text-green-500 text-xs md:text-base transition-all duration-200">
                                     <i class="fa-solid fa-circle-info"></i>
                                 </button>
                             </td>
