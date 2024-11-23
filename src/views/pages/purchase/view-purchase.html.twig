@@ -142,8 +142,12 @@
                                         </thead>
                                         <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
                                             <tr>
-                                                <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">Batch Number</td>
-                                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{{ item.batch_number }}</td>
+                                                <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">Lot Number</td>
+                                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                                    {{ item.lot_id }}
+                                                    <br/>
+                                                    <span class="text-gray-400">{{ item.lot_number }}</span>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">Material Description</td>
