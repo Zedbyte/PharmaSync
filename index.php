@@ -246,7 +246,8 @@ try {
     // Manufactured Page [GET]
     $router->respond('GET', '/inventory/manufactured', function() use ($manufacturedController) {
         AuthMiddleware::checkAuth();
-        $manufacturedController->display();
+        $batchSearch = $_GET['q'] ?? null;
+        $manufacturedController->display(null, $batchSearch);
     });
 
     // Add Manufactured Batch [POST]

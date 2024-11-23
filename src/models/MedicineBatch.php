@@ -211,18 +211,34 @@ class MedicineBatch extends BaseModel
         }
     }
 
-    public function getBatchMedicinesAndBatchData($medicineID)
+    public function getBatchMedicinesAndBatchData($medicineID, $batchID=null)
     {
-        $sql = "SELECT * FROM medicine_batch mb JOIN batches b ON mb.batch_id = b.id
-                WHERE mb.medicine_id = :medicine_id";
+        // Base SQL query
+        $sql = "SELECT * FROM medicine_batch mb 
+        JOIN batches b ON mb.batch_id = b.id
+        WHERE mb.medicine_id = :medicine_id";
+
+        // Bind parameters
+        $params = ['medicine_id' => $medicineID];
+
+        // Add condition for batch_id if it exists
+        if (!empty($batchID)) {
+            $sql .= " AND mb.batch_id = :batch_id";
+            $params['batch_id'] = $batchID;
+        }
 
         try {
+            // Prepare the query
             $statement = $this->db->prepare($sql);
-            $statement->execute(['medicine_id' => $medicineID]);
+
+            // Execute with parameters
+            $statement->execute($params);
+
+            // Fetch and return results
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log($e->getMessage());
-            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int) $e->getCode());
         }
     }
 
@@ -268,6 +284,65 @@ class MedicineBatch extends BaseModel
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
+
+    public function getProductCount() {
+        $sql = "SELECT COUNT(DISTINCT `medicine_id`) AS product_count FROM `medicine_batch`";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC)['product_count'];
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getTotalStocks()
+    {
+        $sql = "SELECT SUM(`stock_level`) AS total_stocks FROM `medicine_batch`";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC)['total_stocks'];
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getNearingOutOfStock()
+    {
+        $sql = "SELECT COUNT(DISTINCT `batch_id`) AS out_of_stock FROM `medicine_batch`
+                WHERE `stock_level` <= 50";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC)['out_of_stock'];
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getExpiringSoon()
+    {
+        $sql = "SELECT COUNT(DISTINCT `medicine_id`) AS expiring_soon FROM `medicine_batch`
+                WHERE `expiry_date` BETWEEN CURDATE() AND LAST_DAY(CURDATE())";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC)['expiring_soon'];
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+
 
 
 }

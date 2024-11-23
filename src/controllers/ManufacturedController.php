@@ -24,7 +24,7 @@ class ManufacturedController extends BaseController
         // $this->db = returnDBCon(new MedicineBatch()); // Initialize DB connection once
     }
 
-    public function display($errors = [])
+    public function display($errors = [], $batchSearch = null)
     {
         $medicineObject = new Medicine();
         $medicineBatchObject = new MedicineBatch();
@@ -34,8 +34,14 @@ class ManufacturedController extends BaseController
     
         // Merge batches with medicines
         foreach ($medicineData as &$medicine) {
-            $medicine['batches'] = $medicineBatchObject->getBatchMedicinesAndBatchData($medicine['id']);
+            $medicine['batches'] = $medicineBatchObject->getBatchMedicinesAndBatchData($medicine['id'], $batchSearch);
         }
+
+        $filteredMedicineData = array_filter($medicineData, function($medicine) {
+            return !empty($medicine['batches']); // Keep only medicines with non-empty batches
+        });
+
+        $medicineData = array_values($filteredMedicineData);
 
         // For Rack details rendering via JS
         $rackObject = new Rack();
@@ -45,12 +51,27 @@ class ManufacturedController extends BaseController
         $batchObject = new Batch();
         $batchData = $batchObject->getAllBatches();
 
+        //For KPI
+        $totalProducts = $medicineBatchObject->getProductCount();
+        $nearingOutOfStock = $medicineBatchObject->getNearingOutOfStock();
+        $expiringSoon = $medicineBatchObject->getExpiringSoon();
+        $totalStock = $medicineBatchObject->getTotalStocks();
+
+        // Creating a KPI array
+        $kpiData = [
+            'totalProducts' => $totalProducts,
+            'nearingOutOfStock' => $nearingOutOfStock,
+            'expiringSoon' => $expiringSoon,
+            'totalStock' => $totalStock
+        ];
+
         echo $this->twig->render('inventory-manufactured.html.twig', [
             'ASSETS_URL' => ASSETS_URL,
             'medicineData' => $medicineData,
             'rackData' => $rackData,
             'errors' => $errors,
-            'batchData_existing' => $batchData
+            'batchData_existing' => $batchData,
+            'KPI' => $kpiData
         ]);
     }
 
