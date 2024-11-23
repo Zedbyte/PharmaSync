@@ -2313,6 +2313,10 @@ video {
     width: auto;
   }
 
+  .sm\:w-3\/6 {
+    width: 50%;
+  }
+
   .sm\:grid-cols-6 {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
