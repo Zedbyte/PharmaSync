@@ -295,6 +295,19 @@ try {
         $manufacturedController->addToExistingBatch();
     });
 
+    $router->respond('GET', '/add-existing-batch/batch/[i:batchID]/medicines', function($request) use ($manufacturedController) {
+        AuthMiddleware::checkAuth();
+        $type = $_GET['type'] ?? null;
+        $batchID = $request->param('batchID');
+        $manufacturedController->medicineListExisting($type, $batchID);
+    });
+
+    $router->respond('GET', '/add-existing-batch/medicines', function($request) use ($manufacturedController) {
+        AuthMiddleware::checkAuth();
+        $type = $_GET['type'] ?? null;
+        $manufacturedController->medicineList($type);
+    });
+
     // Update Batch [GET]
     $router->respond('GET', '/update-batch/medicine/[i:medicineID]/batch/[i:batchID]', function($request) use ($manufacturedController) {
         AuthMiddleware::checkAuth();

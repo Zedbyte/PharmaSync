@@ -206,6 +206,40 @@ class ManufacturedController extends BaseController
         exit;
     }
 
+    public function medicineListExisting($type, $batchID) {
+
+        $medicineObject = new Medicine();
+        $medicineData = $medicineObject->getAllMedicinesByType($type);
+        
+        $medicineBatchObject = new MedicineBatch();
+        $existingBatchPairs = $medicineBatchObject->getBatchMedicines($batchID);
+        
+        // Extract medicine IDs from $existingBatchPairs
+        $existingMedicineIDs = array_column($existingBatchPairs, 'medicine_id');
+        
+        // Filter medicines to exclude those already paired with the given batch
+        $filteredMedicines = array_filter($medicineData, function ($medicine) use ($existingMedicineIDs) {
+            return !in_array($medicine['id'], $existingMedicineIDs);
+        });
+        
+        // Reset the array keys to ensure compatibility with JS forEach
+        $filteredMedicines = array_values($filteredMedicines);
+
+        header('Content-Type: application/json');
+        echo json_encode($filteredMedicines);
+        exit;
+    }
+
+    public function medicineList($type) {
+
+        $medicineObject = new Medicine();
+        $medicineData = $medicineObject->getAllMedicinesByType($type);
+
+        header('Content-Type: application/json');
+        echo json_encode($medicineData);
+        exit;
+    }
+
     private function validateBatchData($data) {
         $errors = [];
     
