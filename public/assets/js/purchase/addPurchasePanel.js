@@ -1,5 +1,5 @@
-function addPurchaseTogglePanel() {
-    const addPanel = document.getElementById("addPurchasePanel");
+function addPurchaseTogglePanel(panel) {
+    const addPanel = document.getElementById(panel);
     const addOverlay = document.getElementById("overlay");
 
     // Toggle the panel and overlay visibility

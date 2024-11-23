@@ -9,23 +9,20 @@ use \PDO;
 use \PDOException;
 use \Exception;
 
-class Material extends BaseModel
+class Lot extends BaseModel
 {
     public function save($data)
     {
-        $sql = "INSERT INTO materials 
+        $sql = "INSERT INTO `lots` 
                 SET
-                    `name`=:name,
-                    `description`=:description,
-                    `material_type`=:material_type";
+                    `number` = :number,
+                    `production_date` = :production_date";
 
         try {
             $statement = $this->db->prepare($sql);
-
             $statement->execute([
-                'name' => $data['name'],
-                'description' => $data['description'],
-                'material_type' => $data['material_type']
+                'number' => $data['number'],
+                'production_date' => $data['production_date']
             ]);
 
             return $this->db->lastInsertId();
@@ -35,55 +32,54 @@ class Material extends BaseModel
         }
     }
 
-    public function update($materialID, $data)
-    {   
-        $sql = "UPDATE materials 
+    public function update($id, $data)
+    {
+        $sql = "UPDATE `lots` 
                 SET
-                    `name` = :name,
-                    `description` = :description,
-                    `material_type` = :material_type
+                    `number` = :number,
+                    `production_date` = :production_date
                 WHERE `id` = :id";
 
         try {
             $statement = $this->db->prepare($sql);
-            
             $statement->execute([
-                'name' => $data['name'],
-                'description' => $data['description'],
-                'material_type' => $data['material_type'],
-                'id' => $materialID
+                'number' => $data['number'],
+                'production_date' => $data['production_date'],
+                'id' => $id
             ]);
 
+            return $statement->rowCount();
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
 
-    public function delete($materialID)
+    public function delete($id)
     {
-        $sql = "DELETE FROM materials WHERE `id` = :id";
-
-        try {
-            $statement = $this->db->prepare($sql);
-            
-            // Execute the query with the materialID as parameter
-            $statement->execute(['id' => $materialID]);
-
-        } catch (PDOException $e) {
-            error_log($e->getMessage());
-            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
-        }
-    }
-
-
-    public function getMaterial($id)
-    {
-        $sql = "SELECT * FROM materials WHERE id = :id";
+        $sql = "DELETE FROM `lots` 
+                WHERE `id` = :id";
 
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute(['id' => $id]);
+
+            return $statement->rowCount();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function get($id)
+    {
+        $sql = "SELECT * FROM `lots` 
+                WHERE `id` = :id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute(['id' => $id]);
+
             return $statement->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log($e->getMessage());
@@ -91,4 +87,16 @@ class Material extends BaseModel
         }
     }
 
+    public function getAll()
+    {
+        $sql = "SELECT * FROM `lots`";
+
+        try {
+            $statement = $this->db->query($sql);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
 }

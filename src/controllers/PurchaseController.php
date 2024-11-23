@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\Lot;
+use App\Models\MaterialLot;
 use App\Models\PurchaseMaterial;
 use App\Models\Purchase;
 use App\Models\Material;
@@ -139,15 +141,27 @@ class PurchaseController extends BaseController {
 
                 $purchaseID = $this->addPurchase($data);
                 $materialIDs = $this->addMaterials($data);
+                $lotIDs = $this->addLots($data);
 
                 foreach ($data['material_name'] as $index => $materialName) {
+
+                    (new MaterialLot())->save([
+                        'lot_id' => $lotIDs[$index],
+                        'material_id' => $materialIDs[$index],
+                        'stock_level' => $data['quantity'][$index],
+                        'expiration_date' => $data['expiry_date'][$index],
+                        'qc_status' => $data['qc_status'][$index],
+                        'inspection_date' => $data['inspection_date'][$index],
+                        'qc_notes' => $data['qc_notes'][$index]
+                    ]);
+
                     (new PurchaseMaterial())->save([
                         'pm_purchase_id' => $purchaseID,
                         'pm_material_id' => $materialIDs[$index],
                         'quantity' => $data['quantity'][$index],
                         'unit_price' => $data['unit_price'][$index],
                         'total_price' => $data['quantity'][$index] * $data['unit_price'][$index],
-                        'batch_number' => $data['batch_number'][$index]
+                        'lot_id' => $lotIDs[$index]
                     ]);
                 }
 
@@ -198,15 +212,26 @@ class PurchaseController extends BaseController {
                 'name' => $materialName,
                 'description' => $data['description'][$index],
                 'material_type' => $data['material_type'][$index],
-                'expiration_date' => $data['expiry_date'][$index],
-                'qc_status' => $data['qc_status'][$index],
-                'inspection_date' => $data['inspection_date'][$index],
-                'qc_notes' => $data['qc_notes'][$index]
             ]);
             $materialIDs[] = $materialID;
         }
 
         return $materialIDs;
+    }
+
+    private function addLots($data) {
+        $lotObject = new Lot();
+        $lotIDs = [];
+
+        foreach ($data['lot_number'] as $index => $lotNumber) {
+            $lotID = $lotObject->save([
+                'number' => $lotNumber,
+                'production_date' => $data['production_date'][$index],
+            ]);
+            $lotIDs[] = $lotID;
+        }
+
+        return $lotIDs;
     }
 
     public function viewPurchase($data) {
@@ -302,7 +327,7 @@ class PurchaseController extends BaseController {
                         'quantity' => $data['quantity'][$index],
                         'unit_price' => $data['unit_price'][$index],
                         'total_price' => $data['quantity'][$index] * $data['unit_price'][$index],
-                        'batch_number' => $data['batch_number'][$index]
+                        'lot_number' => $data['lot_number'][$index]
                     ]);
                 }
     
@@ -396,8 +421,8 @@ class PurchaseController extends BaseController {
     
         // Check material fields
         foreach ($data['material_name'] as $index => $materialName) {
-            if (empty($materialName) || empty($data['quantity'][$index]) || empty($data['unit_price'][$index]) || empty($data['batch_number'][$index])) {
-                $errors[] = "Material name, quantity, unit price, and batch number are required for each item.";
+            if (empty($materialName) || empty($data['quantity'][$index]) || empty($data['unit_price'][$index]) || empty($data['lot_number'][$index])) {
+                $errors[] = "Material name, quantity, unit price, and lot number are required for each item.";
             }
         }
     
@@ -445,8 +470,8 @@ class PurchaseController extends BaseController {
             if (empty($data['unit_price'][$index])) {
                 $errors[] = "Unit price for item " . ($index + 1) . " is required.";
             }
-            if (empty($data['batch_number'][$index])) {
-                $errors[] = "Batch number for item " . ($index + 1) . " is required.";
+            if (empty($data['lot_number'][$index])) {
+                $errors[] = "Lot number for item " . ($index + 1) . " is required.";
             }
     
             // Validate quantity (must be numeric and positive)

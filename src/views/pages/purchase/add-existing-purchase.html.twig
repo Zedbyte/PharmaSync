@@ -1,7 +1,7 @@
 <div class="h-full w-full px-8 py-6">
     <div class="flex justify-between mb-6">
-        <h2 class="text-2xl font-semibold">Add Purchase</h2>
-        <button onclick="addPurchaseTogglePanel('addPurchasePanel')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-all duration-150">
+        <h2 class="text-2xl font-semibold">Add Existing Purchase</h2>
+        <button onclick="addPurchaseTogglePanel('addExistingPurchasePanel')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-all duration-150">
             <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
             </svg>                
@@ -61,14 +61,9 @@
 
                     <div>
                         <label for="material-name" class="block text-sm font-medium">Material Name</label>
-                        <input type="text" id="material-name" name="material_name[]" placeholder="Paracetamol"
-                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
-                    </div>
-
-                    <div class="lg:col-start-1 lg:col-span-1">
-                        <label for="quantity" class="block text-sm font-medium">Quantity</label>
-                        <input type="number" id="quantity" name="quantity[]" placeholder="1"
-                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                        <select id="material-name-id" name="material_name[]" class="material-name mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                            <option value="" selected disabled>Select Material Name</option>
+                        </select>
                     </div>
 
                     <div class="absolute right-0 top-[-4px] mb-4">
@@ -80,9 +75,9 @@
                         </button>
                     </div>
 
-                    <div class="md:col-span-2 lg:col-span-2">
-                        <label for="description" class="block text-sm font-medium">Description</label>
-                        <input type="text" id="description" name="description[]" placeholder="used to treat mild to moderate pain."
+                    <div>
+                        <label for="quantity" class="block text-sm font-medium">Quantity</label>
+                        <input type="number" id="quantity" name="quantity[]" placeholder="1"
                         class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
                     </div>
 

@@ -1962,11 +1962,6 @@ video {
   color: rgb(234 179 8 / var(--tw-text-opacity));
 }
 
-.\!text-white {
-  --tw-text-opacity: 1 !important;
-  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
-}
-
 .placeholder-transparent::-moz-placeholder {
   color: transparent;
 }
@@ -2504,6 +2499,22 @@ video {
     grid-column: span 7 / span 7;
   }
 
+  .lg\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .lg\:col-span-full {
+    grid-column: 1 / -1;
+  }
+
+  .lg\:col-start-1 {
+    grid-column-start: 1;
+  }
+
+  .lg\:clear-both {
+    clear: both;
+  }
+
   .lg\:mt-5 {
     margin-top: 1.25rem;
   }
@@ -2728,11 +2739,6 @@ video {
   background-color: rgb(29 78 216 / var(--tw-bg-opacity));
 }
 
-.dark\:bg-gray-500:where(.dark, .dark *) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(107 114 128 / var(--tw-bg-opacity));
-}
-
 .dark\:bg-gray-600:where(.dark, .dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(75 85 99 / var(--tw-bg-opacity));
@@ -2825,41 +2831,6 @@ video {
 .dark\:bg-yellow-700:where(.dark, .dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(161 98 7 / var(--tw-bg-opacity));
-}
-
-.dark\:bg-slate-300:where(.dark, .dark *) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
-}
-
-.dark\:bg-slate-400:where(.dark, .dark *) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(148 163 184 / var(--tw-bg-opacity));
-}
-
-.dark\:bg-gray-400:where(.dark, .dark *) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
-}
-
-.dark\:bg-\[\#bfb4ee\]:where(.dark, .dark *) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(191 180 238 / var(--tw-bg-opacity));
-}
-
-.dark\:bg-\[\#cabffa\]:where(.dark, .dark *) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(202 191 250 / var(--tw-bg-opacity));
-}
-
-.dark\:bg-\[\#cec3ff\]:where(.dark, .dark *) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(206 195 255 / var(--tw-bg-opacity));
-}
-
-.dark\:bg-\[\#dbd3ff\]:where(.dark, .dark *) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(219 211 255 / var(--tw-bg-opacity));
 }
 
 .dark\:bg-opacity-25:where(.dark, .dark *) {

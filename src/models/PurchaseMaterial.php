@@ -20,7 +20,7 @@ class PurchaseMaterial extends BaseModel
                     `quantity`=:quantity,
                     `unit_price`=:unit_price,
                     `total_price`=:total_price,
-                    `batch_number`=:batch_number";
+                    `lot_id`=:lot_id";
 
         try {
             $statement = $this->db->prepare($sql);
@@ -31,7 +31,7 @@ class PurchaseMaterial extends BaseModel
                 'quantity' => $data['quantity'],
                 'unit_price' => $data['unit_price'],
                 'total_price' => $data['total_price'],
-                'batch_number' => $data['batch_number']
+                'lot_id' => $data['lot_id']
             ]);
 
             return true;
@@ -48,7 +48,7 @@ class PurchaseMaterial extends BaseModel
                     `quantity` = :quantity,
                     `unit_price` = :unit_price,
                     `total_price` = :total_price,
-                    `batch_number` = :batch_number
+                    `lot_id` = :lot_id
                 WHERE `pm_purchase_id` = :pm_purchase_id 
                 AND `pm_material_id` = :pm_material_id";
 
@@ -59,7 +59,7 @@ class PurchaseMaterial extends BaseModel
                 'quantity' => $data['quantity'],
                 'unit_price' => $data['unit_price'],
                 'total_price' => $data['total_price'],
-                'batch_number' => $data['batch_number'],
+                'lot_id' => $data['lot_id'],
                 'pm_purchase_id' => $data['pm_purchase_id'],
                 'pm_material_id' => $data['pm_material_id']
             ]);
@@ -259,7 +259,7 @@ class PurchaseMaterial extends BaseModel
                     pm.quantity,
                     pm.unit_price,
                     pm.total_price AS material_total_price,
-                    pm.batch_number,
+                    pm.lot_id,
                     m.id AS material_id,
                     m.name AS material_name,
                     m.description AS material_description,

@@ -37,6 +37,11 @@
             enableTime: true,
         });
 
+        flatpickr("#production-date", {
+            dateFormat: "Y-m-d - H:i",
+            enableTime: true,
+        });
+
         flatpickr("#inspection-date", {
             dateFormat: "Y-m-d - H:i",
             enableTime: true,
