@@ -10,8 +10,19 @@ function openDeleteModal(button) {
     // Set the delete confirmation button's action
     const confirmButton = document.getElementById('confirmDeleteButton');
     confirmButton.onclick = function() {
+        // Get the checkbox value
+        const deleteMaterials = document.getElementById('delete-materials').checked;
+
+        // Prepare data for the request
+        const formData = new URLSearchParams();
+        formData.append('deleteMaterials', deleteMaterials);
+
         fetch(`/delete-purchase/${purchaseId}`, { 
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData.toString(),
         })
         .then(response => {
             if (response.ok) {

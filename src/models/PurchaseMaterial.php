@@ -294,31 +294,171 @@ class PurchaseMaterial extends BaseModel
         }
     }
 
-    public function deletePurchaseData($purchaseID)
+    public function deletePurchaseData($purchaseID, $deleteMaterials)
     {
         try {
             // Start a transaction
             $this->db->beginTransaction();
 
-            // Delete related records from purchase_material first
-            $sqlDeleteMaterials = "DELETE FROM purchase_material WHERE pm_purchase_id = :purchase_id";
-            $statementMaterials = $this->db->prepare($sqlDeleteMaterials);
-            $statementMaterials->execute(['purchase_id' => $purchaseID]);
+            // Retrieve material and lot details related to the purchase
+            $details = $this->getMaterialAndLotDetails($purchaseID);
 
-            // Delete the purchase record
-            $sqlDeletePurchase = "DELETE FROM purchases WHERE id = :purchase_id";
-            $statementPurchase = $this->db->prepare($sqlDeletePurchase);
-            $statementPurchase->execute(['purchase_id' => $purchaseID]);
+            if (empty($details)) {
+                throw new Exception("No related records found for purchase ID: $purchaseID");
+            }
+
+            $materialIds = array_column($details, 'pm_material_id');
+            $lotIds = array_column($details, 'lot_id');
+
+            if ($deleteMaterials === 'true') {
+                // Execute deletion steps
+                $this->deleteMaterialLot($lotIds, $materialIds);
+                $this->deletePurchaseMaterial($purchaseID);
+                $this->deleteLots($lotIds);
+                $this->deleteMaterials($materialIds);
+                $this->deletePurchase($purchaseID);
+            }
+            else {
+                $this->deletePurchaseMaterial($purchaseID);
+                $this->deletePurchase($purchaseID);
+            }
 
             // Commit the transaction
             $this->db->commit();
-            return $statementPurchase->rowCount(); // Returns the number of deleted rows from purchases
+            return "Purchase and related records deleted successfully.";
 
-        } catch (PDOException $e) {
-            // Rollback the transaction on error
+        } catch (Exception $e) {
+            // Rollback on failure
             $this->db->rollBack();
             error_log($e->getMessage());
-            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+            throw new Exception("Deletion failed: " . $e->getMessage());
+        }
+    }
+
+    // Helper function to get related materials and lots
+    private function getMaterialAndLotDetails($purchaseID)
+    {
+        try {
+            $sql = "SELECT pm_material_id, lot_id 
+                    FROM purchase_material 
+                    WHERE pm_purchase_id = :purchase_id";
+            $statement = $this->db->prepare($sql);
+            $statement->execute(['purchase_id' => $purchaseID]);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error fetching material and lot details: " . $e->getMessage());
+        }
+    }
+
+    // Helper function to delete from material_lot
+    private function deleteMaterialLot($lotIds, $materialIds)
+    {
+        try {
+            if (!empty($lotIds) && !empty($materialIds)) {
+                foreach ($lotIds as $lotId) {
+                    foreach ($materialIds as $materialId) {
+                        // Delete specific material-lot pairings
+                        $sql = "DELETE FROM material_lot WHERE lot_id = :lot_id AND material_id = :material_id";
+                        $statement = $this->db->prepare($sql);
+                        $statement->execute(['lot_id' => $lotId, 'material_id' => $materialId]);
+    
+                        // Log if no rows were affected for debugging
+                        if ($statement->rowCount() === 0) {
+                            error_log("No rows affected for lot_id: $lotId and material_id: $materialId in material_lot");
+                        }
+                    }
+                }
+            } else {
+                error_log("No lotIds or materialIds provided for deletion in material_lot");
+            }
+        } catch (PDOException $e) {
+            throw new Exception("Error deleting from material_lot: " . $e->getMessage());
+        }
+    }
+    
+    
+    
+
+    // Helper function to delete from purchase_material
+    private function deletePurchaseMaterial($purchaseID)
+    {   
+        try {
+            $sql = "DELETE FROM purchase_material 
+                    WHERE pm_purchase_id = :purchase_id";
+            $statement = $this->db->prepare($sql);
+            $statement->execute(['purchase_id' => $purchaseID]);
+        } catch (PDOException $e) {
+            throw new Exception("Error deleting from purchase_material: " . $e->getMessage());
+        }
+    }
+
+    // Helper function to delete from lots
+    private function deleteLots($lotIds)
+    {
+        try {
+            if (!empty($lotIds)) {
+                foreach ($lotIds as $lotId) {
+                    $sql = "DELETE FROM lots WHERE id = :id";
+                    $statement = $this->db->prepare($sql);
+                    $statement->execute(['id' => $lotId]);
+                    if ($statement->rowCount() === 0) {
+                        error_log("No rows affected for id: $lotId in lots");
+                    }
+                }
+            } else {
+                error_log("No lotIds provided for deletion in lots");
+            }
+        } catch (PDOException $e) {
+            throw new Exception("Error deleting from lots: " . $e->getMessage());
+        }
+    }
+    
+
+    // Helper function to delete from materials
+    private function deleteMaterials($materialIds)
+    {
+        try {
+            if (!empty($materialIds)) {
+                foreach ($materialIds as $materialId) {
+                    // Check if the material is still associated with any lot in material_lot
+                    $sqlCheckMaterialLot = "SELECT COUNT(*) FROM material_lot WHERE material_id = :material_id";
+                    $statementCheckMaterialLot = $this->db->prepare($sqlCheckMaterialLot);
+                    $statementCheckMaterialLot->execute(['material_id' => $materialId]);
+                    $rowCount = $statementCheckMaterialLot->fetchColumn();
+    
+                    // If no other pairings exist, delete the material
+                    if ($rowCount == 0) {
+                        $sql = "DELETE FROM materials WHERE id = :id";
+                        $statement = $this->db->prepare($sql);
+                        $statement->execute(['id' => $materialId]);
+    
+                        // Log if no rows were affected for debugging
+                        if ($statement->rowCount() === 0) {
+                            error_log("No rows affected for material_id: $materialId in materials");
+                        }
+                    } else {
+                        error_log("Material_id: $materialId is still associated with other lots and cannot be deleted.");
+                    }
+                }
+            } else {
+                error_log("No materialIds provided for deletion in materials");
+            }
+        } catch (PDOException $e) {
+            throw new Exception("Error deleting from materials: " . $e->getMessage());
+        }
+    }
+    
+
+    // Helper function to delete the purchase record
+    private function deletePurchase($purchaseID)
+    {
+        try {
+            $sql = "DELETE FROM purchases 
+                    WHERE id = :purchase_id";
+            $statement = $this->db->prepare($sql);
+            $statement->execute(['purchase_id' => $purchaseID]);
+        } catch (PDOException $e) {
+            throw new Exception("Error deleting the purchase: " . $e->getMessage());
         }
     }
 }

@@ -448,7 +448,7 @@ class PurchaseController extends BaseController {
     public function deletePurchase($purchaseID) {
         $purchaseMaterialObject = new PurchaseMaterial();
 
-        $purchaseData = $purchaseMaterialObject->deletePurchaseData($purchaseID);
+        $purchaseData = $purchaseMaterialObject->deletePurchaseData($purchaseID, $_POST['deleteMaterials']);
         
         header('Location: /purchase-list');
     }
