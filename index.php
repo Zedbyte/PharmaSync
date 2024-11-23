@@ -145,6 +145,19 @@ try {
         $purchaseController->addPurchaseMaterial($data);
     });
 
+    // Add Purchase Panel [POST]
+    $router->respond('POST', '/add-purchase-existing', function($request) use ($purchaseController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $purchaseController->addPurchaseMaterialExisting($data);
+    });
+
+    $router->respond('GET', '/add-purchase-existing/material', function($request) use ($purchaseController) {
+        AuthMiddleware::checkAuth();
+        $type = $_GET['type'];
+        $purchaseController->updateMaterialDropList($type);
+    });
+
     // View Purchase Panel [GET]
     $router->respond('GET', '/view-purchase/[i:purchaseID]', function($purchaseID) use ($purchaseController) {
         AuthMiddleware::checkAuth();

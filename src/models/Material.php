@@ -91,4 +91,35 @@ class Material extends BaseModel
         }
     }
 
+    public function getAllMaterials()
+    {
+        $sql = "SELECT * FROM materials";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getAllMaterialsByType($type)
+    {
+        if (empty($type)) $type='%';
+
+        $sql = "SELECT * FROM `materials` WHERE `material_type` LIKE :type ORDER BY name";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->bindValue(':type', $type, PDO::PARAM_STR);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
 }

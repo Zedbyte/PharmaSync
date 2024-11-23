@@ -25,12 +25,29 @@ CREATE TABLE `materials` (
     `name` varchar(255) NOT NULL,
     `description` varchar(255) NOT NULL,
     `material_type` varchar(255) NOT NULL,
-    `expiration_date` date DEFAULT NULL,
-    `qc_status` varchar(50) NOT NULL,
-    `inspection_date` date DEFAULT NULL,
-    `qc_notes` varchar(255) NOT NULL,
     PRIMARY KEY (`id`)
-);
+)
+
+CREATE TABLE `lots` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `number` varchar(255) NOT NULL,
+    `production_date` date NOT NULL,
+    PRIMARY KEY (`id`)
+)
+
+CREATE TABLE `material_lot` (
+    `lot_id` int(11) NOT NULL,
+    `material_id` int(11) NOT NULL,
+    `stock_level` int(11) NOT NULL,
+    `qc_status` varchar(50) NOT NULL,
+    `qc_notes` varchar(255) NOT NULL,
+    `inspection_date` date NOT NULL,
+    `expiration_date` date NOT NULL,
+    PRIMARY KEY (`lot_id`,`material_id`),
+    KEY `material_id` (`material_id`),
+    CONSTRAINT `material_lot_ibfk_1` FOREIGN KEY (`material_id`) REFERENCES `materials` (`id`) ON DELETE NO ACTION,
+    CONSTRAINT `material_lot_ibfk_2` FOREIGN KEY (`lot_id`) REFERENCES `lots` (`id`) ON DELETE NO ACTION
+) 
 
 CREATE TABLE `purchases` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -50,12 +67,14 @@ CREATE TABLE `purchase_material` (
     `quantity` int(11) NOT NULL,
     `unit_price` double NOT NULL,
     `total_price` double NOT NULL,
-    `batch_number` varchar(255) NOT NULL,
-    PRIMARY KEY (`pm_purchase_id`, `pm_material_id`),
+    `lot_id` int(11) NOT NULL,
+    PRIMARY KEY (`pm_purchase_id`,`pm_material_id`),
     KEY `pm_material_id` (`pm_material_id`),
+    KEY `lot_id` (`lot_id`),
     CONSTRAINT `purchase_material_ibfk_1` FOREIGN KEY (`pm_material_id`) REFERENCES `materials` (`id`) ON DELETE NO ACTION,
-    CONSTRAINT `purchase_material_ibfk_2` FOREIGN KEY (`pm_purchase_id`) REFERENCES `purchases` (`id`) ON DELETE NO ACTION
-);
+    CONSTRAINT `purchase_material_ibfk_2` FOREIGN KEY (`pm_purchase_id`) REFERENCES `purchases` (`id`) ON DELETE NO ACTION,
+    CONSTRAINT `purchase_material_ibfk_3` FOREIGN KEY (`lot_id`) REFERENCES `lots` (`id`) ON DELETE NO ACTION
+) 
 
 CREATE TABLE `suppliers` (
     `id` int(11) NOT NULL AUTO_INCREMENT,

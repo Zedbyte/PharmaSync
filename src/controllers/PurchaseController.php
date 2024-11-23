@@ -101,7 +101,13 @@ class PurchaseController extends BaseController {
 
         $purchaseObject = new Purchase();
         $purchaseCount = $purchaseObject->getCount();
-    
+
+        /**
+         * 
+         * REWRITTEN ADDITIONALS
+         * 
+         */
+        
         // Pass data and filter values to Twig template for rendering
         echo $this->twig->render('purchase-list.html.twig', [
             'ASSETS_URL' => ASSETS_URL,
@@ -186,6 +192,81 @@ class PurchaseController extends BaseController {
         // Clear the errors from session after they are displayed
         unset($_SESSION['purchase_errors']);
     }
+
+    public function addPurchaseMaterialExisting($data) {
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $errors = $this->validatePurchaseData($data);
+            
+            // POST-Redirect-GET Pattern
+            if (!empty($errors)) {
+                $_SESSION['purchase_errors'] = $errors;
+                // Redirect to the same route with GET (to prevent resubmission)
+                header('Location: /add-purchase');
+                exit;
+            }
+
+            try {
+                $this->db->beginTransaction();
+
+                $purchaseID = $this->addPurchase($data);
+                $lotIDs = $this->addLots($data);
+
+                foreach ($data['material_name'] as $index => $materialName) {
+
+                    (new MaterialLot())->save([
+                        'lot_id' => $lotIDs[$index],
+                        'material_id' => $data['material_name'][$index],
+                        'stock_level' => $data['quantity'][$index],
+                        'expiration_date' => $data['expiry_date'][$index],
+                        'qc_status' => $data['qc_status'][$index],
+                        'inspection_date' => $data['inspection_date'][$index],
+                        'qc_notes' => $data['qc_notes'][$index]
+                    ]);
+
+                    (new PurchaseMaterial())->save([
+                        'pm_purchase_id' => $purchaseID,
+                        'pm_material_id' => $data['material_name'][$index],
+                        'quantity' => $data['quantity'][$index],
+                        'unit_price' => $data['unit_price'][$index],
+                        'total_price' => $data['quantity'][$index] * $data['unit_price'][$index],
+                        'lot_id' => $lotIDs[$index]
+                    ]);
+                }
+
+                $this->db->commit();
+
+                header("Location: /purchase-list");
+                exit();
+
+            } catch (Exception $e) {
+                $this->db->rollBack();
+                error_log($e->getMessage());
+                $errors[] = "Failed to save purchase material: " . $e->getMessage();
+                $this->display($errors);
+            }
+        }
+
+        $errors = isset($_SESSION['purchase_errors']) ? $_SESSION['purchase_errors'] : [];
+    
+        // Render the template with errors, if any
+        $this->display($errors);
+        
+        // Clear the errors from session after they are displayed
+        unset($_SESSION['purchase_errors']);
+    }
+
+
+    public function updateMaterialDropList($type='%') {
+        $materialObject = new Material();
+        $materialData = $materialObject->getAllMaterialsByType($type);
+        
+        header('Content-Type: application/json');
+        echo json_encode($materialData);
+        exit;
+    }
+
 
     private function addPurchase($data) {
         $purchaseObject = new Purchase();
