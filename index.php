@@ -5,6 +5,7 @@ require_once "init.php";
 
 // Dependencies
 
+use App\Controllers\BatchesController;
 use Klein\Klein as Route;
 use Twig\Environment;
 
@@ -28,6 +29,7 @@ try {
     $loginController = new LoginController($twig);
     $registrationController = new RegistrationController($twig);
     $dashboardController = new DashboardController($twig);
+    $batchesController = new BatchesController($twig);
     $settingsController = new SettingsController($twig);
     $purchaseController = new PurchaseController($twig);
     $orderController = new OrderController($twig);
@@ -37,6 +39,12 @@ try {
     $router->respond('GET', '/', function() use ($loginController) {
         $loginController->display();
     });
+
+    /**
+     * 
+     * LOGIN
+     * 
+     */
 
     // Login Page [GET]
     $router->respond('GET', '/login', function() use ($loginController) {
@@ -54,6 +62,12 @@ try {
         $loginController->logout();
     });
 
+    /**
+     * 
+     * REGISTRATION
+     * 
+     */
+
     // Registration Page [GET]
     $router->respond('GET', '/registration', function() use ($registrationController) {
         $registrationController->display();
@@ -64,11 +78,29 @@ try {
         $registrationController->register();
     });
 
+    /**
+     * 
+     * DASHBOARD
+     * 
+     */
+
     // Dashboard Page [GET]
     $router->respond('GET', '/dashboard', function() use ($dashboardController) {
         AuthMiddleware::checkAuth();
         $dashboardController->display();
     });
+
+
+    $router->respond('GET', '/dashboard/production-rate', function() use ($batchesController) {
+        AuthMiddleware::checkAuth();
+        $batchesController->getProductionRate();
+    });
+
+    /**
+     * 
+     * SETTINGS
+     * 
+     */
 
     // Settings Page [GET]
     $router->respond('GET', '/settings', function() use ($settingsController) {

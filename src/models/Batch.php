@@ -102,4 +102,26 @@ class Batch extends BaseModel
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
+
+    public function getBatchProductionRate() {
+        $sql = "SELECT 
+                YEAR(production_date) AS year,
+                MONTH(production_date) AS month,
+                COUNT(*) AS batch_count
+            FROM 
+                batches
+            GROUP BY 
+                YEAR(production_date), MONTH(production_date)
+            ORDER BY 
+                YEAR(production_date), MONTH(production_date);
+            ";
+
+        try {
+            $statement = $this->db->query($sql);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
 }
