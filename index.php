@@ -96,6 +96,11 @@ try {
         $batchesController->getProductionRate();
     });
 
+    // $router->respond('GET', '/dashboard/inventory-distribution', function() use ($batchesController) {
+    //     AuthMiddleware::checkAuth();
+    //     $batchesController->getInventoryDistribution();
+    // });
+
     /**
      * 
      * SETTINGS
