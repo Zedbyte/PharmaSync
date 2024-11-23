@@ -188,6 +188,16 @@ class ManufacturedController extends BaseController
         exit;
     }
 
+    public function viewBatch($medicineID, $batchID) {
+        
+        $medicineBatchObject = new MedicineBatch();
+        $medicineBatchData = $medicineBatchObject->getMedicineBatchData($medicineID, $batchID);
+        
+        echo $this->twig->render('view-manufactured.html.twig', [
+            'medicineBatchData' => $medicineBatchData
+        ]);
+    }
+
     public function getRackData($id) {
         $rackObject = new Rack();
         $rackData = $rackObject->getRack($id);

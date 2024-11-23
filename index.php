@@ -322,6 +322,14 @@ try {
         $manufacturedController->updateBatch($data);
     });
 
+    // Update Batch [GET]
+    $router->respond('GET', '/view-batch/[i:batchID]/medicine/[i:medicineID]', function($request) use ($manufacturedController) {
+        AuthMiddleware::checkAuth();
+        $medicineID = $request->param('medicineID');
+        $batchID = $request->param('batchID');
+        $manufacturedController->viewBatch($medicineID, $batchID);
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {
