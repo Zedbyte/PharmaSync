@@ -65,6 +65,45 @@ class MedicineBatch extends BaseModel
         }
     }
 
+    public function update($data) {
+        $sql = "UPDATE `medicine_batch` 
+        SET
+            `stock_level` = :stock_level,
+            `expiry_date` = :expiry_date
+        WHERE
+            `medicine_id` = :medicine_id AND 
+            `batch_id` = :batch_id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'medicine_id' => $data['medicine_id'],
+                'batch_id' => $data['batch_id'],
+                'stock_level' => $data['stock_level'],
+                'expiry_date' => $data['expiry_date']
+            ]);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function batchExists($medicineId, $batchId) {
+        $sql = "SELECT COUNT(*) FROM `medicine_batch` WHERE `medicine_id` = :medicine_id AND `batch_id` = :batch_id";
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'medicine_id' => $medicineId,
+                'batch_id' => $batchId
+            ]);
+            return $statement->fetchColumn() > 0;
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+    
+
     private function deleteBatchIfUnused($batchId)
     {
         try {
@@ -190,9 +229,12 @@ class MedicineBatch extends BaseModel
 
     public function getMedicineBatchData($medicineId, $batchId)
     {
-        $sql = "SELECT * FROM `medicine_batch`
-                WHERE `medicine_id` = :medicine_id 
-                AND `batch_id` = :batch_id";
+        $sql = "SELECT * FROM `medicine_batch` mb
+                JOIN `medicines` m ON m.id = mb.medicine_id
+                JOIN `batches` b ON b.id = mb.batch_id
+                JOIN `racks` r ON r.id = b.rack_id
+                WHERE mb.medicine_id = :medicine_id 
+                AND mb.batch_id = :batch_id";
 
         try {
             $statement = $this->db->prepare($sql);

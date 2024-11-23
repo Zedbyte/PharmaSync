@@ -104,15 +104,24 @@ class ManufacturedController extends BaseController
     
             // Validate the data
             $errors = $this->validateExistingBatchData($data);
+            
+            // Check if the medicine and batch pair already exists
+            $medicineBatchObject = new MedicineBatch();
+            foreach ($data['medicine_name'] as $index => $medicineName) {
+                $batchExists = $medicineBatchObject->batchExists($medicineName, $data['batch_number'][0]);
+                if ($batchExists) {
+                    $errors[] = "The medicine with ID {$medicineName} already exists in batch {$data['batch_number'][0]}.";
+                }
+            }
+            
             if (!empty($errors)) {
                 $_SESSION['batch_errors'] = $errors;
                 // Redirect to the same route with GET (to prevent resubmission)
-                header('Location: /add-to-existing-batch');
+                header('Location: /add-existing-batch');
                 exit;
             }
     
             // Add medicine batch information
-            $medicineBatchObject = new MedicineBatch();
             foreach ($data['medicine_name'] as $index => $medicineName) {
                 $medicineBatchObject->save([
                     'medicine_id' => $medicineName,
@@ -134,6 +143,41 @@ class ManufacturedController extends BaseController
     
         // Clear the errors from session after they are displayed
         unset($_SESSION['batch_errors']);
+    }
+
+    public function updateBatch($data) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Validate the data
+            $errors = $this->validateBatchUpdateData($data);
+
+            if (!empty($errors)) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => $errors]);
+                return;
+            }
+    
+            // Update batch data
+            $batchObject = new MedicineBatch();
+            foreach ($data['expiry_date'] as $index => $expiryDate) {
+                $batchObject->update([
+                    'medicine_id' => $data['medicineID'], // Ensure correct medicine ID
+                    'batch_id' => $data['batchID'], // Ensure correct batch ID
+                    'stock_level' => $data['stock_level'][$index],
+                    'expiry_date' => $expiryDate
+                ]);
+            }
+    
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true]);
+            return;
+        }
+
+        $batchObject = new MedicineBatch();
+        $batchData = $batchObject->getMedicineBatchData($data['medicineID'], $data['batchID']);
+
+        echo $this->twig->render('update-manufactured.html.twig', [
+            'batchData' => $batchData
+        ]);
     }
 
     public function deleteBatch($medicineID, $batchID) {
@@ -251,6 +295,45 @@ class ManufacturedController extends BaseController
     
         return $errors;
     }
+
+
+    private function validateBatchUpdateData($data) {
+        $errors = [];
+    
+        // Validate medicine_id
+        if (empty($data['medicine_id'])) {
+            $errors[] = "Medicine ID is required.";
+        } elseif (!is_numeric($data['medicine_id']) || (int)$data['medicine_id'] <= 0) {
+            $errors[] = "Medicine ID must be a positive number.";
+        }
+    
+        // Validate batch_id
+        if (empty($data['batch_id'])) {
+            $errors[] = "Batch ID is required.";
+        } elseif (!is_numeric($data['batch_id']) || (int)$data['batch_id'] <= 0) {
+            $errors[] = "Batch ID must be a positive number.";
+        }
+    
+        // Validate expiry_date (single value from array)
+        $expiryDate = $data['expiry_date'][0] ?? null;
+        if (empty($expiryDate)) {
+            $errors[] = "Expiry date is required.";
+        } elseif (!strtotime($expiryDate)) {
+            $errors[] = "Expiry date is invalid.";
+        }
+    
+        // Validate stock_level (single value from array)
+        $stockLevel = $data['stock_level'][0] ?? null;
+        if (empty($stockLevel)) {
+            $errors[] = "Stock level is required.";
+        } elseif (!is_numeric($stockLevel) || (int)$stockLevel <= 0) {
+            $errors[] = "Stock level must be a positive number.";
+        }
+    
+        return $errors;
+    }
+    
+    
     
     
     

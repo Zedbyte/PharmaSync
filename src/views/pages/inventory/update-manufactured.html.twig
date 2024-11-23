@@ -1,0 +1,104 @@
+<div class="h-full w-full px-8 py-6" id="updateBatchPanel">
+    <div class="flex justify-between mb-6">
+        <h2 class="text-2xl font-semibold">Update Medicine Batch</h2>
+        <button onclick="updateClosePanel()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-all duration-150">
+            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>                
+        </button>
+    </div>
+
+    <form action="" method="post" class="update__form_existing h-full space-y-6">
+
+        <input type="hidden" name="medicine_id" value="{{ batchData[0].medicine_id }}">
+        <input type="hidden" name="batch_id" value="{{ batchData[0].batch_id }}">
+
+        <div class="grid grid-cols-10 gap-5">
+            <div class="col-span-10 p-6 bg-slate-200 dark:bg-slate-600 rounded-lg shadow-sm  overflow-x-auto" id="batch_details">
+            
+                <div class="grid grid-cols-2 items-center">
+                    <div>
+                        <h1 class="font-bold">Batch Details - <span class="text-blue-400 dark:text-violet-400">ID: {{ batchData[0].batch_id }}</span></h1>
+                    </div>
+                </div>
+            
+                <!-- Invoice Items -->
+                <div class="batch-details -mx-4 mt-3 flow-root sm:mx-0">
+                    <table class="min-w-full">
+                        <colgroup>
+                            <col class="sm:w-2/6">
+                            <col class="sm:w-2/6">
+                            <col class="sm:w-1/6">
+                            <col class="sm:w-2/6">
+                            <col class="sm:w-1/6">
+                        </colgroup>
+                        <thead class="border-b border-gray-300 text-gray-900 dark:text-gray-100 ">
+                            <tr>
+                                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100  sm:pl-0">
+                                    Medicine ID
+                                </th>
+                                <th scope="col"
+                                    class="py-3.5 pl-3 pr-4 text-left text-sm font-semibold text-gray-900 dark:text-gray-100  sm:pr-0">
+                                    Production Date
+                                </th>
+                                <th scope="col"
+                                    class="py-3.5 pl-3 pr-4 text-left text-sm font-semibold text-gray-900 dark:text-gray-100  sm:pr-0">
+                                    Rack ID
+                                </th>
+                                <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-100  sm:table-cell">
+                                    Location
+                                </th>
+                                <th scope="col"
+                                    class="py-3.5 pl-3 pr-4 text-left text-sm font-semibold text-gray-900 dark:text-gray-100 sm:pr-0 lg:text-nowrap">
+                                    Temperature Controlled
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-5 pl-3 pr-4 text-left text-sm text-gray-500 dark:text-gray-100  sm:pr-0">
+                                    <div class="font-medium text-gray-900 dark:text-white ">{{ batchData[0].name }}</div>
+                                    <div class="mt-1 truncate text-gray-500 dark:text-gray-100 ">{{ batchData[0].composition }}</div>
+                                </td>
+                                <td class="py-5 pl-3 pr-4 text-left text-sm text-gray-500 dark:text-gray-100  sm:pr-0">{{ batchData[0].production_date }}</td>
+                                <td class="py-5 pl-3 pr-4 text-left text-sm text-gray-500 dark:text-gray-100  sm:pr-0">{{ batchData[0].rack_id }}</td>
+                                <td class="hidden px-3 py-5 text-left text-sm text-gray-500 dark:text-gray-100  sm:table-cell">{{ batchData[0].location }}</td>
+                                <td class="py-5 pl-3 pr-4 text-left text-sm text-gray-500 dark:text-gray-100  sm:pr-0">{{ batchData[0].temperature_controlled ? 'Yes' : 'No' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Items Section -->
+        <div class="border-t border-gray-300 dark:border-gray-600 mt-6 pt-6">
+            <h3 class="text-xl font-semibold mb-6">Medicine in Batch</h3>
+
+            <div id="items__container" class="space-y-6">
+                <div class="item__template relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 border-b border-gray-300 dark:border-gray-600 py-6">
+
+                    <div>
+                        <label for="expiry-date" class="block text-sm font-medium">Expiry Date</label>
+                        <input type="text" id="expiry-date" name="expiry_date[]" placeholder="28 Jun, 2022 - 10:00"
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-blue-400 
+                        dark:focus:border-blue-500 dark:bg-gray-700 px-4" onfocus="(this.type='date')" onblur="(this.type='text')" value="{{ batchData[0].expiry_date }}">
+                    </div>
+
+                    <div>
+                        <label for="stock-level" class="text-sm font-medium flex justify-between">Stock Level 
+                        </label>
+                        <input type="number" id="stock-level-id" name="stock_level[]" placeholder="1" min="1"
+                        class="stock-level mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" value="{{ batchData[0].stock_level }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save and Reset Buttons -->
+        <div class="flex justify-end gap-4 mt-6 pb-6">
+            <button type="reset" class="transition-all duration-150 px-6 py-2 rounded-lg bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-700">Reset</button>
+            <button type="submit" class="transition-all duration-150 px-6 py-2 text-white bg-[#2998FF] dark:bg-[#7655fa] rounded-lg hover:bg-opacity-80">Save</button>
+        </div>
+    </form>
+</div>

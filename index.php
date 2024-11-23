@@ -289,6 +289,26 @@ try {
         $manufacturedController->addToExistingBatch();
     });
 
+    // Add Manufactured to Existing Batch [GET]
+    $router->respond('GET', '/add-existing-batch', function($request) use ($manufacturedController) {
+        AuthMiddleware::checkAuth();
+        $manufacturedController->addToExistingBatch();
+    });
+
+    // Update Batch [GET]
+    $router->respond('GET', '/update-batch/medicine/[i:medicineID]/batch/[i:batchID]', function($request) use ($manufacturedController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $manufacturedController->updateBatch($data);
+    });
+
+    // Update Batch [POST]
+    $router->respond('POST', '/update-batch/medicine/[i:medicineID]/batch/[i:batchID]', function($request) use ($manufacturedController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $manufacturedController->updateBatch($data);
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {
