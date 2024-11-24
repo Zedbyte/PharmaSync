@@ -123,4 +123,46 @@ class MaterialLot extends BaseModel
         }
     }
 
+    public function getMaterialLotsAndLotData($materialID, $lotID = null)
+    {
+        // Base SQL query
+        $sql = "SELECT ml.*, l.*, pm.*, s.name AS supplier_name 
+            FROM 
+                material_lot ml
+            JOIN 
+                lots l ON ml.lot_id = l.id
+            JOIN 
+                purchase_material pm ON pm.lot_id = l.id
+            JOIN
+                purchases p ON p.id = pm.pm_purchase_id
+            JOIN
+                suppliers s ON s.id = p.p_supplier_id
+            WHERE 
+                ml.material_id = :material_id";
+
+        // Bind parameters
+        $params = ['material_id' => $materialID];
+
+        // Add condition for lot_id if it exists
+        if (!empty($lotID)) {
+            $sql .= " AND ml.lot_id = :lot_id";
+            $params['lot_id'] = $lotID;
+        }
+
+        try {
+            // Prepare the query
+            $statement = $this->db->prepare($sql);
+
+            // Execute with parameters
+            $statement->execute($params);
+
+            // Fetch and return results
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int) $e->getCode());
+        }
+    }
+
+
 }

@@ -17,6 +17,7 @@ use App\Controllers\SettingsController;
 use App\Controllers\PurchaseController;
 use App\Controllers\OrderController;
 use App\Controllers\ManufacturedController;
+use App\Controllers\RawController;
 use \App\Middleware\AuthMiddleware;
 
 try {
@@ -34,6 +35,7 @@ try {
     $purchaseController = new PurchaseController($twig);
     $orderController = new OrderController($twig);
     $manufacturedController = new ManufacturedController($twig);
+    $rawController = new RawController($twig);
 
     // Landing Page
     $router->respond('GET', '/', function() use ($loginController) {
@@ -295,7 +297,7 @@ try {
 
     /**
      * 
-     * INVENTORY
+     * INVENTORY MANUFACTURED
      * 
      */
 
@@ -385,6 +387,19 @@ try {
         $medicineID = $request->param('medicineID');
         $batchID = $request->param('batchID');
         $manufacturedController->viewBatch($medicineID, $batchID);
+    });
+
+    /**
+     * 
+     * INVENTORY RAW
+     * 
+     */
+
+    // Manufactured Page [GET]
+    $router->respond('GET', '/inventory/raw', function() use ($rawController) {
+        AuthMiddleware::checkAuth();
+        $lotSearch = $_GET['q'] ?? null;
+        $rawController->display();
     });
 
     $router->dispatch();
