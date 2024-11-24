@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const target = event.target;
 
         if (target.matches(".material-type")) {
-            const itemTemplate = target.closest(".item__template");
+            const itemTemplate = target.closest(".item__template_existing");
             const materialNameSelect = itemTemplate.querySelector(".material-name");
             fetchMaterialNames(materialNameSelect, target.value);
         } 
