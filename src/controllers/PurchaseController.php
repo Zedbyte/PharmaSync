@@ -383,7 +383,7 @@ class PurchaseController extends BaseController {
                     if ($materialID) {
                         // Update existing material
                         $materialObject->update($materialID, [
-                            'name' => $materialName,
+                            'material_name' => $materialName,
                             'description' => $data['description'][$index],
                             'material_type' => $data['material_type'][$index],
                         ]);

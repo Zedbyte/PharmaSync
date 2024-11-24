@@ -1,0 +1,56 @@
+<div class="h-full w-full px-8 py-6" id="updateMaterialPanel">
+    <div class="flex justify-between mb-6">
+        <h2 class="text-2xl font-semibold">Update Material</h2>
+        <button onclick="updateMaterialClosePanel()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-all duration-150">
+            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>                
+        </button>
+    </div>
+
+    <form action="" method="post" class="update__form_material h-full space-y-6">
+
+        <input type="hidden" name="material_id" value="{{ materialData.id }}">
+
+        <!-- Items Section -->
+        <div class="border-t border-gray-300 dark:border-gray-600 mt-6 pt-6">
+            <h3 class="text-xl font-semibold mb-6">Medicine in Batch</h3>
+
+            <div id="items__container_material" class="space-y-6">
+                <div class="item__template_material relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 border-b border-gray-300 dark:border-gray-600 py-6">
+
+                    <div>
+                        <label for="material-type" class="block text-sm font-medium">Material Type</label>
+                        <select id="material-type" name="material_type" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                            <option value="" disabled>Select Material Type</option>
+                            <option value="raw" {% if materialData.material_type == 'raw' %}selected{% endif %}>Raw Material</option>
+                            <option value="packaging" {% if materialData.material_type == 'packaging' %}selected{% endif %}>Packaging Material</option>
+                            <option value="auxiliary" {% if materialData.material_type == 'auxiliary' %}selected{% endif %}>Auxiliary Material</option>
+                            <option value="intermediate" {% if materialData.material_type == 'intermediate' %}selected{% endif %}>Intermediate Material</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="material-name" class="block text-sm font-medium">Material Name</label>
+                        <input type="text" id="material-name" name="material_name" placeholder="Paracetamol"
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" 
+                        value="{{ materialData.name }}">
+                    </div>
+
+                    <div class="md:col-span-2 lg:col-span-2">
+                        <label for="description" class="block text-sm font-medium">Description</label>
+                        <input type="text" id="description" name="description" placeholder="used to treat mild to moderate pain."
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" 
+                        value="{{ materialData.description }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save and Reset Buttons -->
+        <div class="flex justify-end gap-4 mt-6 pb-6">
+            <button type="reset" class="transition-all duration-150 px-6 py-2 rounded-lg bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-700">Reset</button>
+            <button type="submit" class="transition-all duration-150 px-6 py-2 text-white bg-[#2998FF] dark:bg-[#7655fa] rounded-lg hover:bg-opacity-80">Save</button>
+        </div>
+    </form>
+</div>

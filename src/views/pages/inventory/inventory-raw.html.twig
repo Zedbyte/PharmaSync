@@ -113,10 +113,10 @@
     </div>
 
     <!-- Update Panel -->
-    <div id="updateBatchPanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+    <div id="updateMaterialPanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
     bg-white dark:bg-gray-800 opacity-0 scale-95 transition-all duration-300 shadow-lg z-50 overflow-y-auto hidden 
     w-full h-full xl:w-1/2 xl:h-auto xl:max-h-[56rem] xl:rounded-lg">
-
+        {% include 'update-raw.html.twig' %}
     </div>
 
     <!-- Delete Modal -->
@@ -255,6 +255,9 @@
                                 <th scope="col" class="px-6 py-3">
                                     Lot Details
                                 </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -288,6 +291,37 @@
                                         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                         </svg>
+                                        </button>
+                                    </td>
+                                    <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap justify-center items-center">
+                                        <button 
+                                        onclick="updateMaterialPanel(this)"
+                                        data-material-id="{{ material.id }}"
+                                        class="showUpdateMaterialPanel text-blue-400 
+                                        dark:text-blue-700  dark:hover:text-blue-500
+                                        hover:text-blue-800 text-xs md:text-base transition-all duration-200">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        
+                                        <button 
+                                        onclick="openDeleteModal(this)" 
+                                        data-batch-id="{{ batch.id }}" 
+                                        data-batch-stock="{{ batch.stock_level }}"
+                                        data-medicine-id="{{ medicine.id }}"
+                                        data-medicine-name="{{ medicine.name }}"
+                                        class="text-red-400 hover:text-red-800 dark:text-red-700 
+                                        dark:hover:text-red-500
+                                        text-xs md:text-base transition-all duration-200">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                        
+                                        <button 
+                                        onclick="viewBatchPanel(this)" 
+                                        data-medicine-id="{{ medicine.id }}"
+                                        data-batch-id="{{ batch.id }}" 
+                                        class="text-green-400 hover:text-green-800 dark:text-green-700 
+                                        dark:hover:text-green-500 text-xs md:text-base transition-all duration-200">
+                                            <i class="fa-solid fa-circle-info"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -390,7 +424,8 @@
 
 {% block scripts %}
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addBatchTogglePanel.js"></script>
+    <script src="{{ ASSETS_URL }}/js/inventory/raw/updateMaterialPanel.js"></script>
+    <!-- <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addBatchTogglePanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addRemoveBatch.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addRemoveBatchExisting.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addBatchUpdateMedList.js"></script>
@@ -400,7 +435,7 @@
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/openDeleteModal.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/updateBatchDetails.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/updateBatchPanel.js"></script>
-    <script src="{{ ASSETS_URL }}/js/inventory/manufactured/viewBatchPanel.js"></script>
+    <script src="{{ ASSETS_URL }}/js/inventory/manufactured/viewBatchPanel.js"></script> -->
 
 
 {% endblock %}

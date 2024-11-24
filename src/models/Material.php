@@ -48,7 +48,7 @@ class Material extends BaseModel
             $statement = $this->db->prepare($sql);
             
             $statement->execute([
-                'name' => $data['name'],
+                'name' => $data['material_name'],
                 'description' => $data['description'],
                 'material_type' => $data['material_type'],
                 'id' => $materialID

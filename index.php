@@ -402,6 +402,20 @@ try {
         $rawController->display();
     });
 
+    // Update Batch [GET]
+    $router->respond('GET', '/update-material/[i:materialID]', function($request) use ($rawController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $rawController->updateMaterial($data);
+    });
+
+    // Update Batch [POST]
+    $router->respond('POST', '/update-material/[i:materialID]', function($request) use ($rawController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $rawController->updateMaterial($data);
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {

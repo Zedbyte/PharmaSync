@@ -51,4 +51,32 @@ class RawController extends BaseController
         ]);
     }
 
+    public function updateMaterial($data) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Validate the data
+            //$errors = $this->validateMaterialUpdateData($data);
+            error_log(print_r($data, true));
+            if (!empty($errors)) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => $errors]);
+                return;
+            }
+    
+            // Update material data
+            $materialObject = new Material();
+            $materialObject->update($data['material_id'], $data);
+    
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true]);
+            return;
+        }
+
+        $materialObject = new Material();
+        $materialData = $materialObject->getMaterial($data['materialID']);
+
+        echo $this->twig->render('update-raw.html.twig', [
+            'materialData' => $materialData
+        ]);
+    }
+
 }

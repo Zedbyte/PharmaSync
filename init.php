@@ -11,6 +11,7 @@
         __DIR__ . '\src\views\pages\purchase',
         __DIR__ . '\src\views\pages\order',
         __DIR__ . '\src\views\pages\inventory',
+        __DIR__ . '\src\views\pages\inventory\raw',
         __DIR__ . '\src\views\pages\settings',
         __DIR__ . '\src\views\components',
         __DIR__ . '\src\views'
