@@ -43,7 +43,7 @@ class Lot extends BaseModel
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute([
-                'number' => $data['number'],
+                'number' => $data['lot_number'],
                 'production_date' => $data['production_date'],
                 'id' => $id
             ]);

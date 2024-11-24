@@ -755,6 +755,10 @@ video {
   grid-column: span 9 / span 9;
 }
 
+.col-start-1 {
+  grid-column-start: 1;
+}
+
 .m-0 {
   margin: 0px;
 }

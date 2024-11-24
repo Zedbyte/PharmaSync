@@ -83,17 +83,18 @@
                             </button>
                         </div>
 
-                        <div class="md:col-span-2 lg:col-span-3">
+                        <div class="col-start-1">
+                            <label for="quantity" class="block text-sm font-medium">Quantity</label>
+                            <input type="number" id="quantity" name="quantity[]" placeholder="1" value="{{ material.quantity }}"
+                            class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                        </div>
+
+                        <div class="col-span-2">
                             <label for="description" class="block text-sm font-medium">Description</label>
                             <input type="text" id="description" name="description[]" placeholder="used to treat mild to moderate pain." value="{{ material.material_description }}"
                             class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
                         </div>
 
-                        <div>
-                            <label for="quantity" class="block text-sm font-medium">Quantity</label>
-                            <input type="number" id="quantity" name="quantity[]" placeholder="1" value="{{ material.quantity }}"
-                            class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
-                        </div>
 
                         <div>
                             <label for="unit-price" class="block text-sm font-medium">Unit Price</label>
@@ -102,9 +103,16 @@
                         </div>
 
                         <div>
-                            <label for="batch-number" class="block text-sm font-medium">Batch Number</label>
-                            <input type="text" id="batch-number" name="batch_number[]" placeholder="307002" value="{{ material.batch_number }}"
+                            <label for="lot-number" class="block text-sm font-medium">Lot Number</label>
+                            <input type="text" id="lot-number" name="lot_number[]" placeholder="307002" value="{{ material.lot_number }}"
                             class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                        </div>
+
+                        <div>
+                            <label for="production-date" class="block text-sm font-medium">Production Date</label>
+                            <input type="text" id="production-date" name="production_date[]" placeholder="28 Jun, 2022 - 10:00" value="{{ material.production_date }}"
+                            class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4"
+                            onfocus="(this.type='date')" onblur="(this.type='text')" >
                         </div>
 
                         <div>

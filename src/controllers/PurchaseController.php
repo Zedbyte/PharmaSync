@@ -358,42 +358,65 @@ class PurchaseController extends BaseController {
 
                 // Update each material and link to purchase & Delete materials (if any)
                 $materialObject = new Material();
+                $materialLotObject = new MaterialLot();
+                $lotObject = new Lot();
 
                 $existingMaterialIDs = $purchaseMaterialObject->getMaterialIdsByPurchase($purchaseID);
 
-                
                 // Find materials that were removed
                 $updatedMaterialIDs = array_filter($data['material_id']); // Get non-null material IDs from the form data
                 $removedMaterialIDs = array_diff($existingMaterialIDs, $updatedMaterialIDs);
                 
+
+                $lotIDs = $purchaseMaterialObject->getLotIdsByPurchase($purchaseID);
+
                 // Remove materials that were deleted by the user
-                foreach ($removedMaterialIDs as $materialID) {
+                foreach ($removedMaterialIDs as $index => $materialID) {
                     $purchaseMaterialObject->delete(['pm_purchase_id' => $purchaseID, 'pm_material_id' => $materialID]);
-                    $materialObject->delete($materialID);
+                    $materialLotObject->delete($lotIDs[$index], $materialID);
                 }
                 
-        
-    
+                
                 foreach ($data['material_name'] as $index => $materialName) {
                     $materialID = $data['material_id'][$index] ?? null; // Use null if material_id is not provided
-    
+                    $lotID = null;
                     if ($materialID) {
                         // Update existing material
                         $materialObject->update($materialID, [
                             'name' => $materialName,
                             'description' => $data['description'][$index],
                             'material_type' => $data['material_type'][$index],
-                            'expiration_date' => $data['expiry_date'][$index],
+                        ]);
+
+                        $materialLotObject->update($lotIDs[$index], $materialID, [
+                            'stock_level' => $data['quantity'][$index],
                             'qc_status' => $data['qc_status'][$index],
-                            'inspection_date' => $data['inspection_date'][$index],
-                            'qc_notes' => $data['qc_notes'][$index]
+                            'qc_notes' => $data['qc_notes'][$index],
+                            'expiration_date' => $data['expiry_date'][$index],
+                            'inspection_date' => $data['inspection_date'][$index]
+                        ]);
+
+                        $lotObject->update($lotIDs[$index], [
+                            'lot_number' => $data['lot_number'][$index],
+                            'production_date' => $data['production_date'][$index],
                         ]);
                     } else {
                         // Insert new material and retrieve the new material ID
                         $materialID = $materialObject->save([
                             'name' => $materialName,
                             'description' => $data['description'][$index],
-                            'material_type' => $data['material_type'][$index],
+                            'material_type' => $data['material_type'][$index]
+                        ]);
+                        
+                        $lotID = $lotObject->save([
+                            'number' => $data['lot_number'][$index],
+                            'production_date' => $data['production_date'][$index]
+                        ]);
+
+                        $materialLotObject->save([
+                            'lot_id' => $lotID,
+                            'material_id' => $materialID,
+                            'stock_level' => $data['quantity'][$index],
                             'expiration_date' => $data['expiry_date'][$index],
                             'qc_status' => $data['qc_status'][$index],
                             'inspection_date' => $data['inspection_date'][$index],
@@ -408,7 +431,7 @@ class PurchaseController extends BaseController {
                         'quantity' => $data['quantity'][$index],
                         'unit_price' => $data['unit_price'][$index],
                         'total_price' => $data['quantity'][$index] * $data['unit_price'][$index],
-                        'lot_number' => $data['lot_number'][$index]
+                        'lot_id' => $lotID
                     ]);
                 }
     

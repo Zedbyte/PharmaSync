@@ -47,8 +47,7 @@ class PurchaseMaterial extends BaseModel
                 SET
                     `quantity` = :quantity,
                     `unit_price` = :unit_price,
-                    `total_price` = :total_price,
-                    `lot_id` = :lot_id
+                    `total_price` = :total_price
                 WHERE `pm_purchase_id` = :pm_purchase_id 
                 AND `pm_material_id` = :pm_material_id";
 
@@ -59,7 +58,6 @@ class PurchaseMaterial extends BaseModel
                 'quantity' => $data['quantity'],
                 'unit_price' => $data['unit_price'],
                 'total_price' => $data['total_price'],
-                'lot_id' => $data['lot_id'],
                 'pm_purchase_id' => $data['pm_purchase_id'],
                 'pm_material_id' => $data['pm_material_id']
             ]);
@@ -117,6 +115,22 @@ class PurchaseMaterial extends BaseModel
     public function getMaterialIdsByPurchase($purchaseID)
     {
         $sql = "SELECT pm_material_id FROM purchase_material WHERE pm_purchase_id = :pm_purchase_id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute(['pm_purchase_id' => $purchaseID]);
+
+            // Fetch all material IDs as an array
+            return $statement->fetchAll(PDO::FETCH_COLUMN);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getLotIdsByPurchase($purchaseID)
+    {
+        $sql = "SELECT lot_id FROM purchase_material WHERE pm_purchase_id = :pm_purchase_id";
 
         try {
             $statement = $this->db->prepare($sql);
@@ -261,6 +275,7 @@ class PurchaseMaterial extends BaseModel
                 pm.total_price AS material_total_price,
                 pm.lot_id,
                 l.number AS lot_number,
+                l.production_date,
                 m.id AS material_id,
                 m.name AS material_name,
                 m.description AS material_description,
