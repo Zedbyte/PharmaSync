@@ -416,6 +416,13 @@ try {
         $rawController->updateMaterial($data);
     });
 
+    // Delete Material [POST]
+    $router->respond('POST', '/delete-material/[i:materialID]', function($request) use ($rawController) {
+        AuthMiddleware::checkAuth();
+        $materialID = $request->param('materialID');
+        $rawController->deleteMaterial($materialID);
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {

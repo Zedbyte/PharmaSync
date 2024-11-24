@@ -120,8 +120,8 @@
     </div>
 
     <!-- Delete Modal -->
-    <div id="deleteBatchModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
-        
+    <div id="deleteMaterialModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
+        {% include 'delete-raw.html.twig' %}
     </div>
 
     <!-- View Panel -->
@@ -304,11 +304,9 @@
                                         </button>
                                         
                                         <button 
-                                        onclick="openDeleteModal(this)" 
-                                        data-batch-id="{{ batch.id }}" 
-                                        data-batch-stock="{{ batch.stock_level }}"
-                                        data-medicine-id="{{ medicine.id }}"
-                                        data-medicine-name="{{ medicine.name }}"
+                                        onclick="openMaterialDeleteModal(this)" 
+                                        data-material-id="{{ material.id }}"
+                                        data-lots-count="{{ material.lots|length }}"
                                         class="text-red-400 hover:text-red-800 dark:text-red-700 
                                         dark:hover:text-red-500
                                         text-xs md:text-base transition-all duration-200">
@@ -425,14 +423,17 @@
 {% block scripts %}
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/raw/updateMaterialPanel.js"></script>
+    <script src="{{ ASSETS_URL }}/js/inventory/raw/openMaterialDeleteModal.js"></script>
+
     <!-- <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addBatchTogglePanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addRemoveBatch.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addRemoveBatchExisting.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addBatchUpdateMedList.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/calendarThemeManufactured.js"></script>
-    <script src="{{ ASSETS_URL }}/js/inventory/manufactured/rackDetails.js"></script>
+    <script src="{{ ASSETS_URL }}/js/inventory/manufactured/rackDetails.js"></script> -->
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/viewBatchDetails.js"></script>
-    <script src="{{ ASSETS_URL }}/js/inventory/manufactured/openDeleteModal.js"></script>
+
+    <!-- <script src="{{ ASSETS_URL }}/js/inventory/manufactured/openDeleteModal.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/updateBatchDetails.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/updateBatchPanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/viewBatchPanel.js"></script> -->

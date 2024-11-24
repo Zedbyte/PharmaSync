@@ -79,4 +79,11 @@ class RawController extends BaseController
         ]);
     }
 
+    public function deleteMaterial($id) {
+        $materialObject = new Material();
+        $materialObject->delete($id);
+        header("Location: /inventory/raw");
+        
+    }
+
 }

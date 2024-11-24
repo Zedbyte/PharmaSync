@@ -62,19 +62,32 @@ class Material extends BaseModel
 
     public function delete($materialID)
     {
-        $sql = "DELETE FROM materials WHERE `id` = :id";
-
         try {
-            $statement = $this->db->prepare($sql);
-            
-            // Execute the query with the materialID as parameter
-            $statement->execute(['id' => $materialID]);
-
+            $this->db->beginTransaction();
+    
+            // Delete from `purchase_material`
+            $sqlPurchaseMaterial = "DELETE FROM purchase_material WHERE pm_material_id = :material_id";
+            $stmtPurchaseMaterial = $this->db->prepare($sqlPurchaseMaterial);
+            $stmtPurchaseMaterial->execute(['material_id' => $materialID]);
+    
+            // Delete from `material_lot`
+            $sqlMaterialLot = "DELETE FROM material_lot WHERE material_id = :material_id";
+            $stmtMaterialLot = $this->db->prepare($sqlMaterialLot);
+            $stmtMaterialLot->execute(['material_id' => $materialID]);
+    
+            // Delete from `materials`
+            $sqlMaterials = "DELETE FROM materials WHERE id = :material_id";
+            $stmtMaterials = $this->db->prepare($sqlMaterials);
+            $stmtMaterials->execute(['material_id' => $materialID]);
+    
+            $this->db->commit();
         } catch (PDOException $e) {
+            $this->db->rollBack();
             error_log($e->getMessage());
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
+    
 
 
     public function getMaterial($id)
