@@ -423,6 +423,13 @@ try {
         $rawController->deleteMaterial($materialID);
     });
 
+    // View Material [GET]
+    $router->respond('GET', '/view-material/[i:materialID]', function($request) use ($rawController) {
+    AuthMiddleware::checkAuth();
+    $materialID = $request->param('materialID');
+    $rawController->viewMaterial($materialID);
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {

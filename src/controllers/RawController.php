@@ -86,4 +86,16 @@ class RawController extends BaseController
         
     }
 
+    public function viewMaterial($id) {
+        $materialObject = new Material();
+        $materialData = $materialObject->getMaterialLotSupplierData($id);
+
+
+        // var_dump($materialData);
+
+        echo $this->twig->render('view-raw.html.twig', [
+            'MaterialLotData' => $materialData
+        ]);
+    }
+
 }

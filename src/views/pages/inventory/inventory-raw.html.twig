@@ -125,10 +125,10 @@
     </div>
 
     <!-- View Panel -->
-    <div id="viewBatchPanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+    <div id="viewMaterialPanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
     bg-white dark:bg-gray-800 opacity-0 scale-95 transition-all duration-300 shadow-lg z-50 overflow-y-auto hidden 
     w-full h-full xl:w-1/2 xl:h-auto xl:max-h-[56rem] xl:rounded-lg">
-        
+        {% include 'view-raw.html.twig' %}
     </div>
 
 
@@ -314,9 +314,8 @@
                                         </button>
                                         
                                         <button 
-                                        onclick="viewBatchPanel(this)" 
-                                        data-medicine-id="{{ medicine.id }}"
-                                        data-batch-id="{{ batch.id }}" 
+                                        onclick="viewMaterialPanel(this)" 
+                                        data-material-id="{{ material.id }}"
                                         class="text-green-400 hover:text-green-800 dark:text-green-700 
                                         dark:hover:text-green-500 text-xs md:text-base transition-all duration-200">
                                             <i class="fa-solid fa-circle-info"></i>
@@ -424,6 +423,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/raw/updateMaterialPanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/raw/openMaterialDeleteModal.js"></script>
+    <script src="{{ ASSETS_URL }}/js/inventory/raw/viewMaterialPanel.js"></script>
 
     <!-- <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addBatchTogglePanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addRemoveBatch.js"></script>
