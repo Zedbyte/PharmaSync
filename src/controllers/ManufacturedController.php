@@ -37,11 +37,21 @@ class ManufacturedController extends BaseController
             $medicine['batches'] = $medicineBatchObject->getBatchMedicinesAndBatchData($medicine['id'], $batchSearch);
         }
 
-        $filteredMedicineData = array_filter($medicineData, function($medicine) {
-            return !empty($medicine['batches']); // Keep only medicines with non-empty batches
-        });
+        /**
+         * 
+         * FOR OBSERVATION
+         * 
+         */
+                    // $filteredMedicineData = array_filter($medicineData, function($medicine) {
+                    //     return !empty($medicine['batches']); // Keep only medicines with non-empty batches
+                    // });
 
-        $medicineData = array_values($filteredMedicineData);
+                    // $medicineData = array_values($filteredMedicineData);
+        /**
+         * 
+         * FOR OBSERVATION
+         * 
+         */
 
         // For Rack details rendering via JS
         $rackObject = new Rack();

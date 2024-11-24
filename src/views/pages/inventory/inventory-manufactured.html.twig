@@ -54,7 +54,7 @@
                 <svg class="w-6 h-6 text-gray-700 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
                 </svg>
-                <h1 class="font-semibold text-sm 2xl:text-base">Out of Stock</h1>
+                <h1 class="font-semibold text-sm 2xl:text-base">Nearing Out of Stock</h1>
             </span>
 
             <span class="text-end">
@@ -256,6 +256,9 @@
                                     Regulatory Class
                                 </th>
                                 <th scope="col" class="px-6 py-3">
+                                    Batch Count
+                                </th>
+                                <th scope="col" class="px-6 py-3">
                                     Batch Details
                                 </th>
                             </tr>
@@ -288,6 +291,13 @@
                                         {{ medicine.regulatory_class }}
                                     </td>
                                     <td class="px-6 py-4">
+                                        {% if medicine.batches|length == 0 %}
+                                            <span class="text-red-500">Out of Stock</span>
+                                        {% else %}
+                                        <span class="text-green-600">{{ medicine.batches|length }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="px-6 py-4">
                                         <button onclick="toggleDetails('details-{{ medicine.id }}')" 
                                         class="text-blue-500 hover:underline dark:text-blue-400 text-center inline-flex items-center">
                                         View Details 
@@ -299,7 +309,7 @@
                                 </tr>
                                 <!-- Batch Details (Hidden by Default) -->
                                 <tr id="details-{{ medicine.id }}" class="hidden">
-                                    <td colspan="8" class="bg-gray-50 p-4 dark:bg-gray-700">
+                                    <td colspan="9" class="bg-gray-50 p-4 dark:bg-gray-700">
                                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                                             <thead>
                                                 <tr>
