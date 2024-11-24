@@ -310,12 +310,13 @@ class PurchaseMaterial extends BaseModel
             $materialIds = array_column($details, 'pm_material_id');
             $lotIds = array_column($details, 'lot_id');
 
+            $error = null;
             if ($deleteMaterials === 'true') {
                 // Execute deletion steps
                 $this->deleteMaterialLot($lotIds, $materialIds);
                 $this->deletePurchaseMaterial($purchaseID);
                 $this->deleteLots($lotIds);
-                $this->deleteMaterials($materialIds);
+                $error = $this->deleteMaterials($materialIds);
                 $this->deletePurchase($purchaseID);
             }
             else {
@@ -325,7 +326,7 @@ class PurchaseMaterial extends BaseModel
 
             // Commit the transaction
             $this->db->commit();
-            return "Purchase and related records deleted successfully.";
+            return $error;
 
         } catch (Exception $e) {
             // Rollback on failure
@@ -418,6 +419,7 @@ class PurchaseMaterial extends BaseModel
     private function deleteMaterials($materialIds)
     {
         try {
+            $errors = [];
             if (!empty($materialIds)) {
                 foreach ($materialIds as $materialId) {
                     // Check if the material is still associated with any lot in material_lot
@@ -438,8 +440,10 @@ class PurchaseMaterial extends BaseModel
                         }
                     } else {
                         error_log("Material_id: $materialId is still associated with other lots and cannot be deleted.");
+                        $errors[] = "Material_id: $materialId is still associated with other lots and cannot be deleted.";
                     }
                 }
+                return $errors;
             } else {
                 error_log("No materialIds provided for deletion in materials");
             }

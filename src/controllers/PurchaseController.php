@@ -219,10 +219,10 @@ class PurchaseController extends BaseController {
                         'lot_id' => $lotIDs[$index],
                         'material_id' => $data['material_name'][$index],
                         'stock_level' => $data['quantity'][$index],
-                        'expiration_date' => $data['expiry_date'][$index],
-                        'qc_status' => $data['qc_status'][$index],
-                        'inspection_date' => $data['inspection_date'][$index],
-                        'qc_notes' => $data['qc_notes'][$index]
+                        'expiration_date' => $data['expiry_date'][$index] ?? null,
+                        'qc_status' => $data['qc_status'][$index] ?? null,
+                        'inspection_date' => $data['inspection_date'][$index] ?? null,
+                        'qc_notes' => $data['qc_notes'][$index] ?? null
                     ]);
 
                     (new PurchaseMaterial())->save([
@@ -446,11 +446,26 @@ class PurchaseController extends BaseController {
     }
 
     public function deletePurchase($purchaseID) {
-        $purchaseMaterialObject = new PurchaseMaterial();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $purchaseMaterialObject = new PurchaseMaterial();
 
-        $purchaseData = $purchaseMaterialObject->deletePurchaseData($purchaseID, $_POST['deleteMaterials']);
-        
-        header('Location: /purchase-list');
+            $errors = $purchaseMaterialObject->deletePurchaseData($purchaseID, $_POST['deleteMaterials']);
+
+            if (!empty($errors)) {
+                $_SESSION['delete_errors'] = $errors;
+                echo json_encode(['success' => true, 'redirect' => '/delete-purchase']);
+                exit;
+            }
+
+            echo json_encode(['success' => true, 'redirect' => '/purchase-list']);
+            exit;
+        }
+
+        $errors = isset($_SESSION['delete_errors']) ? $_SESSION['delete_errors'] : [];
+        // Render the template with errors, if any
+        $this->display($errors);
+        // Clear the errors from session after they are displayed
+        unset($_SESSION['delete_errors']);
     }
 
     public function updatePurchaseStatus() {
@@ -487,7 +502,7 @@ class PurchaseController extends BaseController {
     private function validatePurchaseData($data) {
         $errors = [];
     
-        // Check required fields
+        // Check required fields for the purchase itself
         if (empty($data['purchase_date']) || empty($data['vendor'])) {
             $errors[] = "Purchase date and vendor are required.";
         }
@@ -500,28 +515,48 @@ class PurchaseController extends BaseController {
             }
         }
     
-        // Check material fields
-        foreach ($data['material_name'] as $index => $materialName) {
-            if (empty($materialName) || empty($data['quantity'][$index]) || empty($data['unit_price'][$index]) || empty($data['lot_number'][$index])) {
-                $errors[] = "Material name, quantity, unit price, and lot number are required for each item.";
-            }
-        }
+        // Validate each material's data
+        if (isset($data['material_name']) && is_array($data['material_name'])) {
+            foreach ($data['material_name'] as $index => $materialName) {
+                // Check if the fields for this index exist and are valid
+                if (empty($materialName)) {
+                    $errors[] = "Material name for item " . ($index + 1) . " is required.";
+                }
+                if (!isset($data['material_type'][$index]) || $data['material_type'][$index] === '') {
+                    $errors[] = "Material Type for item " . ($index + 1) . " is required.";
+                }
+                if (!isset($data['quantity'][$index]) || $data['quantity'][$index] === '') {
+                    $errors[] = "Quantity for item " . ($index + 1) . " is required.";
+                }
+                if (!isset($data['unit_price'][$index]) || $data['unit_price'][$index] === '') {
+                    $errors[] = "Unit price for item " . ($index + 1) . " is required.";
+                }
+                if (!isset($data['lot_number'][$index]) || $data['lot_number'][$index] === '') {
+                    $errors[] = "Lot number for item " . ($index + 1) . " is required.";
+                }
     
-        // Validate numeric and positive values for quantity and unit price
-        foreach ($data['quantity'] as $quantity) {
-            if (!is_numeric($quantity) || $quantity <= 0) {
-                $errors[] = "Each quantity must be a positive number.";
-            }
-        }
+                // Validate quantity (must be numeric and positive)
+                if (isset($data['quantity'][$index]) && $data['quantity'][$index] !== '') {
+                    if (!is_numeric($data['quantity'][$index]) || $data['quantity'][$index] <= 0) {
+                        $errors[] = "Quantity for item " . ($index + 1) . " must be a positive number.";
+                    }
+                }
     
-        foreach ($data['unit_price'] as $unitPrice) {
-            if (!is_numeric($unitPrice) || $unitPrice <= 0) {
-                $errors[] = "Each unit price must be a positive number.";
+                // Validate unit price (must be numeric and positive)
+                if (isset($data['unit_price'][$index]) && $data['unit_price'][$index] !== '') {
+                    if (!is_numeric($data['unit_price'][$index]) || $data['unit_price'][$index] <= 0) {
+                        $errors[] = "Unit price for item " . ($index + 1) . " must be a positive number.";
+                    }
+                }
             }
+        } else {
+            $errors[] = "At least one material must be selected.";
         }
     
         return $errors;
     }
+    
+    
 
     private function validateUpdatedPurchaseData($data) {
         $errors = [];

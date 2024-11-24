@@ -186,6 +186,12 @@ try {
         $purchaseController->deletePurchase($purchaseID);
     });
 
+    // Delete Purchase [GET]
+    $router->respond('GET', '/delete-purchase', function($request) use ($purchaseController) {
+        AuthMiddleware::checkAuth();
+        $purchaseController->deletePurchase(null);
+    });
+
     // Update Purchase Status [POST]
     $router->respond('POST', '/update-purchase-status', function() use ($purchaseController) {
         AuthMiddleware::checkAuth();

@@ -24,11 +24,15 @@ function openDeleteModal(button) {
             },
             body: formData.toString(),
         })
-        .then(response => {
-            if (response.ok) {
-                window.location.href = `/purchase-list`;
+        .then(response => response.json())
+        .then(data => {            
+            if (data.success) {
+                // Redirect to the provided path on success
+                window.location.href = data.redirect;
             } else {
-                console.error("Failed to delete purchase. Status:", response.status);
+                // Redirect to the provided path on failure
+                console.error('Errors occurred:', data);
+                window.location.href = data.redirect;
             }
         })
         .catch(error => console.error('Error:', error));
