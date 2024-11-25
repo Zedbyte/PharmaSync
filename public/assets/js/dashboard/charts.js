@@ -24,23 +24,35 @@ async function fetchInventoryDistribution() {
 
   console.log(data);
 
-  // Prepare data for Chart.js
-  const labelsInventory = [];
-  const medicineData = [];
-  const materialData = [];
+  // Extract unique labels (month-year combinations) from both medicine and material data
+  const labelSet = new Set();
 
-  // Extract medicine data
   data.medicine.forEach(item => {
-      const monthYear = `${item.year}-${item.month.toString().padStart(2, '0')}`;
-      labelsInventory.push(monthYear);
-      medicineData.push(Number(item.total_stock_level));
+      labelSet.add(`${item.year}-${item.month.toString().padStart(2, '0')}`);
   });
 
-  // Extract material data
   data.material.forEach(item => {
-      const monthYear = `${item.year}-${item.month.toString().padStart(2, '0')}`;
-      if (!labelsInventory.includes(monthYear)) labelsInventory.push(monthYear); // Ensure unique labels
-      materialData.push(Number(item.total_stock_level));
+      labelSet.add(`${item.year}-${item.month.toString().padStart(2, '0')}`);
+  });
+
+  // Sort labels chronologically
+  const labelsInventory = Array.from(labelSet).sort();
+
+  // Prepare datasets
+  const medicineData = labelsInventory.map(label => {
+      const [year, month] = label.split("-");
+      const entry = data.medicine.find(
+          item => item.year === parseInt(year) && item.month === parseInt(month)
+      );
+      return entry ? parseInt(entry.total_stock_level) : 0; // Default to 0 if no data
+  });
+
+  const materialData = labelsInventory.map(label => {
+      const [year, month] = label.split("-");
+      const entry = data.material.find(
+          item => item.year === parseInt(year) && item.month === parseInt(month)
+      );
+      return entry ? parseInt(entry.total_stock_level) : 0; // Default to 0 if no data
   });
 
   return { labelsInventory, medicineData, materialData };
