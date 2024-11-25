@@ -21,66 +21,109 @@
 {% block body %}
 
     <section class="grid sm:grid-cols-6 lg:grid-cols-12 gap-5">
-        <div class="grid grid-rows-2 grid-cols-6 col-span-6 gap-4">
+        <div class="grid lg:grid-rows-2 grid-cols-6 col-span-7 lg:col-span-5 gap-4">
             <div class="col-span-3 lg:col-span-3 border dark:border-slate-600 border-gray-300  rounded-xl px-5 py-3 text-gray-700 dark:text-[#fdfdfd] bg-white dark:bg-slate-800">
                 <span class="flex items-center space-x-2 mb-4">
-                    <svg class="w-6 h-6 text-gray-700 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M4.857 3A1.857 1.857 0 0 0 3 4.857v4.286C3 10.169 3.831 11 4.857 11h4.286A1.857 1.857 0 0 0 11 9.143V4.857A1.857 1.857 0 0 0 9.143 3H4.857Zm10 0A1.857 1.857 0 0 0 13 4.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 9.143V4.857A1.857 1.857 0 0 0 19.143 3h-4.286Zm-10 10A1.857 1.857 0 0 0 3 14.857v4.286C3 20.169 3.831 21 4.857 21h4.286A1.857 1.857 0 0 0 11 19.143v-4.286A1.857 1.857 0 0 0 9.143 13H4.857Zm10 0A1.857 1.857 0 0 0 13 14.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 19.143v-4.286A1.857 1.857 0 0 0 19.143 13h-4.286Z" clip-rule="evenodd"/>
-                    </svg>
+                    <span class="rounded-full p-1 w-9 h-9 bg-slate-700 flex items-center justify-center">
+                        <i class="fa-solid fa-clock text-md text-[#2998FF] dark:text-[#7655fa]"></i>
+                    </span>
                     <h1 class="font-semibold text-sm 2xl:text-base">Production Efficiency</h1>
                 </span>
     
-                <span class="text-end">
-                    <h1 class="font-semibold text-sm text-slate-500 dark:text-gray-300">Current</h1>
-                    <h1 class="font-semibold text-2xl text-[#2998FF] dark:text-[#9279f8]">1000</h1>
+                <span class="grid grid-cols-1 space-y-3">
+                    <span class="text-start">
+                        <h1 class="font-semibold text-[0.600rem] text-slate-500 dark:text-gray-300">Total</h1>
+                        <h1 class="font-semibold text-2xl">$98,000.53</h1>
+                    </span>
+                    <hr class="dark:border-gray-700" />
+                    <span class="text-start text-nowrap">
+                        <span class="font-semibold text-green-500 flex space-x-5">
+                            <p><i class="fa-solid fa-arrow-trend-up"></i> 12.4%</p>
+                            <span class="text-gray-500">
+                                <small> - This month</small>
+                            </span>
+                        </span>
+                    </span>
                 </span>
             </div>
     
             <div class="col-span-3 lg:col-span-3 border dark:border-slate-600 border-gray-300  rounded-xl px-5 py-3 text-gray-700 dark:text-[#fdfdfd] bg-white dark:bg-slate-800">
                 <span class="flex items-center space-x-2 mb-4">
-                    <svg class="w-6 h-6 text-gray-700 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
-                    </svg>
-                    <h1 class="font-semibold text-sm 2xl:text-base">Out of Stock</h1>
+                    <span class="rounded-full p-1 w-9 h-9 bg-slate-700 flex items-center justify-center">
+                        <i class="fa-solid fa-bars-progress text-md text-[#2998FF] dark:text-[#7655fa]"></i>
+                    </span>
+                    <h1 class="font-semibold text-sm 2xl:text-base">Total Orders</h1>
                 </span>
     
-                <span class="text-end">
-                    <h1 class="font-semibold text-sm text-slate-500 dark:text-gray-300">Current</h1>
-                    <h1 class="font-semibold text-2xl {% if KPI.nearingOutOfStock > 0 %} text-red-400 {% else %} text-green-400 {% endif %}">{{ KPI.nearingOutOfStock }}</h1>
+                <span class="grid grid-cols-1 space-y-3">
+                    <span class="text-start">
+                        <h1 class="font-semibold text-[0.600rem] text-slate-500 dark:text-gray-300">Total</h1>
+                        <h1 class="font-semibold text-2xl">15,130</h1>
+                    </span>
+                    <hr class="dark:border-gray-700" />
+                    <span class="text-start text-nowrap">
+                        <span class="font-semibold text-red-500 flex space-x-5">
+                            <p><i class="fa-solid fa-arrow-trend-down"></i> 12.4%</p>
+                            <span class="text-gray-500">
+                                <small> - This month</small>
+                            </span>
+                        </span>
+                    </span>
                 </span>
             </div>
 
-            <div class="col-span-1 lg:col-span-3 border dark:border-slate-600 border-gray-300  rounded-xl px-5 py-3 text-gray-700 dark:text-[#fdfdfd] bg-white dark:bg-slate-800">
+            <div class="col-span-3 lg:col-span-3 border dark:border-slate-600 border-gray-300  rounded-xl px-5 py-3 text-gray-700 dark:text-[#fdfdfd] bg-white dark:bg-slate-800">
                 <span class="flex items-center space-x-2 mb-4">
-                    <svg class="w-6 h-6 text-gray-700 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M10 5a2 2 0 0 0-2 2v3h2.4A7.48 7.48 0 0 0 8 15.5a7.48 7.48 0 0 0 2.4 5.5H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1V7a4 4 0 1 1 8 0v1.15a7.446 7.446 0 0 0-1.943.685A.999.999 0 0 1 12 8.5V7a2 2 0 0 0-2-2Z" clip-rule="evenodd"/>
-                        <path fill-rule="evenodd" d="M10 15.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0Zm6.5-1.5a1 1 0 1 0-2 0v1.5a1 1 0 0 0 .293.707l1 1a1 1 0 0 0 1.414-1.414l-.707-.707V14Z" clip-rule="evenodd"/>
-                    </svg>
-                    <h1 class="font-semibold text-sm 2xl:text-base">Expiring Soon</h1>
+                    <span class="rounded-full p-1 w-9 h-9 bg-slate-700 flex items-center justify-center">
+                        <i class="fa-solid fa-square-poll-vertical text-md text-[#2998FF] dark:text-[#7655fa]"></i>
+                    </span>
+                    <h1 class="font-semibold text-sm 2xl:text-base">Sales Performance</h1>
                 </span>
     
-                <span class="text-end">
-                    <h1 class="font-semibold text-sm text-slate-500 dark:text-gray-300">Current</h1>
-                    <h1 class="font-semibold text-2xl {% if KPI.expiringSoon > 0 %} text-red-400 {% else %} text-green-400 {% endif %}">{{ KPI.expiringSoon }}</h1>
+                <span class="grid grid-cols-1 space-y-3">
+                    <span class="text-start">
+                        <h1 class="font-semibold text-[0.600rem] text-slate-500 dark:text-gray-300">Total</h1>
+                        <h1 class="font-semibold text-2xl">$98,000.53</h1>
+                    </span>
+                    <hr class="dark:border-gray-700" />
+                    <span class="text-start text-nowrap">
+                        <span class="font-semibold text-green-500 flex space-x-5">
+                            <p><i class="fa-solid fa-arrow-trend-up"></i> 12.4%</p>
+                            <span class="text-gray-500">
+                                <small> - This month</small>
+                            </span>
+                        </span>
+                    </span>
                 </span>
             </div>
     
-            <div class="col-span-1 lg:col-span-3 border dark:border-slate-600 border-gray-300  rounded-xl px-5 py-3 text-gray-700 dark:text-[#fdfdfd] bg-white dark:bg-slate-800">
+            <div class="col-span-3 lg:col-span-3 border dark:border-slate-600 border-gray-300  rounded-xl px-5 py-3 text-gray-700 dark:text-[#fdfdfd] bg-white dark:bg-slate-800">
                 <span class="flex items-center space-x-2 mb-4">
-                    <svg class="w-6 h-6 text-gray-700 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" clip-rule="evenodd"/>
-                    </svg>
-                    <h1 class="font-semibold text-sm 2xl:text-base">Total Stock</h1>
+                    <span class="rounded-full p-1 w-9 h-9 bg-slate-700 flex items-center justify-center">
+                        <i class="fa-solid fa-truck text-md text-[#2998FF] dark:text-[#7655fa]"></i>
+                    </span>
+                    <h1 class="font-semibold text-sm 2xl:text-base">Purchase Frequency</h1>
                 </span>
     
-                <span class="text-end">
-                    <h1 class="font-semibold text-sm text-slate-500 dark:text-gray-300">Current</h1>
-                    <h1 class="font-semibold text-2xl">{{ KPI.totalStock }}</h1>
+                <span class="grid grid-cols-1 space-y-3">
+                    <span class="text-start">
+                        <h1 class="font-semibold text-[0.600rem] text-slate-500 dark:text-gray-300">Total</h1>
+                        <h1 class="font-semibold text-2xl">$98,000.53</h1>
+                    </span>
+                    <hr class="dark:border-gray-700" />
+                    <span class="text-start text-nowrap">
+                        <span class="font-semibold text-green-500 flex space-x-5">
+                            <p><i class="fa-solid fa-arrow-trend-up"></i> 12.4%</p>
+                            <span class="text-gray-500">
+                                <small> - This month</small>
+                            </span>
+                        </span>
+                    </span>
                 </span>
             </div>
         </div>
 
-        <div class="col-span-6 px-6 py-3 rounded-lg border-x border dark:border-slate-600 bg-gray-50 border-gray-300 dark:bg-slate-800 space-y-5">
+        <div class="col-span-7 px-6 py-3 rounded-lg border-x border dark:border-slate-600 bg-gray-50 border-gray-300 dark:bg-slate-800 space-y-5">
             <h1 class="font-bold text-lg text-gray-700 dark:text-white">Production Trends</h1>
                 <canvas id="productionChart" class="!w-full !h-60"></canvas>
         </div>
@@ -90,7 +133,7 @@
         <div class="grid lg:grid-cols-12 gap-10 h-full">
             <div class="col-span-7 px-6 py-3 rounded-lg border-x border dark:border-slate-600 bg-gray-50 border-gray-300 dark:bg-slate-800 space-y-5">
                 <h1 class="font-bold text-lg text-gray-700 dark:text-white">Inventory Distribution</h1>
-                <canvas id="barChart" class="!w-full !h-72"></canvas>
+                <canvas id="barChart" class="!w-full !h-64"></canvas>
             </div>
         
             <div class="col-span-5 px-6 py-3 rounded-lg border-x border dark:border-slate-600 bg-gray-50 border-gray-300 dark:bg-slate-800 space-y-5">
