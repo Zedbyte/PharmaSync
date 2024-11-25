@@ -430,6 +430,20 @@ try {
     $rawController->viewMaterial($materialID);
     });
 
+    // Update Lot [GET]
+    $router->respond('GET', '/update-lot/[i:lotID]/material/[i:materialID]', function($request) use ($rawController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $rawController->updateLot($data);
+    });
+
+    // Update Lot [POST]
+    $router->respond('POST', '/update-lot/[i:lotID]/material/[i:materialID]', function($request) use ($rawController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $rawController->updateLot($data);
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {

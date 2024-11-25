@@ -71,7 +71,7 @@ class Lot extends BaseModel
         }
     }
 
-    public function get($id)
+    public function getLot($id)
     {
         $sql = "SELECT * FROM `lots` 
                 WHERE `id` = :id";

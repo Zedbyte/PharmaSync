@@ -93,8 +93,17 @@ class MaterialLot extends BaseModel
 
     public function getMaterialLot($lotId, $materialId)
     {
-        $sql = "SELECT * FROM `material_lot` 
-                WHERE `lot_id` = :lot_id AND `material_id` = :material_id";
+        $sql = "SELECT 
+                    ml.*, 
+                    l.* 
+                    FROM 
+                        material_lot ml 
+                    JOIN 
+                        lots l ON l.id = ml.lot_id
+                    WHERE 
+                        ml.lot_id = :lot_id 
+                    AND 
+                        ml.material_id = :material_id";
 
         try {
             $statement = $this->db->prepare($sql);
