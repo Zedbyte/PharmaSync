@@ -454,8 +454,8 @@ class PurchaseMaterial extends BaseModel
                             error_log("No rows affected for material_id: $materialId in materials");
                         }
                     } else {
-                        error_log("Material_id: $materialId is still associated with other lots and cannot be deleted.");
-                        $errors[] = "Material_id: $materialId is still associated with other lots and cannot be deleted.";
+                        error_log("Material ID: $materialId is still associated with other lots and cannot be deleted.");
+                        $errors[] = "Material ID: $materialId is still associated with other lots and cannot be deleted.";
                     }
                 }
                 return $errors;
