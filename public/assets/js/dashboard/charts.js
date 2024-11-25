@@ -6,16 +6,44 @@ async function fetchProductionRate() {
   
 
   // Transform data for Chart.js
-  const labels = [];
+  const labelsProduction = [];
   const counts = [];
 
   data.forEach(item => {
       const monthYear = `${item.year}-${item.month.toString().padStart(2, '0')}`;
-      labels.push(monthYear);
+      labelsProduction.push(monthYear);
       counts.push(item.batch_count);
   });
 
-  return { labels, counts };
+  return { labelsProduction, counts };
+}
+
+async function fetchInventoryDistribution() {
+  const response = await fetch('/dashboard/inventory-distribution');
+  const data = await response.json();
+
+  console.log(data);
+
+  // Prepare data for Chart.js
+  const labelsInventory = [];
+  const medicineData = [];
+  const materialData = [];
+
+  // Extract medicine data
+  data.medicine.forEach(item => {
+      const monthYear = `${item.year}-${item.month.toString().padStart(2, '0')}`;
+      labelsInventory.push(monthYear);
+      medicineData.push(Number(item.total_stock_level));
+  });
+
+  // Extract material data
+  data.material.forEach(item => {
+      const monthYear = `${item.year}-${item.month.toString().padStart(2, '0')}`;
+      if (!labelsInventory.includes(monthYear)) labelsInventory.push(monthYear); // Ensure unique labels
+      materialData.push(Number(item.total_stock_level));
+  });
+
+  return { labelsInventory, medicineData, materialData };
 }
 
 
@@ -24,11 +52,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const barChart = document.getElementById("barChart");
 
   // Fetch data
-  const { labels, counts } = await fetchProductionRate();
+  const { labelsProduction, counts } = await fetchProductionRate();
+  const { labelsInventory, medicineData, materialData } = await fetchInventoryDistribution();
 
   // Chart.js configuration
   const productionData = {
-    labels: labels,
+    labels: labelsProduction,
     datasets: [
       {
         label: "Batches Produced",
@@ -76,6 +105,51 @@ document.addEventListener("DOMContentLoaded", async () => {
     responsive: true,
     maintainAspectRatio: false,
   };
+
+    const distribData = {
+      labels: labelsInventory,
+      datasets: [
+          {
+              label: "Medicine Stock Level",
+              data: medicineData,
+              backgroundColor: "rgba(54, 162, 235, 0.6)",
+              borderColor: "rgba(54, 162, 235, 1)",
+              borderWidth: 1,
+          },
+          {
+              label: "Material Stock Level",
+              data: materialData,
+              backgroundColor: "rgba(255, 99, 132, 0.6)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 1,
+          },
+      ],
+  };
+  
+
+  const distribOptions = {
+    scales: {
+        x: {
+            grid: {
+                color: "rgba(200, 200, 200, 0.3)",
+            },
+            ticks: {
+                color: "rgba(0, 0, 0, 1)",
+            },
+        },
+        y: {
+            grid: {
+                color: "rgba(200, 200, 200, 0.3)",
+            },
+            ticks: {
+                beginAtZero: true,
+                color: "rgba(0, 0, 0, 1)",
+            },
+        },
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+};
 
   var data = {
     labels: ["2013", "2014", "2014", "2015", "2016", "2017"],
@@ -267,7 +341,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   new Chart(barChart, {
     type: "bar",
-    data: data,
-    options: options,
+    data: distribData,
+    options: distribOptions,
   });
 });

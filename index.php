@@ -16,6 +16,7 @@ use App\Controllers\DashboardController;
 use App\Controllers\SettingsController;
 use App\Controllers\PurchaseController;
 use App\Controllers\OrderController;
+use App\Controllers\InventoryController;
 use App\Controllers\ManufacturedController;
 use App\Controllers\RawController;
 use \App\Middleware\AuthMiddleware;
@@ -34,6 +35,7 @@ try {
     $settingsController = new SettingsController($twig);
     $purchaseController = new PurchaseController($twig);
     $orderController = new OrderController($twig);
+    $inventoryController = new InventoryController($twig);
     $manufacturedController = new ManufacturedController($twig);
     $rawController = new RawController($twig);
 
@@ -98,10 +100,10 @@ try {
         $batchesController->getProductionRate();
     });
 
-    // $router->respond('GET', '/dashboard/inventory-distribution', function() use ($batchesController) {
-    //     AuthMiddleware::checkAuth();
-    //     $batchesController->getInventoryDistribution();
-    // });
+    $router->respond('GET', '/dashboard/inventory-distribution', function() use ($inventoryController) {
+        AuthMiddleware::checkAuth();
+        $inventoryController->getInventoryDistribution();
+    });
 
     /**
      * 
