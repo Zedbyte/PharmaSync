@@ -299,11 +299,20 @@
                                     <td class="px-6 py-4">
                                         {{ material.material_type| title }} Material
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-4 flex items-center">
                                         {% if material.lots|length == 0 %}
                                             <span class="text-red-500">Out of Stock</span>
                                         {% else %}
-                                        <span class="text-green-600">{{ material.lots|length }}</span>
+                                            <span class="text-green-600">{{ material.lots|length }}</span>
+                                            {% set warning = false %}
+                                            {% for lot in material.lots %}
+                                                {% if lot.stock_level <= 50 %}
+                                                    {% set warning = true %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if warning %}
+                                                <ion-icon name="alert-circle-outline" class="text-yellow-500 text-xl ml-2"></ion-icon>
+                                            {% endif %}
                                         {% endif %}
                                     </td>
                                     <td class="px-6 py-4">
@@ -385,7 +394,15 @@
                                                         {{ lot.expiration_date }}
                                                     </td>
                                                     <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
-                                                        {{ lot.stock_level }}
+                                                        {% if lot.stock_level <= 50 %}
+                                                            {% if lot.stock_level <= 25 %}
+                                                                <span class="text-red-500 font-bold">{{ lot.stock_level }}</span>
+                                                            {% else %}
+                                                                <span class="text-yellow-500 font-bold">{{ lot.stock_level }}</span>
+                                                            {% endif %}
+                                                        {% else %}
+                                                            {{ lot.stock_level }}
+                                                        {% endif %}
                                                     </td>
                                                     <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                                                         {{ lot.production_date }}
