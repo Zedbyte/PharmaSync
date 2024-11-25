@@ -132,6 +132,12 @@ class RawController extends BaseController
         ]);
     }
 
+    public function deleteLot($data) {
+        $materialLotObject = new MaterialLot();
+        $materialLotObject->delete($data['lotID'], $data['materialID']);
+        header("Location: /inventory/raw");
+    }
+
 
     private function validateMaterialUpdateData($data) {
         $errors = [];

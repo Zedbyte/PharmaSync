@@ -137,6 +137,11 @@
         {% include 'update-lot.html.twig' %}
     </div>
 
+    <!-- Delete Lot Modal -->
+    <div id="deleteLotModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
+        {% include 'delete-lot.html.twig' %}
+    </div>
+
 
 
     <section class="order__list_container_content mt-8 flex flex-col h-full">
@@ -434,6 +439,7 @@
     <script src="{{ ASSETS_URL }}/js/inventory/raw/openMaterialDeleteModal.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/raw/viewMaterialPanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/raw/updateLotPanel.js"></script>
+    <script src="{{ ASSETS_URL }}/js/inventory/raw/openLotDeleteModal.js"></script>
 
     <!-- <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addBatchTogglePanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/addRemoveBatch.js"></script>

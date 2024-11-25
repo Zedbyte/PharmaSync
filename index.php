@@ -444,6 +444,13 @@ try {
         $rawController->updateLot($data);
     });
 
+    // Delete Lot [POST]
+    $router->respond('POST', '/delete-lot/[i:lotID]/material/[i:materialID]', function($request) use ($rawController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $rawController->deleteLot($data);
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {
