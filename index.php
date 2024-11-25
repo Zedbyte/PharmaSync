@@ -425,9 +425,9 @@ try {
 
     // View Material [GET]
     $router->respond('GET', '/view-material/[i:materialID]', function($request) use ($rawController) {
-    AuthMiddleware::checkAuth();
-    $materialID = $request->param('materialID');
-    $rawController->viewMaterial($materialID);
+        AuthMiddleware::checkAuth();
+        $materialID = $request->param('materialID');
+        $rawController->viewMaterial($materialID);
     });
 
     // Update Lot [GET]
@@ -449,6 +449,13 @@ try {
         AuthMiddleware::checkAuth();
         $data = $request->params();
         $rawController->deleteLot($data);
+    });
+
+    // View Lot [GET]
+    $router->respond('GET', '/view-lot/[i:lotID]/material/[i:materialID]', function($request) use ($rawController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $rawController->viewLot($data);
     });
 
     $router->dispatch();
