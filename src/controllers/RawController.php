@@ -33,22 +33,35 @@ class RawController extends BaseController
         $materialLotObject = new MaterialLot();
         
         foreach ($materialData as &$material) {
-            $material['lots'] = $materialLotObject->getMaterialLotsAndLotData($material['id']);
+            $material['lots'] = $materialLotObject->getMaterialLotsAndLotData($material['id'], $lotSearch);
         }
 
-        // $filteredMaterialData = array_filter($medicineData, function($medicine) {
-        //     return !empty($medicine['batches']); // Keep only medicines with non-empty batches
-        // });
+        if ($lotSearch) {
+            $filteredMaterialData = array_filter($materialData, function($material) {
+                return !empty($material['lots']); // Keep only materials with non-empty lots
+            });
+    
+            $materialData = array_values($filteredMaterialData);
+        }
 
-        // $medicineData = array_values($filteredMedicineData);
 
-        // var_dump($materialData);
+        //For KPI
+        $totalMaterials = $materialLotObject->getMaterialCount();
+        $nearingOutOfStock = $materialLotObject->getNearingOutOfStock();
+        $outOfStock = $materialLotObject->getOutOfStock();
+        $totalStock = $materialLotObject->getTotalStocks();
 
-
+        $KPI = [
+            'totalMaterials' => $totalMaterials,
+            'nearingOutOfStock' => $nearingOutOfStock,
+            'outOfStock' => $outOfStock,
+            'totalStock' => $totalStock
+        ];
 
         echo $this->twig->render('inventory-raw.html.twig', [
             'ASSETS_URL' => ASSETS_URL,
-            'materialData' => $materialData
+            'materialData' => $materialData,
+            'KPI' => $KPI
         ]);
     }
 

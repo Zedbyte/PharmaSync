@@ -399,7 +399,7 @@ try {
     $router->respond('GET', '/inventory/raw', function() use ($rawController) {
         AuthMiddleware::checkAuth();
         $lotSearch = $_GET['q'] ?? null;
-        $rawController->display();
+        $rawController->display(null, $lotSearch);
     });
 
     // Update Batch [GET]

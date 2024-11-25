@@ -214,5 +214,64 @@ class MaterialLot extends BaseModel
         }
     }
 
+    public function getMaterialCount() {
+        $sql = "SELECT COUNT(DISTINCT `material_id`) AS material_count FROM `material_lot`";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC)['material_count'];
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getTotalStocks()
+    {
+        $sql = "SELECT SUM(`stock_level`) AS total_stocks FROM `material_lot`";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC)['total_stocks'];
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getNearingOutOfStock()
+    {
+        $sql = "SELECT COUNT(DISTINCT `material_id`) AS out_of_stock FROM `material_lot`
+                WHERE `stock_level` <= 50";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC)['out_of_stock'];
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getOutOfStock()
+    {
+        $sql = "SELECT COUNT(DISTINCT m.id) AS missing_material_id
+                FROM materials m
+                LEFT JOIN material_lot ml ON m.id = ml.material_id
+                WHERE ml.material_id IS NULL;
+                ";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC)['missing_material_id'];
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
 
 }
