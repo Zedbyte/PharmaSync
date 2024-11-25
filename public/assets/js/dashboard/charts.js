@@ -95,22 +95,29 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   const productionOptions = {
+    plugins: {
+      legend: {
+          labels: {
+              color: 'rgba(135, 135, 135, 1)' // Set the legend text color to white
+          }
+      }
+    },
     scales: {
       x: {
         grid: {
-          color: "rgba(200, 200, 200, 1)",
+          color: "rgba(200, 200, 200, 0.3)",
         },
         ticks: {
-          color: "rgba(0, 0, 0, 1)",
+          color: "rgba(135, 135, 135, 1)",
         },
       },
       y: {
         grid: {
-          color: "rgba(200, 200, 200, 1)",
+          color: "rgba(200, 200, 200, 0.3)",
         },
         ticks: {
           beginAtZero: true,
-          color: "rgba(0, 0, 0, 1)",
+          color: "rgba(135, 135, 135, 1)",
         },
       },
     },
@@ -140,13 +147,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   
 
   const distribOptions = {
+    plugins: {
+      legend: {
+          labels: {
+              color: 'rgba(135, 135, 135, 1)' // Set the legend text color to white
+          }
+      }
+    },
     scales: {
         x: {
             grid: {
                 color: "rgba(200, 200, 200, 0.3)",
             },
             ticks: {
-                color: "rgba(0, 0, 0, 1)",
+                color: "rgba(135, 135, 135, 1)",
             },
         },
         y: {
@@ -155,7 +169,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
             ticks: {
                 beginAtZero: true,
-                color: "rgba(0, 0, 0, 1)",
+                color: "rgba(135, 135, 135, 1)",
             },
         },
     },
