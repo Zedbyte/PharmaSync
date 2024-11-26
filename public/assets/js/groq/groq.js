@@ -24,9 +24,13 @@ document.getElementById('groqForm').addEventListener('submit', function (event) 
             if (data.choices && data.choices.length > 0) {
                 const responseText = data.choices[0].message.content || 'No content received.';
                 console.log('Response Text:', responseText);
+
+                // Parse and replace **bold** syntax with <strong> tags
+                const parsedText = parseBoldAndNewLines(responseText);
+
                 groqRequest.value = '';
                 typeText(userPrompt, groqRequest);
-                typeText(responseDiv, responseText); // Call typing effect
+                typeHTML(responseDiv, parsedText); // Call typing effect
             } else {
                 responseDiv.innerText = data.error || 'Unexpected response structure.';
             }
@@ -37,6 +41,12 @@ document.getElementById('groqForm').addEventListener('submit', function (event) 
         });
 });
 
+// Function to parse **bold** syntax and replace new lines with <br>
+function parseBoldAndNewLines(text) {
+    const boldProcessed = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Process bold
+    return boldProcessed.replace(/\n/g, '<br>'); // Replace new lines with <br>
+}
+
 // Function to simulate typing effect
 function typeText(element, text, speed = 10) {
     let i = 0;
@@ -46,6 +56,23 @@ function typeText(element, text, speed = 10) {
         if (i < text.length) {
             typedText += text.charAt(i);
             element.innerText = typedText; // Update innerText with the typed content
+            i++;
+            setTimeout(type, speed); // Call the function recursively to continue typing
+        }
+    }
+
+    type(); // Start typing
+}
+
+// Function to simulate typing effect for HTML content
+function typeHTML(element, html, speed = 10) {
+    let i = 0;
+    let typedHTML = "";
+
+    function type() {
+        if (i < html.length) {
+            typedHTML += html.charAt(i);
+            element.innerHTML = typedHTML; // Update innerHTML with the typed content
             i++;
             setTimeout(type, speed); // Call the function recursively to continue typing
         }
