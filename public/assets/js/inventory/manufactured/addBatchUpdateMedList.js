@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Case 2: .medicine-type dropdown
         if (target.matches(".medicine-type")) {
-            const itemTemplate = target.closest(".item__template_existing") || target.closest(".item__template");
+            const itemTemplate = target.closest(".item__template_existing") || target.closest(".item__template_new");
             if (itemTemplate) {
                 const medicineNameSelect = itemTemplate.querySelector(".medicine-name");
                 const type = target.value;
