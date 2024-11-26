@@ -125,4 +125,24 @@ class User extends BaseModel
 
         return $errors;
     }
+
+    public function getRoleById($id)
+    {
+        try {
+            $sql = "SELECT role FROM users WHERE id = :id";
+            $statement = $this->db->prepare($sql);
+            $statement->execute(['id' => $id]);
+
+            $user = $statement->fetch(PDO::FETCH_ASSOC)['role'];
+
+            if ($user) {
+                return $user;
+            }
+
+            return null; // User not found
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
 }

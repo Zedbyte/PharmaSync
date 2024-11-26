@@ -21,6 +21,9 @@ use App\Controllers\ManufacturedController;
 use App\Controllers\RawController;
 use \App\Middleware\AuthMiddleware;
 
+//Models
+use App\Models\User;
+
 try {
 
     // Initialize Klein router
@@ -38,6 +41,12 @@ try {
     $inventoryController = new InventoryController($twig);
     $manufacturedController = new ManufacturedController($twig);
     $rawController = new RawController($twig);
+
+    // Add userRole as a global variable after session start
+    $userObject = new User();
+    $userRole = isset($_SESSION['user_id']) ? $userObject->getRoleById($_SESSION['user_id']) : null;
+    error_log($userRole);
+    $twig->addGlobal('userRole', $userRole);
 
     // Landing Page
     $router->respond('GET', '/', function() use ($loginController) {
@@ -74,6 +83,7 @@ try {
 
     // Registration Page [GET]
     $router->respond('GET', '/registration', function() use ($registrationController) {
+        AuthMiddleware::checkRole(['hr_manager']);
         $registrationController->display();
     });
 
@@ -91,6 +101,7 @@ try {
     // Dashboard Page [GET]
     $router->respond('GET', '/dashboard', function() use ($dashboardController) {
         AuthMiddleware::checkAuth();
+        AuthMiddleware::checkRole(['finance_manager', 'hr_manager', 'inventory_manager', 'staff']);
         $dashboardController->display();
     });
 
@@ -114,6 +125,7 @@ try {
     // Settings Page [GET]
     $router->respond('GET', '/settings', function() use ($settingsController) {
         AuthMiddleware::checkAuth();
+        AuthMiddleware::checkRole(['finance_manager', 'hr_manager', 'inventory_manager', 'staff']);
         $settingsController->display();
     });
 
@@ -126,6 +138,7 @@ try {
     // Purchase Page [GET]
     $router->respond('GET', '/purchase-list', function() use ($purchaseController) {
         AuthMiddleware::checkAuth();
+        AuthMiddleware::checkRole(['finance_manager']);
         $purchaseController->display();
     });
 
@@ -211,6 +224,7 @@ try {
     // Order Page [GET]
     $router->respond('GET', '/order-list', function() use ($orderController) {
         AuthMiddleware::checkAuth();
+        AuthMiddleware::checkRole(['finance_manager']);
         $orderController->display();
     });
 
@@ -306,6 +320,7 @@ try {
     // Manufactured Page [GET]
     $router->respond('GET', '/inventory/manufactured', function() use ($manufacturedController) {
         AuthMiddleware::checkAuth();
+        AuthMiddleware::checkRole(['inventory_manager']);
         $batchSearch = $_GET['q'] ?? null;
         $manufacturedController->display(null, $batchSearch);
     });
@@ -400,6 +415,7 @@ try {
     // Manufactured Page [GET]
     $router->respond('GET', '/inventory/raw', function() use ($rawController) {
         AuthMiddleware::checkAuth();
+        AuthMiddleware::checkRole(['inventory_manager']);
         $lotSearch = $_GET['q'] ?? null;
         $rawController->display(null, $lotSearch);
     });

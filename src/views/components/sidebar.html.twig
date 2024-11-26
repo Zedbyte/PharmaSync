@@ -8,7 +8,8 @@
             </a>
         </li>
 
-        <li class="nav__label dark:!text-[#fdfdfd]">FINANCES</li>
+        {% if userRole == 'administrator' or userRole == 'finance_manager' %}
+            <li class="nav__label dark:!text-[#fdfdfd]">FINANCES</li>
 
         <!-- Purchases (Collapsible) -->
         <!-- <li class="nav__item">
@@ -40,103 +41,109 @@
                 </li>
             </ul>
         </li> -->
-        <li class="nav__item">
-            <a href="/purchase-list" class="nav__link nav__link_active dark:hover:!bg-[#7655fa]">
-                <ion-icon name="card-outline" class="dark:text-[#fdfdfd]"></ion-icon>
-                <span class="dark:text-[#fdfdfd]">Purchases</span>
-            </a>
-        </li>
+            <li class="nav__item">
+                <a href="/purchase-list" class="nav__link nav__link_active dark:hover:!bg-[#7655fa]">
+                    <ion-icon name="card-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                    <span class="dark:text-[#fdfdfd]">Purchases</span>
+                </a>
+            </li>
 
-        <!-- Orders -->
-        <li class="nav__item">
-            <a href="/order-list" class="nav__link nav__link_active dark:hover:!bg-[#7655fa]">
-                <ion-icon name="list-circle-outline" class="dark:text-[#fdfdfd]"></ion-icon>
-                <span class="dark:text-[#fdfdfd]">Orders</span>
-            </a>
-        </li>
+            <!-- Orders -->
+            <li class="nav__item">
+                <a href="/order-list" class="nav__link nav__link_active dark:hover:!bg-[#7655fa]">
+                    <ion-icon name="list-circle-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                    <span class="dark:text-[#fdfdfd]">Orders</span>
+                </a>
+            </li>
+        {% endif %}
 
+        
+        {% if userRole == 'administrator' or userRole == 'inventory_manager' %}
+            <li class="nav__label dark:!text-[#fdfdfd]">STORAGE</li>
 
-        <li class="nav__label dark:!text-[#fdfdfd]">STORAGE</li>
+            <!-- Inventory (Collapsible) -->
+            <li class="nav__item">
+                <button class="nav__link nav__link_button collapsible justify-between dark:hover:!bg-[#7655fa]" onclick="toggleCollapse('inventory', this)">
+                    <span class="flex items-center expanded__label">
+                        <ion-icon name="cube-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                        <span class="dark:text-[#fdfdfd]">Inventory</span>
+                    </span>
+                    <ion-icon name="chevron-forward-outline" class="arrow expanded__label dark:!text-[#fdfdfd]"></ion-icon>
+                </button>
+                <ul id="inventory" class="nav__collapse transition-all ease-in-out duration-300 overflow-hidden max-h-0 opacity-0 dark:!bg-gray-700">
+                    <li class="nav__subitem">
+                        <a href="/inventory/manufactured" class="nav__link_subitem nav__link_active text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
+                            <ion-icon name="cube-outline"></ion-icon>
+                            <span>Manufactured</span>
+                        </a>
+                    </li>
+                    <li class="nav__subitem">
+                        <a href="/inventory/raw" class="nav__link_subitem nav__link_active text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
+                            <ion-icon name="leaf-outline"></ion-icon>
+                            <span>Raw Materials</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-        <!-- Inventory (Collapsible) -->
-        <li class="nav__item">
-            <button class="nav__link nav__link_button collapsible justify-between dark:hover:!bg-[#7655fa]" onclick="toggleCollapse('inventory', this)">
-                <span class="flex items-center expanded__label">
-                    <ion-icon name="cube-outline" class="dark:text-[#fdfdfd]"></ion-icon>
-                    <span class="dark:text-[#fdfdfd]">Inventory</span>
-                </span>
-                <ion-icon name="chevron-forward-outline" class="arrow expanded__label dark:!text-[#fdfdfd]"></ion-icon>
-            </button>
-            <ul id="inventory" class="nav__collapse transition-all ease-in-out duration-300 overflow-hidden max-h-0 opacity-0 dark:!bg-gray-700">
-                <li class="nav__subitem">
-                    <a href="/inventory/manufactured" class="nav__link_subitem nav__link_active text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
-                        <ion-icon name="cube-outline"></ion-icon>
-                        <span>Manufactured</span>
-                    </a>
-                </li>
-                <li class="nav__subitem">
-                    <a href="/inventory/raw" class="nav__link_subitem nav__link_active text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
-                        <ion-icon name="leaf-outline"></ion-icon>
-                        <span>Raw Materials</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
+            <!-- Medicine -->
+            <li class="nav__item">
+                <button class="nav__link nav__link_button collapsible justify-between dark:hover:!bg-[#7655fa]" onclick="toggleCollapse('medicine', this)">
+                    <span class="flex items-center expanded__label">
+                        <ion-icon name="medkit-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                        <span class="dark:text-[#fdfdfd]">Medicine</span>
+                    </span>
+                    <ion-icon name="chevron-forward-outline" class="arrow expanded__label dark:!text-[#fdfdfd]"></ion-icon>
+                </button>
+                <ul id="medicine" class="nav__collapse transition-all ease-in-out duration-300 overflow-hidden max-h-0 opacity-0 dark:!bg-gray-700">
+                    <li class="nav__subitem">
+                        <a href="/null" class="nav__link_subitem nav__link_active text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
+                            <ion-icon name="flask-outline"></ion-icon>
+                            <span>Formulation</span>
+                        </a>
+                    </li>
+                    <li class="nav__subitem">
+                        <a href="/null" class="nav__link_subitem nav__link_active text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
+                            <ion-icon name="bookmarks-outline"></ion-icon>
+                            <span>Batch</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        {% endif %}
+        
 
-        <!-- Medicine -->
-        <li class="nav__item">
-            <button class="nav__link nav__link_button collapsible justify-between dark:hover:!bg-[#7655fa]" onclick="toggleCollapse('medicine', this)">
-                <span class="flex items-center expanded__label">
-                    <ion-icon name="medkit-outline" class="dark:text-[#fdfdfd]"></ion-icon>
-                    <span class="dark:text-[#fdfdfd]">Medicine</span>
-                </span>
-                <ion-icon name="chevron-forward-outline" class="arrow expanded__label dark:!text-[#fdfdfd]"></ion-icon>
-            </button>
-            <ul id="medicine" class="nav__collapse transition-all ease-in-out duration-300 overflow-hidden max-h-0 opacity-0 dark:!bg-gray-700">
-                <li class="nav__subitem">
-                    <a href="/null" class="nav__link_subitem nav__link_active text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
-                        <ion-icon name="flask-outline"></ion-icon>
-                        <span>Formulation</span>
-                    </a>
-                </li>
-                <li class="nav__subitem">
-                    <a href="/null" class="nav__link_subitem nav__link_active text-[#2e2e2e] dark:!text-[#fdfdfd] dark:hover:!text-[#b29fff]">
-                        <ion-icon name="bookmarks-outline"></ion-icon>
-                        <span>Batch</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        {% if userRole == 'administrator' or userRole == 'hr_manager' %}
+            <li class="nav__label dark:!text-[#fdfdfd]">CUSTOMERS</li>
 
-        <li class="nav__label dark:!text-[#fdfdfd]">CUSTOMERS</li>
+            <!-- Customers -->
+            <li class="nav__item">
+                <a href="/null" class="nav__link nav__link_active dark:hover:!bg-[#7655fa]">
+                    <ion-icon name="people-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                    <span class="dark:text-[#fdfdfd]">Customers</span>
+                </a>
+            </li>
 
-        <!-- Customers -->
-        <li class="nav__item">
-            <a href="/null" class="nav__link nav__link_active dark:hover:!bg-[#7655fa]">
-                <ion-icon name="people-outline" class="dark:text-[#fdfdfd]"></ion-icon>
-                <span class="dark:text-[#fdfdfd]">Customers</span>
-            </a>
-        </li>
+            <li class="nav__label dark:!text-[#fdfdfd]">SUPPLIERS</li>
 
-        <li class="nav__label dark:!text-[#fdfdfd]">SUPPLIERS</li>
+            <!-- Supplier -->
+            <li class="nav__item">
+                <a href="/null" class="nav__link nav__link_active dark:hover:!bg-[#7655fa]">
+                    <ion-icon name="people-circle-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                    <span class="dark:text-[#fdfdfd]">Supplier</span>
+                </a>
+            </li>
 
-        <!-- Supplier -->
-        <li class="nav__item">
-            <a href="/null" class="nav__link nav__link_active dark:hover:!bg-[#7655fa]">
-                <ion-icon name="people-circle-outline" class="dark:text-[#fdfdfd]"></ion-icon>
-                <span class="dark:text-[#fdfdfd]">Supplier</span>
-            </a>
-        </li>
+            <li class="nav__label dark:!text-[#fdfdfd]" id="#important">USERS</li>
 
-        <li class="nav__label dark:!text-[#fdfdfd]" id="#important">USERS</li>
-
-        <!-- Users -->
-        <li class="nav__item">
-            <a href="/null" class="nav__link nav__link_active dark:hover:!bg-[#7655fa]">
-                <ion-icon name="person-outline" class="dark:text-[#fdfdfd]"></ion-icon>
-                <span class="dark:text-[#fdfdfd]">Users</span>
-            </a>
-        </li>
+            <!-- Users -->
+            <li class="nav__item">
+                <a href="/null" class="nav__link nav__link_active dark:hover:!bg-[#7655fa]">
+                    <ion-icon name="person-outline" class="dark:text-[#fdfdfd]"></ion-icon>
+                    <span class="dark:text-[#fdfdfd]">Users</span>
+                </a>
+            </li>
+        {% endif %}
 
         <!-- Payroll -->
         <!-- <li class="nav__item">
