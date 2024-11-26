@@ -1,0 +1,88 @@
+{% extends 'root.twig' %}
+
+{% block title %}
+    Medicine List
+{% endblock %}
+
+{% block headers %}
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/link.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/scrollbar.css">
+    <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block panel_title %}
+    Ask Groq
+{% endblock %}
+
+{% set paths = [
+    { 'name': 'Dashboard', 'url': '/dashboard' },
+    { 'name': 'Ask Groq', 'url': '/ask-groq' }
+] %}
+
+{% block body %}
+
+    <!-- <section class="order__list_container_content mt-8 flex flex-col h-full">
+        <div class="flex-grow flex flex-col">
+            <div class="flex justify-between items-end space-x-5">
+                <form action="" method="post" id="groqForm" class="tabbed-nav-form w-5/12 2xl:w-7/12">
+                    <input type="text" name="groq_request" id="groqRequest" placeholder="Enter your request">
+                    <button type="submit">Submit</button>
+                </form>
+                <div id="groq_response">
+                    Groq Response: <span id="responseContent"></span>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Chat Area -->
+    <main class="flex-grow flex flex-col bg-gray-100 dark:bg-gray-700 space-y-5">
+        <!-- Header -->
+        <!-- <header class="bg-white dark:bg-gray-900 rounded-lg shadow p-4 flex justify-between items-center">
+            <h1 class="text-lg font-semibold">Powered by Llama3</h1>
+            <a class="text-gray-600 hover:text-gray-800" href="/ask-groq">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 0v4m0-4h4m-4 0H8"></path>
+                </svg>
+            </a>
+        </header> -->
+    
+        <!-- Chat Messages -->
+        <div class="flex-grow p-5 h-full dark:bg-slate-900 rounded-lg">
+            <!-- Chatbot Response -->
+            <div class="flex items-start space-x-4 mb-4">
+                <div class="bg-blue-100 dark:bg-slate-800 px-4 py-2 rounded-lg overflow-y-auto max-h-[calc(100dvh-450px)]" id="groq_response">
+                    <span id="responseContent" class="text-wrap">Hello! How can I help you?</span>
+                </div>
+            </div>
+            <!-- User Message -->
+            <div class="flex items-end justify-end space-x-4 mb-4">
+                <div class="bg-green-100 text-green-900 px-4 py-2 rounded-lg" id="userPrompt">
+                    ...
+                </div>
+            </div>
+        </div>
+    
+        <!-- Input Field -->
+        <div class="p-4 bg-white dark:bg-slate-900 rounded-lg" action="" method="post" id="groqForm">
+            <form class="flex items-center space-x-4">
+                <input type="text" name="groq_request" id="groqRequest" placeholder="Type your message..."
+                    class="flex-grow px-4 py-2 rounded-lg outline-none dark:bg-slate-900" />
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    Send
+                </button>
+            </form>
+        </div>
+    </main>
+    
+
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{{ ASSETS_URL }}/js/groq/groq.js"></script>
+
+{% endblock %}

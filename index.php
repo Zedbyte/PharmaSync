@@ -503,11 +503,15 @@ try {
      */
 
     // Medicine Page [GET]
-    $router->respond('GET', '/medicine-list', function() use ($medicineController) {
+    $router->respond('GET', '/ask-groq', function() use ($medicineController) {
         AuthMiddleware::checkAuth();
         AuthMiddleware::checkRole(['inventory_manager']);
-        $medicineSearch = $_GET['q'] ?? null;
-        $medicineController->display(null, $medicineSearch);
+        $medicineController->displayGroq();
+    });
+
+    $router->respond('POST', '/ask-groq', function() use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        $medicineController->sendGroqRequest();
     });
 
     $router->dispatch();
