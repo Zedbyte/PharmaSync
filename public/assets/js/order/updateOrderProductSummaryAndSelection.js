@@ -88,12 +88,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const productRow = `
                 <tr class="border-b border-gray-200">
                     <td class="py-5 pl-4 pr-3 text-sm">
-                        <div class="font-medium text-gray-900">${name}</div>
-                        <div class="mt-1 truncate text-gray-500">${composition}</div>
+                        <div class="font-medium text-gray-900 dark:text-white">${name}</div>
+                        <div class="mt-1 truncate text-gray-500 dark:text-gray-100">${composition}</div>
                     </td>
-                    <td class="px-3 py-5 text-right text-sm text-gray-500">${expiry_date}</td>
-                    <td class="px-3 py-5 text-right text-sm text-gray-500">$${unit_price}</td>
-                    <td class="py-5 pl-3 pr-4 text-right text-sm text-gray-500">$${amount}</td>
+                    <td class="px-3 py-5 text-right text-sm text-gray-500 dark:text-gray-100">${expiry_date}</td>
+                    <td class="px-3 py-5 text-right text-sm text-gray-500 dark:text-gray-100">$${unit_price}</td>
+                    <td class="py-5 pl-3 pr-4 text-right text-sm text-gray-500 dark:text-gray-100">$${amount}</td>
                 </tr>
             `;
             productSummaryContainer.innerHTML = productRow;
