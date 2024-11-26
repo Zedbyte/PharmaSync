@@ -154,7 +154,6 @@ class RawController extends BaseController
     public function viewLot($data) {
         $materialObject = new MaterialLot();
         $LotMaterialData = $materialObject->getLotMaterialData($data['lotID'], $data['materialID']);
-        // var_dump($LotMaterialData);
         echo $this->twig->render('view-lot.html.twig', [
             'LotMaterialData' => $LotMaterialData
         ]);
