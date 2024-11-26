@@ -19,6 +19,7 @@ use App\Controllers\PurchaseController;
 use App\Controllers\OrderController;
 use App\Controllers\InventoryController;
 use App\Controllers\ManufacturedController;
+use App\Controllers\MedicineController;
 use App\Controllers\RawController;
 use \App\Middleware\AuthMiddleware;
 
@@ -43,6 +44,7 @@ try {
     $inventoryController = new InventoryController($twig);
     $manufacturedController = new ManufacturedController($twig);
     $rawController = new RawController($twig);
+    $medicineController = new MedicineController($twig);
 
     // Add userRole as a global variable after session start
     $userObject = new User();
@@ -492,6 +494,20 @@ try {
         AuthMiddleware::checkAuth();
         $data = $request->params();
         $rawController->viewLot($data);
+    });
+
+    /**
+     * 
+     * MEDICINES
+     * 
+     */
+
+    // Medicine Page [GET]
+    $router->respond('GET', '/medicine-list', function() use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        AuthMiddleware::checkRole(['inventory_manager']);
+        $medicineSearch = $_GET['q'] ?? null;
+        $medicineController->display(null, $medicineSearch);
     });
 
     $router->dispatch();
