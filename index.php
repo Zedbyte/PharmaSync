@@ -10,6 +10,7 @@ use Klein\Klein as Route;
 use Twig\Environment;
 
 // Controllers
+use App\Controllers\ErrorController;
 use App\Controllers\LoginController;
 use App\Controllers\RegistrationController;
 use App\Controllers\DashboardController;
@@ -31,6 +32,7 @@ try {
     //$loader came from init.php
     $twig = new Environment($loader);
 
+    $errorController = new ErrorController($twig);
     $loginController = new LoginController($twig);
     $registrationController = new RegistrationController($twig);
     $dashboardController = new DashboardController($twig);
@@ -48,9 +50,25 @@ try {
     error_log($userRole);
     $twig->addGlobal('userRole', $userRole);
 
-    // Landing Page
+    /**
+     * 
+     * LANDING PAGE
+     * 
+     */
+    
     $router->respond('GET', '/', function() use ($loginController) {
         $loginController->display();
+    });
+
+    /**
+     * 
+     * ERROR PAGE
+     * 
+     */
+
+    $router->respond('GET', '/error', function($request) use ($errorController) {
+        $errorCode = $_GET['code'] ?? null;
+        $errorController->display($errorCode);
     });
 
     /**
