@@ -22,8 +22,8 @@ class AuthMiddleware
         // Check if the role is allowed
         if ($userRole !== 'administrator' && !in_array($userRole, $allowedRoles)) {
             // Deny access: Redirect to an error page or return a 403 HTTP response
-            http_response_code(403);
-            echo "Access Denied: You do not have permission to access this page.";
+            //http_response_code(403);
+            header('Location: /error?code=403');
             exit;
         }
     

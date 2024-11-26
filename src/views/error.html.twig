@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error {{error_code}}</title>
+
+    <link rel="icon" href="{{ ASSETS_URL }}/images/PharmaSync__Logo_Light.svg" type="image/svg+xml">
+
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/output.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/error/particle.css">
+
+    <script src="{{ ASSETS_URL }}/js/localStorage.js"></script>
+</head>
+<body class="h-dvh">
+    <section class="bg-gray-900 h-full relative grid lg:grid-cols-10 place-content-center">
+        
+        <!-- particles.js container -->
+        <div id="particles-js" class="absolute"></div>
+        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 col-span-5 place-self-center z-50">
+            <div class="mx-auto max-w-screen-sm text-center">
+                <h1 class="mb-4 text-7xl tracking-tight font-extrabold lg:text-7xl text-white">
+                    {% if error_code == 403 %}
+                        {{ error_code }} Forbidden
+                    {% else %}
+                        Internal Server Error
+                    {% endif %}
+                </h1>
+                <p class="mb-4 text-3xl tracking-tight font-bold  md:text-4xl text-white">
+                    {% if error_code == 403 %}
+                        <span class="text-red-500">Access Denied.</span>
+                    {% else %}
+                        Something's missing.
+                    {% endif %}
+                </p>
+                <p class="mb-4 text-lg font-light text-gray-400">You do not have access to this page.</p>
+                <p class="mb-4 text-lg font-light text-gray-400">The administrator may have set restrictions that prevent you from accessing the page.</p>
+                <a href="/dashboard" class="inline-flex text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:ring-blue-900 my-4">Back to Homepage</a>
+            </div>   
+        </div>
+
+        <div class="z-50 col-span-5 flex justify-center">
+            <img src="{{ ASSETS_URL }}/images/500.svg" class="w-10/12"/>
+        </div>
+    </section>
+
+    <script src="{{ ASSETS_URL }}/js/error/particles.js"></script>
+    <script src="{{ ASSETS_URL }}/js/error/app.js"></script>
+</body>
+</html>
