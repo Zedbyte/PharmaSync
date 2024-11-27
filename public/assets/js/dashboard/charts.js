@@ -295,7 +295,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       {
         label: "Material Stock Level",
         data: materialData,
-        backgroundColor: "rgba(255, 99, 132, 0.6)",
+        backgroundColor: "rgba(165, 55, 253, 0.6)",
         borderColor: "rgba(255, 99, 132, 1)",
         borderWidth: 1,
       },
