@@ -342,7 +342,27 @@ class MedicineBatch extends BaseModel
         }
     }
 
+    public function getMedicineBatchListOrderedByExpiry()
+    {
+        $sql = "SELECT 
+                mb.medicine_id, 
+                m.name AS medicine_name,
+                mb.batch_id, 
+                mb.expiry_date,
+                mb.stock_level
+                FROM medicine_batch mb
+                JOIN medicines m ON mb.medicine_id = m.id
+                ORDER BY `expiry_date` ASC LIMIT 10";
 
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);  // Returns an array of medicine and batch pairs
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
 
 
 }

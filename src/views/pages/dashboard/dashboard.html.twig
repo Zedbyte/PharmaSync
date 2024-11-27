@@ -125,7 +125,7 @@
 
         <div class="col-span-7 px-6 py-3 rounded-lg border-x border dark:border-slate-600 bg-gray-50 border-gray-300 dark:bg-slate-800 space-y-5">
             <!-- <h1 class="font-bold text-lg text-gray-700 dark:text-white">Production Trends</h1> -->
-            <div id="productionChart" class="!h-full"></div>
+            <div id="productionChart" class=""></div>
         </div>
     </section>
     
@@ -133,12 +133,74 @@
         <div class="grid lg:grid-cols-12 gap-10 h-full">
             <div class="col-span-7 px-6 py-3 rounded-lg border-x border dark:border-slate-600 bg-white border-gray-300 dark:bg-slate-800 space-y-5">
                 <!-- <h1 class="font-bold text-lg text-gray-700 dark:text-white">Inventory Distribution</h1> -->
-                <div id="barChart" class="!h-full"></div>
+                <div id="barChart" class=""></div>
             </div>
         
             <div class="col-span-5 px-6 py-3 rounded-lg border-x border dark:border-slate-600 bg-gray-50 border-gray-300 dark:bg-slate-800 space-y-5">
                 <!-- <h1 class="font-bold text-lg text-gray-700 dark:text-white">Pie Chart</h1> -->
-                <div id="pieChart" class="!h-full"></div>
+                <div id="pieChart" class=""></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-8 flex flex-col">
+        <div class="grid lg:grid-cols-12 gap-10 h-full">
+            <div class="col-span-6 px-6 py-3 rounded-lg border-x border dark:border-slate-600 bg-white border-gray-300 dark:bg-slate-800 space-y-5">
+                
+                <span class="flex justify-between">
+                    <h1 class="font-bold text-lg text-gray-700 dark:text-white">Expiring List</h1>
+                    <a href="/inventory/manufactured" class="link__underline_hover flex space-x-3 items-center text-blue-300 dark:text-purple-500">
+                        <span>See All </span>
+                        <span class="p-1 bg-blue-100 dark:bg-purple-500 rounded-full">
+                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                            </svg>
+                        </span>
+                    </a>
+                </span>
+
+                <div class="w-full max-h-[24rem] overflow-y-auto border border-gray-300 dark:border-gray-700 rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="relative text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr class="sticky top-0 bg-white dark:bg-gray-700">
+                                <th scope="col" class="px-6 py-3">
+                                    Medicine Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Batch Number
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Expiry Date
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Stock Level
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for medicineBatch in medicineBatchData %}
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ medicineBatch.medicine_name }}
+                                    </th>
+                                    <td class="px-6 py-4">
+                                        {{ medicineBatch.batch_id }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ medicineBatch.expiry_date }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ medicineBatch.stock_level }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        
+            <div class="col-span-6 px-6 py-3 rounded-lg border-x border dark:border-slate-600 bg-gray-50 border-gray-300 dark:bg-slate-800 space-y-5">
+                <h1 class="font-bold text-lg text-gray-700 dark:text-white">Recent Orders</h1>
             </div>
         </div>
     </section>

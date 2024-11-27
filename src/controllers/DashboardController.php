@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\MedicineBatch;
+
 require_once __DIR__ . '/../../config/config.php';
 
 class DashboardController extends BaseController
@@ -16,6 +18,13 @@ class DashboardController extends BaseController
 
     public function display()
     {
-        echo $this->twig->render('dashboard.html.twig', ['ASSETS_URL' => ASSETS_URL]);
+
+        $medicineBatchObject = new MedicineBatch();
+        $medicineBatchData = $medicineBatchObject->getMedicineBatchListOrderedByExpiry();
+
+        echo $this->twig->render('dashboard.html.twig', [
+            'ASSETS_URL' => ASSETS_URL,
+            'medicineBatchData' => $medicineBatchData
+        ]);
     }
 }
