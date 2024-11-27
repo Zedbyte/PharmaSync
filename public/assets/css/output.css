@@ -975,8 +975,8 @@ video {
   height: 15rem !important;
 }
 
-.\!h-64 {
-  height: 16rem !important;
+.\!h-\[17rem\] {
+  height: 17rem !important;
 }
 
 .h-10 {
@@ -1043,36 +1043,16 @@ video {
   height: 100%;
 }
 
-.h-screen {
-  height: 100vh;
+.\!h-\[18rem\] {
+  height: 18rem !important;
 }
 
-.h-\[calc\(100vh-90px\)\] {
-  height: calc(100vh - 90px);
+.\!h-72 {
+  height: 18rem !important;
 }
 
-.h-\[calc\(100vh-1500px\)\] {
-  height: calc(100vh - 1500px);
-}
-
-.h-\[calc\(100vh-500px\)\] {
-  height: calc(100vh - 500px);
-}
-
-.h-\[calc\(100vh-100px\)\] {
-  height: calc(100vh - 100px);
-}
-
-.h-\[calc\(100vh-200px\)\] {
-  height: calc(100vh - 200px);
-}
-
-.h-\[calc\(100vh-300px\)\] {
-  height: calc(100vh - 300px);
-}
-
-.h-\[calc\(100vh-400px\)\] {
-  height: calc(100vh - 400px);
+.\!h-full {
+  height: 100% !important;
 }
 
 .max-h-0 {
@@ -1091,26 +1071,6 @@ video {
   max-height: 29rem;
 }
 
-.max-h-64 {
-  max-height: 16rem;
-}
-
-.max-h-full {
-  max-height: 100%;
-}
-
-.max-h-\[calc\(100dvh-200px\)\] {
-  max-height: calc(100dvh - 200px);
-}
-
-.max-h-\[calc\(100dvh-500px\)\] {
-  max-height: calc(100dvh - 500px);
-}
-
-.max-h-\[calc\(100dvh-400px\)\] {
-  max-height: calc(100dvh - 400px);
-}
-
 .max-h-\[calc\(100dvh-450px\)\] {
   max-height: calc(100dvh - 450px);
 }
@@ -1121,10 +1081,6 @@ video {
 
 .min-h-\[calc\(100\%-80px\)\] {
   min-height: calc(100% - 80px);
-}
-
-.min-h-64 {
-  min-height: 16rem;
 }
 
 .\!w-full {
@@ -1754,15 +1710,6 @@ video {
   background-color: rgb(234 179 8 / var(--tw-bg-opacity));
 }
 
-.bg-\[2998FF\] {
-  background-color: 2998FF;
-}
-
-.bg-\[\#d1f7ff\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(209 247 255 / var(--tw-bg-opacity));
-}
-
 .bg-opacity-25 {
   --tw-bg-opacity: 0.25;
 }
@@ -2096,11 +2043,6 @@ video {
 .text-blue-800 {
   --tw-text-opacity: 1;
   color: rgb(30 64 175 / var(--tw-text-opacity));
-}
-
-.text-blue-900 {
-  --tw-text-opacity: 1;
-  color: rgb(30 58 138 / var(--tw-text-opacity));
 }
 
 .text-gray-400 {
@@ -2455,12 +2397,6 @@ video {
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
-}
-
-.focus\:ring:focus {
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
 .focus\:ring-2:focus {
@@ -3104,6 +3040,11 @@ video {
 .dark\:bg-yellow-700:where(.dark, .dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(161 98 7 / var(--tw-bg-opacity));
+}
+
+.dark\:\!bg-slate-800:where(.dark, .dark *) {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(30 41 59 / var(--tw-bg-opacity)) !important;
 }
 
 .dark\:bg-opacity-25:where(.dark, .dark *) {
