@@ -26,7 +26,7 @@ document.getElementById('groqForm').addEventListener('submit', function (event) 
                 console.log('Response Text:', responseText);
 
                 // Parse and replace **bold** syntax with <strong> tags
-                const parsedText = parseBoldAndNewLines(responseText);
+                const parsedText = parseText(responseText);
 
                 groqRequest.value = '';
                 typeText(userPrompt, groqRequest);
@@ -41,10 +41,24 @@ document.getElementById('groqForm').addEventListener('submit', function (event) 
         });
 });
 
-// Function to parse **bold** syntax and replace new lines with <br>
-function parseBoldAndNewLines(text) {
-    const boldProcessed = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Process bold
-    return boldProcessed.replace(/\n/g, '<br>'); // Replace new lines with <br>
+// Function to parse **bold**, triple backticks, tabs, and replace new lines with <br>
+function parseText(text) {
+    // Process bold syntax (**bold**)
+    const boldProcessed = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    // Process triple backticks (```code```)
+    const codeProcessed = boldProcessed.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+
+    // Process tab-indented text (convert each tab level to nested blockquotes)
+    const tabProcessed = codeProcessed.replace(/^(\t+)/gm, (_, tabs) => {
+        const level = tabs.length; // Count the number of tabs
+        return '<blockquote>'.repeat(level); // Open blockquote for each tab
+    }).replace(/(\t+)([^\t]+)/g, '$2</blockquote>'); // Close blockquote after text
+
+    // Replace new lines with <br>, excluding within <pre><code> blocks
+    const newlineProcessed = tabProcessed.replace(/(?<!<\/pre>)\n/g, '<br>');
+
+    return newlineProcessed;
 }
 
 // Function to simulate typing effect

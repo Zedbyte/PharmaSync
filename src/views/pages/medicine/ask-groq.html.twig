@@ -49,23 +49,23 @@
         </header> -->
     
         <!-- Chat Messages -->
-        <div class="flex-grow p-5 h-full dark:bg-slate-900 rounded-lg">
+        <div class="flex-grow p-5 h-full bg-white dark:bg-slate-900 rounded-lg shadow-md">
             <!-- Chatbot Response -->
             <div class="flex items-start space-x-4 mb-4">
-                <div class="bg-blue-100 dark:bg-slate-800 px-4 py-2 rounded-lg overflow-y-auto max-h-[calc(100dvh-450px)]" id="groq_response">
+                <div class="bg-blue-100 dark:bg-slate-800 px-4 py-2 rounded-lg overflow-y-auto max-h-[calc(100dvh-450px)] shadow-md" id="groq_response">
                     <span id="responseContent" class="text-wrap">Hello! How can I help you?</span>
                 </div>
             </div>
             <!-- User Message -->
             <div class="flex items-end justify-end space-x-4 mb-4">
-                <div class="bg-green-100 text-green-900 px-4 py-2 rounded-lg" id="userPrompt">
+                <div class="bg-green-100 text-green-900 px-4 py-2 rounded-lg shadow-md" id="userPrompt">
                     ...
                 </div>
             </div>
         </div>
     
         <!-- Input Field -->
-        <div class="p-4 bg-white dark:bg-slate-900 rounded-lg" action="" method="post" id="groqForm">
+        <div class="p-4 bg-white dark:bg-slate-900 rounded-lg shadow-md" action="" method="post" id="groqForm">
             <form class="flex items-center space-x-4">
                 <input type="text" name="groq_request" id="groqRequest" placeholder="Type your message..."
                     class="flex-grow px-4 py-2 rounded-lg outline-none dark:bg-slate-900" />
