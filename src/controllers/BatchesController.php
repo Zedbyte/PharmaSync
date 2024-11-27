@@ -30,4 +30,10 @@ class BatchesController extends BaseController
         echo json_encode($batchData);
     }
 
+    public function getMedicineStockDistribution() {
+        $medicineBatchObject = new MedicineBatch();
+        $medicineBatchData = $medicineBatchObject->getMedicineStockDistribution();
+        echo json_encode($medicineBatchData);
+    }
+
 }

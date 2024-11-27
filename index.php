@@ -125,15 +125,22 @@ try {
         $dashboardController->display();
     });
 
-
+    // Line Chart
     $router->respond('GET', '/dashboard/production-rate', function() use ($batchesController) {
         AuthMiddleware::checkAuth();
         $batchesController->getProductionRate();
     });
 
+    // Bar Chart
     $router->respond('GET', '/dashboard/inventory-distribution', function() use ($inventoryController) {
         AuthMiddleware::checkAuth();
         $inventoryController->getInventoryDistribution();
+    });
+
+    // Pie Chart
+    $router->respond('GET', '/dashboard/medicine-stock', function() use ($batchesController) {
+        AuthMiddleware::checkAuth();
+        $batchesController->getMedicineStockDistribution();
     });
 
     /**
@@ -502,13 +509,21 @@ try {
      * 
      */
 
-    // Medicine Page [GET]
+    // Medicine List Page [GET]
+    $router->respond('GET', '/medicine-list', function() use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        AuthMiddleware::checkRole(['inventory_manager']);
+        $medicineController->display();
+    });
+
+    // Groq Page [GET]
     $router->respond('GET', '/ask-groq', function() use ($medicineController) {
         AuthMiddleware::checkAuth();
         AuthMiddleware::checkRole(['inventory_manager']);
         $medicineController->displayGroq();
     });
 
+    // Groq Page [POST]
     $router->respond('POST', '/ask-groq', function() use ($medicineController) {
         AuthMiddleware::checkAuth();
         $medicineController->sendGroqRequest();

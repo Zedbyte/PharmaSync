@@ -2,8 +2,6 @@ async function fetchProductionRate() {
   const response = await fetch("/dashboard/production-rate");
   const data = await response.json();
 
-  console.log(data);
-
   // Transform data for Chart.js
   const labelsProduction = [];
   const counts = [];
@@ -20,8 +18,6 @@ async function fetchProductionRate() {
 async function fetchInventoryDistribution() {
   const response = await fetch("/dashboard/inventory-distribution");
   const data = await response.json();
-
-  console.log(data);
 
   // Extract unique labels (month-year combinations) from both medicine and material data
   const labelSet = new Set();
@@ -56,6 +52,28 @@ async function fetchInventoryDistribution() {
 
   return { labelsInventory, medicineData, materialData };
 }
+
+async function fetchMedicineStockDistribution() {
+  try {
+    const response = await fetch("/dashboard/medicine-stock");
+    const data = await response.json();
+
+    // Transform data for Chart.js
+    const labelsMedicine = [];
+    const stockDistribution = [];
+
+    data.forEach((item) => {
+      labelsMedicine.push(item.medicine_name); // Medicine names for chart labels
+      stockDistribution.push(item.total_stock); // Total stock for chart data
+    });
+
+    return { labelsMedicine, stockDistribution };
+  } catch (error) {
+    console.error("Error fetching medicine stock distribution:", error);
+    return { labelsMedicine: [], stockDistribution: [] };
+  }
+}
+
 
 function getBarChartConfig(isDarkMode, distribData) {
   return {
@@ -214,15 +232,75 @@ function getLineChartConfig(isDarkMode, productionData) {
   };
 }
 
+function getPieChartConfig(isDarkMode, pieData) {
+  return {
+    chart: {
+      type: 'pie',
+      backgroundColor: isDarkMode ? null : null,
+      options3d: {
+        enabled: true,
+        alpha: 45,
+      },
+    },
+    title: {
+      text: 'Medicine Stock Distribution',
+      align: 'left',
+      style: {
+        color: isDarkMode ? '#ffffff' : '#333333',
+      },
+    },
+    subtitle: {
+      text: 'Stock levels of each medicine in the inventory',
+      align: 'left',
+      style: {
+        color: isDarkMode ? '#aaaaaa' : '#555555',
+      },
+    },
+    plotOptions: {
+      pie: {
+        innerSize: '60%', // Donut chart effect
+        depth: 45,
+        dataLabels: {
+          enabled: true,
+          format: '{point.name}: {point.y} units',
+          style: {
+            color: isDarkMode ? '#ffffff' : '#333333',
+          },
+        },
+      },
+    },
+    tooltip: {
+      style: {
+        color: isDarkMode ? '#ffffff' : '#333333',
+      },
+      backgroundColor: isDarkMode ? '#333333' : '#ffffff',
+      borderColor: isDarkMode ? '#555555' : '#cccccc',
+      pointFormat: '<b>{point.name}</b>: {point.y} units',
+    },
+    series: [
+      {
+        name: 'Stock Level',
+        data: pieData.labels.map((label, index) => ({
+          name: label,
+          y: pieData.values[index],
+          color: pieData.colors[index % pieData.colors.length], // Use modulo for safety
+        })),
+      },
+    ],
+  };
+}
+
+
 
 document.addEventListener("DOMContentLoaded", async () => {
   const productionChart = document.getElementById("productionChart");
   const barChart = document.getElementById("barChart");
-
+  const pieChart = document.getElementById("pieChart");
+  
   // Fetch data
   const { labelsProduction, counts } = await fetchProductionRate();
-  const { labelsInventory, medicineData, materialData } =
-    await fetchInventoryDistribution();
+  const { labelsInventory, medicineData, materialData } = await fetchInventoryDistribution();
+  const { labelsMedicine, stockDistribution } = await fetchMedicineStockDistribution();
 
   // Chart.js configuration
   const productionData = {
@@ -333,6 +411,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     maintainAspectRatio: false,
   };
 
+  const pieData = {
+    labels: labelsMedicine, // Directly use the medicine names from labelsMedicine
+    values: stockDistribution.map(item => parseInt(item)), // Convert stock quantities to integers
+    colors: [
+      '#2ecc71', '#3498db', '#e74c3c', '#9b59b6', '#f1c40f', '#e67e22', '#34495e', 
+      '#1abc9c', '#16a085', '#95a5a6', '#c0392b', '#27ae60', '#2980b9', '#8e44ad',
+      '#f39c12', '#d35400', '#7f8c8d', '#bdc3c7', '#2c3e50'
+    ],
+  };
+
   function renderBarChart() {
     const isBarDarkMode = document.documentElement.classList.contains("dark");
     const barChartConfig = getBarChartConfig(isBarDarkMode, distribData);
@@ -369,46 +457,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   lineChartObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-
-
-  Highcharts.chart('pieChart', {
-    chart: {
-        type: 'pie',
-        options3d: {
-            enabled: true,
-            alpha: 45
-        }
-    },
-    title: {
-        text: 'Beijing 2022 gold medals by country',
-        align: 'left'
-    },
-    subtitle: {
-        text: '3D donut in Highcharts',
-        align: 'left'
-    },
-    plotOptions: {
-        pie: {
-            innerSize: 100,
-            depth: 45
-        }
-    },
-    series: [{
-        name: 'Medals',
-        data: [
-            ['Norway', 16],
-            ['Germany', 12],
-            ['USA', 8],
-            ['Sweden', 8],
-            ['Netherlands', 8],
-            ['ROC', 6],
-            ['Austria', 7],
-            ['Canada', 4],
-            ['Japan', 3]
-
-        ]
-    }]
-});
+  function renderPieChart() {
+    const isPieDarkMode = document.documentElement.classList.contains('dark');
+    const chartConfig = getPieChartConfig(isPieDarkMode, pieData);
+    Highcharts.chart(pieChart, chartConfig);
+  }
+  
+  // Render the chart initially
+  renderPieChart();
+  
+  // Optional: Add MutationObserver for theme toggling
+  const pieChartObserver = new MutationObserver(() => {
+    renderPieChart();
+  });
+  
+  pieChartObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  });
+  
 
 
 });
