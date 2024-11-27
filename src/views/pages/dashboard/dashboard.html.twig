@@ -149,8 +149,8 @@
                 
                 <span class="flex justify-between">
                     <h1 class="font-bold text-lg text-gray-700 dark:text-white">Expiring List</h1>
-                    <a href="/inventory/manufactured" class="link__underline_hover flex space-x-3 items-center text-blue-300 dark:text-purple-500">
-                        <span>See All </span>
+                    <a href="/inventory/manufactured" class="flex space-x-3 items-center text-blue-300 dark:text-purple-500">
+                        <span class="link__underline_hover">See All</span>
                         <span class="p-1 bg-blue-100 dark:bg-purple-500 rounded-full">
                             <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
@@ -200,7 +200,64 @@
             </div>
         
             <div class="col-span-6 px-6 py-3 rounded-lg border-x border dark:border-slate-600 bg-gray-50 border-gray-300 dark:bg-slate-800 space-y-5">
-                <h1 class="font-bold text-lg text-gray-700 dark:text-white">Recent Orders</h1>
+                <span class="flex justify-between">
+                    <h1 class="font-bold text-lg text-gray-700 dark:text-white">Recent Orders</h1>
+                    <a href="/order-list" class="flex space-x-3 items-center text-blue-300 dark:text-purple-500">
+                        <span class="link__underline_hover">See All </span>
+                        <span class="p-1 bg-blue-100 dark:bg-purple-500 rounded-full">
+                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                            </svg>
+                        </span>
+                    </a>
+                </span>
+
+                <div class="w-full max-h-[24rem] overflow-y-auto border border-gray-300 dark:border-gray-700 rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="relative text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr class="sticky top-0 bg-white dark:bg-gray-700">
+                                <th scope="col" class="px-6 py-3">
+                                    Order ID
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Customer Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Date
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Order Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orderData %}
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ order.order_id }}
+                                    </th>
+                                    <td class="px-6 py-4">
+                                        {{ order.customer_name }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ order.date }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="rounded-md text-xs text-center p-2 text-white w-24
+                                                {% if order.order_status|upper == 'COMPLETED' %} dark:bg-green-800 bg-green-400
+                                                {% elseif order.order_status|upper == 'PROCESSING' %} dark:bg-yellow-700 bg-yellow-400
+                                                {% elseif order.order_status|upper == 'FAILED' %} dark:bg-red-800 bg-red-400
+                                                {% elseif order.order_status|upper == 'CANCELED' %} dark:bg-gray-600 bg-gray-300
+                                                {% elseif order.order_status|upper == 'BACKORDERED' %} dark:bg-orange-800 bg-orange-400
+                                                {% else %} bg-yellow-500 {% endif %}">
+                                                {{ order.order_status| title }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </section>

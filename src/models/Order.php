@@ -248,4 +248,25 @@ class Order extends BaseModel
             throw new Exception("Database error occurred: " . $e->getMessage(), (int) $e->getCode());
         }
     }
+
+    public function getRecentOrders()
+    {
+        $sql = "SELECT 
+                o.id AS order_id, 
+                o.date, 
+                o.order_status, 
+                c.name AS customer_name
+                FROM orders o
+                JOIN customers c ON c.id = o.customer_id
+                WHERE `date` >= CURDATE() - INTERVAL 30 DAY
+                ORDER BY `date` DESC LIMIT 10";
+
+        try {
+            $statement = $this->db->query($sql);
+            return $statement->fetchAll(PDO::FETCH_ASSOC); // Returns an array of recent orders
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
 }
