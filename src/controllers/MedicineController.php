@@ -31,7 +31,8 @@ class MedicineController extends BaseController
 
         echo $this->twig->render('medicine-list.html.twig', [
             'ASSETS_URL' => ASSETS_URL,
-            'medicineData' => $medicineData
+            'medicineData' => $medicineData,
+            'errors' => $errors,
         ]);
     }
 
@@ -40,13 +41,13 @@ class MedicineController extends BaseController
             $data = $_POST;
             
             // Validate the data
-            // $errors = $this->validateBatchData($data);
-            // if (!empty($errors)) {
-            //     $_SESSION['batch_errors'] = $errors;
-            //     // Redirect to the same route with GET (to prevent resubmission)
-            //     header('Location: /add-medicine');
-            //     exit;
-            // }
+            $errors = $this->validateMedicineData($data);
+            if (!empty($errors)) {
+                $_SESSION['medicine_errors'] = $errors;
+                // Redirect to the same route with GET (to prevent resubmission)
+                header('Location: /add-medicine');
+                exit;
+            }
             
             // Save Medicine information
             $medicineObject = new Medicine();
@@ -66,13 +67,13 @@ class MedicineController extends BaseController
             exit;
         }
 
-        $errors = isset($_SESSION['batch_errors']) ? $_SESSION['batch_errors'] : [];
+        $errors = isset($_SESSION['medicine_errors']) ? $_SESSION['medicine_errors'] : [];
     
         // Render the template with errors, if any
         $this->display($errors);
         
         // Clear the errors from session after they are displayed
-        unset($_SESSION['batch_errors']);
+        unset($_SESSION['medicine_errors']);
     }
 
     public function displayGroq() {
@@ -134,4 +135,61 @@ class MedicineController extends BaseController
             exit;
         }
     }
+
+    private function validateMedicineData($data) {
+        $errors = [];
+        
+        // Ensure that medicine_type and material_name arrays exist and are not completely empty
+        if (empty($data['medicine_type']) || empty(array_filter($data['material_name']))) {
+            $errors[] = "At least one medicine type and material name are required.";
+        }
+    
+        // Validate each entry in the arrays
+        if (isset($data['material_name']) && is_array($data['material_name'])) {
+            foreach ($data['material_name'] as $index => $materialName) {
+                // Material name validation
+                if (empty($materialName)) {
+                    $errors[] = "Material name for item " . ($index + 1) . " is required.";
+                }
+    
+                // Medicine type validation
+                if (!isset($data['medicine_type'][$index]) || empty($data['medicine_type'][$index])) {
+                    $errors[] = "Medicine type for item " . ($index + 1) . " is required.";
+                }
+    
+                // Composition validation
+                if (!isset($data['composition'][$index]) || empty($data['composition'][$index])) {
+                    $errors[] = "Composition for item " . ($index + 1) . " is required.";
+                }
+    
+                // Unit price validation
+                if (!isset($data['unit_price'][$index]) || $data['unit_price'][$index] === '') {
+                    $errors[] = "Unit price for item " . ($index + 1) . " is required.";
+                } elseif (!is_numeric($data['unit_price'][$index]) || $data['unit_price'][$index] <= 0) {
+                    $errors[] = "Unit price for item " . ($index + 1) . " must be a positive number.";
+                }
+    
+                // Therapeutic class validation
+                if (!isset($data['therapeutic_class'][$index]) || empty($data['therapeutic_class'][$index])) {
+                    $errors[] = "Therapeutic class for item " . ($index + 1) . " is required.";
+                }
+    
+                // Regulatory class validation
+                if (!isset($data['regulatory_class'][$index]) || empty($data['regulatory_class'][$index])) {
+                    $errors[] = "Regulatory class for item " . ($index + 1) . " is required.";
+                }
+    
+                // Manufacturing details validation
+                if (!isset($data['manufacturing_details'][$index]) || empty($data['manufacturing_details'][$index])) {
+                    $errors[] = "Manufacturing details for item " . ($index + 1) . " are required.";
+                }
+            }
+        } else {
+            $errors[] = "Medicine data is missing or improperly formatted.";
+        }
+    
+        return $errors;
+    }
+    
+    
 }

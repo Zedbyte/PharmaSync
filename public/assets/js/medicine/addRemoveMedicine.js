@@ -1,7 +1,7 @@
 function addNewMedicine() {
     const container = document.getElementById('items__container_new');
     const newItem = document.querySelector('.item__template_new').cloneNode(true);
-    newItem.querySelectorAll('input, select').forEach(field => field.value = ''); // Clear values
+    newItem.querySelectorAll('input, select, textarea').forEach(field => field.value = ''); // Clear values
 
     container.appendChild(newItem);
     toggleRemoveButtonsMedicine();  // Check visibility of remove buttons

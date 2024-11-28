@@ -522,6 +522,12 @@ try {
         $medicineController->addMedicine();
     });
 
+    // Add Medicine Panel [GET]
+    $router->respond('GET', '/add-medicine', function() use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        $medicineController->addMedicine();
+    });
+
     // Groq Page [GET]
     $router->respond('GET', '/ask-groq', function() use ($medicineController) {
         AuthMiddleware::checkAuth();
