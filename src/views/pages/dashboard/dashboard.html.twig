@@ -244,11 +244,11 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="rounded-md text-xs text-center p-2 text-white w-24
-                                                {% if order.order_status|upper == 'COMPLETED' %} dark:bg-green-800 bg-green-400
-                                                {% elseif order.order_status|upper == 'PROCESSING' %} dark:bg-yellow-700 bg-yellow-400
-                                                {% elseif order.order_status|upper == 'FAILED' %} dark:bg-red-800 bg-red-400
-                                                {% elseif order.order_status|upper == 'CANCELED' %} dark:bg-gray-600 bg-gray-300
-                                                {% elseif order.order_status|upper == 'BACKORDERED' %} dark:bg-orange-800 bg-orange-400
+                                                {% if order.order_status|upper == 'COMPLETED' %} dark:bg-green-800 bg-green-400 dark:text-green-300
+                                                {% elseif order.order_status|upper == 'PROCESSING' %} dark:bg-yellow-700 bg-yellow-400 dark:text-yellow-300
+                                                {% elseif order.order_status|upper == 'FAILED' %} dark:bg-red-800 bg-red-400 dark:text-red-300
+                                                {% elseif order.order_status|upper == 'CANCELED' %} dark:bg-gray-600 bg-gray-300 dark:text-gray-300
+                                                {% elseif order.order_status|upper == 'BACKORDERED' %} dark:bg-orange-800 bg-orange-400 dark:text-orange-300
                                                 {% else %} bg-yellow-500 {% endif %}">
                                                 {{ order.order_status| title }}
                                         </div>

@@ -401,11 +401,11 @@
                                 <form method="post" action="/update-purchase-status">
                                     <select name="status" onchange="this.form.submit()" class="rounded-md text-xs 
                                     md:block md:w-9/12 text-center p-1 md:p-0 md:py-1 text-white
-                                            {% if purchase.status|upper == 'COMPLETED' %} dark:bg-green-800 bg-green-400
-                                        {% elseif purchase.status|upper == 'PENDING' %} dark:bg-yellow-700 bg-yellow-400
-                                        {% elseif purchase.status|upper == 'FAILED' %} dark:bg-red-800 bg-red-400
-                                        {% elseif purchase.status|upper == 'CANCELED' %} dark:bg-gray-600 bg-gray-400
-                                        {% elseif purchase.status|upper == 'BACKORDERED' %} dark:bg-orange-800 bg-orange-400
+                                            {% if purchase.status|upper == 'COMPLETED' %} dark:bg-green-800 bg-green-400 dark:text-green-300
+                                        {% elseif purchase.status|upper == 'PENDING' %} dark:bg-yellow-700 bg-yellow-400 dark:text-yellow-300
+                                        {% elseif purchase.status|upper == 'FAILED' %} dark:bg-red-800 bg-red-400 dark:text-red-300
+                                        {% elseif purchase.status|upper == 'CANCELED' %} dark:bg-gray-600 bg-gray-400 dark:text-gray-300
+                                        {% elseif purchase.status|upper == 'BACKORDERED' %} dark:bg-orange-800 bg-orange-400 dark:text-orange-300
                                         {% else %} bg-blue-500 {% endif %}
                                     ">
                                         <option value="completed" {% if purchase.status == 'completed' %}selected{% endif %}>Completed</option>

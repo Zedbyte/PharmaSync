@@ -310,9 +310,9 @@
                                         <form method="post" action="/update-order/payment/status">
                                             <select name="payment_status" onchange="this.form.submit()" 
                                                 class="rounded-md text-xs text-center p-1 md:p-0 md:py-1 text-white 
-                                                {% if order.payment_status|upper == 'PAID' %} dark:bg-green-800 bg-green-400
-                                                {% elseif order.payment_status|upper == 'PENDING' %} dark:bg-yellow-700 bg-yellow-400
-                                                {% elseif order.payment_status|upper == 'FAILED' %} dark:bg-red-800 bg-red-400
+                                                {% if order.payment_status|upper == 'PAID' %} dark:bg-green-800 bg-green-400 dark:text-green-300
+                                                {% elseif order.payment_status|upper == 'PENDING' %} dark:bg-yellow-700 bg-yellow-400 dark:text-yellow-300
+                                                {% elseif order.payment_status|upper == 'FAILED' %} dark:bg-red-800 bg-red-400 dark:text-red-300
                                                 {% else %} bg-blue-500 {% endif %}
                                             ">
                                                 <option value="paid" {% if order.payment_status == 'paid' %}selected{% endif %}>Paid</option>
@@ -326,11 +326,11 @@
                                         <form method="post" action="/update-order/status">
                                             <select name="order_status" onchange="this.form.submit()" 
                                                 class="rounded-md text-xs text-center p-1 md:p-0 md:py-1 text-white 
-                                                {% if order.order_status|upper == 'COMPLETED' %} dark:bg-green-800 bg-green-400
-                                                {% elseif order.order_status|upper == 'PROCESSING' %} dark:bg-yellow-700 bg-yellow-400
-                                                {% elseif order.order_status|upper == 'FAILED' %} dark:bg-red-800 bg-red-400
-                                                {% elseif order.order_status|upper == 'CANCELED' %} dark:bg-gray-600 bg-gray-300
-                                                {% elseif order.order_status|upper == 'BACKORDERED' %} dark:bg-orange-800 bg-orange-400
+                                                {% if order.order_status|upper == 'COMPLETED' %} dark:bg-green-800 bg-green-400 dark:text-green-300
+                                                {% elseif order.order_status|upper == 'PROCESSING' %} dark:bg-yellow-700 bg-yellow-400 dark:text-yellow-300
+                                                {% elseif order.order_status|upper == 'FAILED' %} dark:bg-red-800 bg-red-400 dark:text-red-300
+                                                {% elseif order.order_status|upper == 'CANCELED' %} dark:bg-gray-600 bg-gray-300 dark:text-gray-300
+                                                {% elseif order.order_status|upper == 'BACKORDERED' %} dark:bg-orange-800 bg-orange-400 dark:text-orange-300
                                                 {% else %} bg-yellow-500 {% endif %}
                                             ">
                                                 <option value="processing" {% if order.order_status == 'processing' %}selected{% endif %}>Processing</option>
