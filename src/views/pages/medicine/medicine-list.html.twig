@@ -44,11 +44,11 @@
     </div>
 
     <!-- Update Panel -->
-    <!-- <div id="updateOrderPanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+    <div id="updateMedicinePanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
     bg-white dark:bg-gray-800 opacity-0 scale-95 transition-all duration-300 shadow-lg z-50 overflow-y-auto hidden 
     w-full h-full xl:w-1/2 xl:h-auto xl:max-h-[56rem] xl:rounded-lg">
-
-    </div> -->
+        {% include 'update-medicine.html.twig' %}
+    </div>
 
     <!-- Delete Modal -->
     <!-- <div id="deleteOrderModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
@@ -186,18 +186,17 @@
                                     </td>
                                     <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap justify-center items-center">
                                         <button 
-                                        onclick="updateOrderPanel(this)"
-                                        data-id="{{ order.order_id }}" 
-                                        class="showUpdateOrderPanel text-blue-400 
+                                        onclick="updateMedicinePanel(this)"
+                                        data-medicine-id="{{ medicine.id }}" 
+                                        class="showUpdateMedicinePanel text-blue-400 
                                         dark:text-blue-700 dark:hover:text-blue-500
                                         hover:text-blue-800 text-xs md:text-base transition-all duration-200">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
                                         
                                         <button 
-                                        onclick="openDeleteModal(this)" 
-                                        data-id="{{ order.order_id }}" 
-                                        data-material-count="{{ order.product_count }}" 
+                                        onclick="openDeleteMedicineModal(this)" 
+                                        data-medicine-id="{{ medicine.id }}" 
                                         class="text-red-400 hover:text-red-800 dark:text-red-700 
                                         dark:hover:text-red-500
                                         text-xs md:text-base transition-all duration-200">
@@ -249,5 +248,6 @@
     <script src="{{ ASSETS_URL }}/js/medicine/addMedicineTogglePanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/medicine/addRemoveMedicine.js"></script>
     <script src="{{ ASSETS_URL }}/js/medicine/viewMedicinePanel.js"></script>
+    <script src="{{ ASSETS_URL }}/js/medicine/updateMedicinePanel.js"></script>
 
 {% endblock %}

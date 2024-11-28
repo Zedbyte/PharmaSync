@@ -1,0 +1,99 @@
+<div class="h-full w-full px-8 py-6" id="updateMedicinePanel">
+    <div class="flex justify-between mb-6">
+        <h2 class="text-2xl font-semibold">Update Medicine</h2>
+        <button onclick="updateClosePanel()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-all duration-150">
+            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Medicine Information Section -->
+    <form action="" method="post" class="update__form_existing">
+        <div class="border-t border-gray-300 dark:border-gray-600 mt-6 pt-6">
+            <div id="items__container_update" class="space-y-6">
+                <div class="item__template_update relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 border-b border-gray-300 dark:border-gray-600 py-6">
+
+                    <input type="hidden" name="medicine_id" value="{{ medicineData.id }}">
+
+                    <div>
+                        <label for="medicine-type" class="block text-sm font-medium">Medicine Type</label>
+                        <select id="medicine-type-id" name="medicine_type" class="medicine-type mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
+                            <option value="" disabled>Select Medicine Type</option>
+                            <option value="liquid" {% if medicineData.type|lower == 'liquid' %}selected{% endif %}>Liquid</option>
+                            <option value="tablet" {% if medicineData.type|lower == 'tablet' %}selected{% endif %}>Tablet</option>
+                            <option value="capsule" {% if medicineData.type|lower == 'capsule' %}selected{% endif %}>Capsule</option>
+                            <option value="topical" {% if medicineData.type|lower == 'topical' %}selected{% endif %}>Topical Medicine</option>
+                            <option value="suppository" {% if medicineData.type|lower == 'suppository' %}selected{% endif %}>Suppository</option>
+                            <option value="drops" {% if medicineData.type|lower == 'drops' %}selected{% endif %}>Drops</option>
+                            <option value="inhaler" {% if medicineData.type|lower == 'inhaler' %}selected{% endif %}>Inhaler</option>
+                            <option value="injection" {% if medicineData.type|lower == 'injection' %}selected{% endif %}>Injection</option>
+                            <option value="implant_patch" {% if medicineData.type|lower == 'implant_patch' %}selected{% endif %}>Implant or Patch</option>
+                            <option value="buccal_sublingual" {% if medicineData.type|lower == 'buccal_sublingual' %}selected{% endif %}>Buccal or Sublingual</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="medicine-name" class="block text-sm font-medium">Medicine Name</label>
+                        <input type="text" id="medicine-name" name="medicine_name" placeholder="Paracetamol"
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" 
+                        value="{{ medicineData.name }}">
+                    </div>
+
+                    <div>
+                        <label for="composition" class="block text-sm font-medium">Composition</label>
+                        <input type="text" id="composition" name="composition" placeholder="Paracetamol 500mg"
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" 
+                        value="{{ medicineData.composition }}">
+                    </div>
+
+                    <div>
+                        <label for="unit-price" class="block text-sm font-medium">Unit Price</label>
+                        <input type="number" id="unit-price" name="unit_price" placeholder="1" step="any"
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" 
+                        value="{{ medicineData.unit_price }}">
+                    </div>
+
+                    <div>
+                        <label for="therapeutic-class" class="block text-sm font-medium">Therapeutic Class</label>
+                        <input type="text" id="therapeutic-class" name="therapeutic_class" placeholder="Antipyretic"
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" 
+                        value="{{ medicineData.therapeutic_class }}">
+                    </div>
+
+                    <div>
+                        <label for="regulatory-class" class="block text-sm font-medium">Regulatory Class</label>
+                        <input type="text" id="regulatory-class" name="regulatory_class" placeholder="OTC"
+                        class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" 
+                        value="{{ medicineData.regulatory_class }}">
+                    </div>
+
+                    <div class="col-span-2">
+                        <label for="manufacturing-details" class="block text-sm font-medium">Manufacturing Details</label>
+                        <textarea id="manufacturing-details" name="manufacturing_details" placeholder="Complies with GMP and FDA guidelines."
+                        class="mt-1 block w-full h-24 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4 py-2">{{ medicineData.manufacturing_details }}</textarea>
+                    </div>
+
+                    <div class="absolute right-0 top-[-15px] mb-4">
+                        <button onclick="removeMedicine(event)" class="remove-button-new hidden bg-red-500 hover:bg-red-600 text-white px-2 py-2 rounded transition-all duration-150  items-center space-x-1"> 
+                            <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/>
+                            </svg>  
+                            <p class="text-sm">Remove</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            
+            <button type="button" onclick="addNewMedicine()" class="transition-all duration-150 mt-4 px-4 py-2 text-white bg-[#2998FF] dark:bg-[#7655fa] rounded-lg hover:bg-opacity-80">Add Another Item</button>
+            
+        </div>
+
+        <!-- Save and Reset Buttons -->
+        <div class="flex justify-end gap-4 mt-6 pb-6">
+            <button type="reset" class="transition-all duration-150 px-6 py-2 rounded-lg bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-700">Reset</button>
+            <button type="submit" class="transition-all duration-150 px-6 py-2 text-white bg-[#2998FF] dark:bg-[#7655fa] rounded-lg hover:bg-opacity-80">Save</button>
+        </div>
+    </form>
+</div>

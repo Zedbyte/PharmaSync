@@ -535,6 +535,20 @@ try {
         $medicineController->viewMedicine($data);
     });
 
+    // Update Medicine [GET]
+    $router->respond('GET', '/update-medicine/[i:medicineID]', function($request) use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $medicineController->updateMedicine($data);
+    });
+
+    // Update Medicine [POST]
+    $router->respond('POST', '/update-medicine/[i:medicineID]', function($request) use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $medicineController->updateMedicine($data);
+    });
+
     // Groq Page [GET]
     $router->respond('GET', '/ask-groq', function() use ($medicineController) {
         AuthMiddleware::checkAuth();

@@ -26,7 +26,7 @@ class Medicine extends BaseModel
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute([
-                'name' => $data['material_name'],
+                'name' => $data['medicine_name'],
                 'type' => $data['medicine_type'],
                 'composition' => $data['composition'],
                 'therapeutic_class' => $data['therapeutic_class'],

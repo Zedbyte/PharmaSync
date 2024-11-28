@@ -54,7 +54,7 @@ class MedicineController extends BaseController
             foreach ($data['medicine_type'] as $index => $medicineType) {
                 $medicineObject->save([
                     'medicine_type' => $medicineType,
-                    'material_name' => $data['material_name'][$index],
+                    'medicine_name' => $data['medicine_name'][$index],
                     'composition' => $data['composition'][$index],
                     'therapeutic_class' => $data['therapeutic_class'][$index],
                     'regulatory_class' => $data['regulatory_class'][$index],
@@ -87,6 +87,46 @@ class MedicineController extends BaseController
         ]);
     }
 
+    public function updateMedicine($data) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            // Validate the data
+            $errors = $this->validateUpdateMedicineData($data);
+
+            if (!empty($errors)) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => $errors]);
+                return;
+            }
+    
+            // Update Medicine data
+            $medicineObject = new Medicine();
+            (new Medicine())->update($data['medicineID'],
+                [
+                'name' => $data['medicine_name'],  
+                'type' => $data['medicine_type'],
+                'composition' => $data['composition'],
+                'therapeutic_class' => $data['therapeutic_class'],
+                'regulatory_class' => $data['regulatory_class'],
+                'manufacturing_details' => $data['manufacturing_details'],
+                'unit_price' => $data['unit_price']
+                ]
+            );
+            
+    
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true]);
+            return;
+        }
+
+        $medicineObject = new Medicine();
+        $medicineData = $medicineObject->getMedicine($data['medicineID']);
+
+        echo $this->twig->render('update-medicine.html.twig', [
+            'medicineData' => $medicineData
+        ]);
+    }
+
     public function displayGroq() {
         echo $this->twig->render('ask-groq.html.twig', [
             'ASSETS_URL' => ASSETS_URL
@@ -99,7 +139,7 @@ class MedicineController extends BaseController
         
             // GROQ API endpoint and your API key
             $groq_api_url = "https://api.groq.com/openai/v1/chat/completions";
-            $api_key =  $_ENV['GROQ_API']; // Replace with your actual GROQ API key
+            $api_key =  $_ENV['GROQ_API'];
         
             // Prepare the API request payload
             $payload = [
@@ -150,17 +190,17 @@ class MedicineController extends BaseController
     private function validateMedicineData($data) {
         $errors = [];
         
-        // Ensure that medicine_type and material_name arrays exist and are not completely empty
-        if (empty($data['medicine_type']) || empty(array_filter($data['material_name']))) {
-            $errors[] = "At least one medicine type and material name are required.";
+        // Ensure that medicine_type and medicine_name arrays exist and are not completely empty
+        if (empty($data['medicine_type']) || empty(array_filter($data['medicine_name']))) {
+            $errors[] = "At least one medicine type and medicine name are required.";
         }
     
         // Validate each entry in the arrays
-        if (isset($data['material_name']) && is_array($data['material_name'])) {
-            foreach ($data['material_name'] as $index => $materialName) {
-                // Material name validation
-                if (empty($materialName)) {
-                    $errors[] = "Material name for item " . ($index + 1) . " is required.";
+        if (isset($data['medicine_name']) && is_array($data['medicine_name'])) {
+            foreach ($data['medicine_name'] as $index => $medicineName) {
+                // Medicine name validation
+                if (empty($medicineName)) {
+                    $errors[] = "Medicine name for item " . ($index + 1) . " is required.";
                 }
     
                 // Medicine type validation
@@ -202,5 +242,56 @@ class MedicineController extends BaseController
         return $errors;
     }
     
+    private function validateUpdateMedicineData($data)
+    {
+        $errors = [];
+
+        // Medicine ID validation
+        if (!isset($data['medicine_id']) || empty($data['medicine_id'])) {
+            $errors[] = "Medicine ID is required.";
+        } elseif (!is_numeric($data['medicine_id']) || $data['medicine_id'] <= 0) {
+            $errors[] = "Medicine ID must be a positive integer.";
+        }
+
+        // Medicine type validation
+        if (!isset($data['medicine_type']) || empty($data['medicine_type'])) {
+            $errors[] = "Medicine type is required.";
+        }
+
+        // Medicine name validation
+        if (!isset($data['medicine_name']) || empty($data['medicine_name'])) {
+            $errors[] = "Medicine name is required.";
+        }
+
+        // Composition validation
+        if (!isset($data['composition']) || empty($data['composition'])) {
+            $errors[] = "Composition is required.";
+        }
+
+        // Unit price validation
+        if (!isset($data['unit_price']) || $data['unit_price'] === '') {
+            $errors[] = "Unit price is required.";
+        } elseif (!is_numeric($data['unit_price']) || $data['unit_price'] <= 0) {
+            $errors[] = "Unit price must be a positive number.";
+        }
+
+        // Therapeutic class validation
+        if (!isset($data['therapeutic_class']) || empty($data['therapeutic_class'])) {
+            $errors[] = "Therapeutic class is required.";
+        }
+
+        // Regulatory class validation
+        if (!isset($data['regulatory_class']) || empty($data['regulatory_class'])) {
+            $errors[] = "Regulatory class is required.";
+        }
+
+        // Manufacturing details validation
+        if (!isset($data['manufacturing_details']) || empty($data['manufacturing_details'])) {
+            $errors[] = "Manufacturing details are required.";
+        }
+
+        return $errors;
+    }
+
     
 }
