@@ -119,7 +119,6 @@ CREATE TABLE `medicines` (
     therapeutic_class varchar(255) NOT NULL,
     regulatory_class varchar(255) NOT NULL,
     manufacturing_details varchar(255) NOT NULL,
-    formulation_id int(11) NOT NULL,
     unit_price double NOT NULL,
     PRIMARY KEY (id)
 ) 

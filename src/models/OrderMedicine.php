@@ -209,7 +209,6 @@ class OrderMedicine extends BaseModel
                 m.therapeutic_class,
                 m.regulatory_class,
                 m.manufacturing_details,
-                m.formulation_id,
                 m.unit_price AS medicine_unit_price,
                 mb.expiry_date AS batch_expiry_date,
                 b.id AS batch_id,
