@@ -25,10 +25,54 @@ class MedicineController extends BaseController
     }
 
     public function display($errors = [], $medicineSearch = null)
-    {
+    {   
+        $medicineObject = new Medicine();
+        $medicineData = $medicineObject->getAllMedicines();
+
         echo $this->twig->render('medicine-list.html.twig', [
-            'ASSETS_URL' => ASSETS_URL
+            'ASSETS_URL' => ASSETS_URL,
+            'medicineData' => $medicineData
         ]);
+    }
+
+    public function addMedicine() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = $_POST;
+            
+            // Validate the data
+            // $errors = $this->validateBatchData($data);
+            // if (!empty($errors)) {
+            //     $_SESSION['batch_errors'] = $errors;
+            //     // Redirect to the same route with GET (to prevent resubmission)
+            //     header('Location: /add-medicine');
+            //     exit;
+            // }
+            
+            // Save Medicine information
+            $medicineObject = new Medicine();
+            foreach ($data['medicine_type'] as $index => $medicineType) {
+                $medicineObject->save([
+                    'medicine_type' => $medicineType,
+                    'material_name' => $data['material_name'][$index],
+                    'composition' => $data['composition'][$index],
+                    'therapeutic_class' => $data['therapeutic_class'][$index],
+                    'regulatory_class' => $data['regulatory_class'][$index],
+                    'manufacturing_details' => $data['manufacturing_details'][$index],
+                    'unit_price' => $data['unit_price'][$index],
+                ]);
+            }
+
+            header("Location: /medicine-list");
+            exit;
+        }
+
+        $errors = isset($_SESSION['batch_errors']) ? $_SESSION['batch_errors'] : [];
+    
+        // Render the template with errors, if any
+        $this->display($errors);
+        
+        // Clear the errors from session after they are displayed
+        unset($_SESSION['batch_errors']);
     }
 
     public function displayGroq() {

@@ -516,6 +516,12 @@ try {
         $medicineController->display();
     });
 
+    // Add Medicine Panel [POST]
+    $router->respond('POST', '/add-medicine', function() use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        $medicineController->addMedicine();
+    });
+
     // Groq Page [GET]
     $router->respond('GET', '/ask-groq', function() use ($medicineController) {
         AuthMiddleware::checkAuth();

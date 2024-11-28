@@ -21,13 +21,13 @@ class Medicine extends BaseModel
                     `therapeutic_class` = :therapeutic_class,
                     `regulatory_class` = :regulatory_class,
                     `manufacturing_details` = :manufacturing_details,
-                    'unit_price' = :unit_price";
+                    `unit_price` = :unit_price";
 
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute([
-                'name' => $data['name'],
-                'type' => $data['type'],
+                'name' => $data['material_name'],
+                'type' => $data['medicine_type'],
                 'composition' => $data['composition'],
                 'therapeutic_class' => $data['therapeutic_class'],
                 'regulatory_class' => $data['regulatory_class'],
