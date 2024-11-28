@@ -76,6 +76,17 @@ class MedicineController extends BaseController
         unset($_SESSION['medicine_errors']);
     }
 
+    public function viewMedicine($data) {
+
+        $medicineObject = new Medicine();
+        $medicineData = $medicineObject->getMedicine($data['medicineID']);
+
+        echo $this->twig->render('view-medicine.html.twig', [
+            'ASSETS_URL' => ASSETS_URL,
+            'medicineData' => $medicineData
+        ]);
+    }
+
     public function displayGroq() {
         echo $this->twig->render('ask-groq.html.twig', [
             'ASSETS_URL' => ASSETS_URL

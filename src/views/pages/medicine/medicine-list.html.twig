@@ -44,8 +44,9 @@
     </div>
 
     <!-- Update Panel -->
-    <!-- <div id="updateOrderPanel" class="fixed right-0 top-0 w-full xl:w-1/2 h-full bg-white 
-    dark:bg-gray-800 transform translate-x-full transition-transform duration-300 shadow-lg z-50 overflow-y-auto">
+    <!-- <div id="updateOrderPanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+    bg-white dark:bg-gray-800 opacity-0 scale-95 transition-all duration-300 shadow-lg z-50 overflow-y-auto hidden 
+    w-full h-full xl:w-1/2 xl:h-auto xl:max-h-[56rem] xl:rounded-lg">
 
     </div> -->
 
@@ -55,10 +56,11 @@
     </div> -->
 
     <!-- View Panel -->
-    <!-- <div id="viewOrderPanel" class="fixed right-0 top-0 w-full xl:w-1/2 h-full bg-white 
-    dark:bg-gray-800 transform translate-x-full transition-transform duration-300 shadow-lg z-50 overflow-y-auto">
-        
-    </div> -->
+    <div id="viewMedicinePanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+    bg-white dark:bg-gray-800 opacity-0 scale-95 transition-all duration-300 shadow-lg z-50 overflow-y-auto hidden 
+    w-full h-full xl:w-1/2 xl:h-auto xl:max-h-[56rem] xl:rounded-lg">
+        {% include 'view-medicine.html.twig' %}
+    </div>
 
     <section class="medicine__list_container_head h-full space-y-5 mb-5">
         <div class="flex-grow rounded-lg p-6 border dark:border-slate-800 bg-gray-50 border-gray-300 dark:bg-slate-500">
@@ -203,8 +205,8 @@
                                         </button>
 
                                         <button 
-                                        onclick="viewOrderPanel(this)" 
-                                        data-id="{{ order.order_id }}" 
+                                        onclick="viewMedicinePanel(this)" 
+                                        data-medicine-id="{{ medicine.id }}" 
                                         class="text-green-400 hover:text-green-800 dark:text-green-700 
                                         dark:hover:text-green-500 text-xs md:text-base transition-all duration-200">
                                             <i class="fa-solid fa-circle-info"></i>
@@ -246,5 +248,6 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{{ ASSETS_URL }}/js/medicine/addMedicineTogglePanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/medicine/addRemoveMedicine.js"></script>
+    <script src="{{ ASSETS_URL }}/js/medicine/viewMedicinePanel.js"></script>
 
 {% endblock %}
