@@ -548,6 +548,20 @@ try {
         $medicineController->updateMedicine($data);
     });
 
+    
+    // Delete Medicine [POST]
+    $router->respond('POST', '/delete-medicine/[i:medicineID]', function($request) use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        $medicineID = $request->param('medicineID');
+        $medicineController->deleteMedicine($medicineID);
+    });
+
+    // Delete Medicine [GET]
+    $router->respond('GET', '/delete-medicine', function($request) use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        $medicineController->deleteMedicine(null);
+    });
+
 
     // Add Formulation Panel [POST]
     $router->respond('POST', '/add-formulation', function() use ($medicineController) {

@@ -173,6 +173,43 @@ class MedicineController extends BaseController
         unset($_SESSION['formulation_errors']);
     }
 
+    public function deleteMedicine($medicineID) {
+        // $medicineObject = new Medicine();
+        // $medicineObject->delete($medicineID);
+        // header("Location: /medicine-list");
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // $purchaseMaterialObject = new PurchaseMaterial();
+
+            // $errors = $purchaseMaterialObject->deletePurchaseData($purchaseID, $_POST['deleteMaterials']);
+            
+            $medicineObject = new Medicine();
+            $errors = $medicineObject->delete($medicineID, $_POST['deleteMedicine']);
+
+            $tempErrors = [];
+            if (!empty($errors)) {
+                foreach ($errors as $errorArray) {
+                    $tempErrors = array_merge($tempErrors, $errorArray);
+                }
+                // Assign the flattened errors back to the original $errors variable
+                $errors = $tempErrors;
+                $_SESSION['delete_med_errors'] = $errors;
+                echo json_encode(['success' => true, 'redirect' => '/delete-medicine']);
+                exit;
+            }
+
+            echo json_encode(['success' => true, 'redirect' => '/medicine-list']);
+            exit;
+        }
+
+        $errors = isset($_SESSION['delete_med_errors']) ? $_SESSION['delete_med_errors'] : [];
+
+        // Render the template with errors, if any
+        $this->display($errors);
+        // Clear the errors from session after they are displayed
+        unset($_SESSION['delete_med_errors']);
+    }
+
     public function updateFormulation($data) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

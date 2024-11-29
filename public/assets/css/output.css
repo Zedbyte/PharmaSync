@@ -1051,16 +1051,12 @@ video {
   max-height: 29rem;
 }
 
-.max-h-\[calc\(100dvh-450px\)\] {
-  max-height: calc(100dvh - 450px);
-}
-
-.max-h-\[40rem\] {
-  max-height: 40rem;
-}
-
 .max-h-\[30rem\] {
   max-height: 30rem;
+}
+
+.max-h-\[calc\(100dvh-450px\)\] {
+  max-height: calc(100dvh - 450px);
 }
 
 .min-h-11 {

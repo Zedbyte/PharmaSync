@@ -65,9 +65,9 @@
     </div>
 
     <!-- Delete Modal -->
-    <!-- <div id="deleteOrderModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
-
-    </div> -->
+    <div id="deleteMedicineModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
+        {% include 'delete-medicine.html.twig' %}
+    </div>
 
     <!-- View Medicine Panel -->
     <div id="viewMedicinePanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
@@ -379,5 +379,6 @@
     <script src="{{ ASSETS_URL }}/js/medicine/updateMedicinePanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/medicine/addRemoveFormulation.js"></script>
     <script src="{{ ASSETS_URL }}/js/medicine/updateFormulationPanel.js"></script>
+    <script src="{{ ASSETS_URL }}/js/medicine/deleteMedicineModal.js"></script>
 
 {% endblock %}
