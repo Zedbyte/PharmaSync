@@ -185,3 +185,17 @@ CREATE TABLE `batch_rack` (
     CONSTRAINT `batch_rack_ibfk_1` FOREIGN KEY (`batch_id`) REFERENCES `batches` (`id`) ON DELETE NO ACTION,
     CONSTRAINT `batch_rack_ibfk_2` FOREIGN KEY (`rack_id`) REFERENCES `racks` (`id`) ON DELETE NO ACTION
 ) 
+
+CREATE TABLE `product_formulation` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `medicine_id` int(11) NOT NULL,
+    `material_id` int(11) NOT NULL,
+    `quantity_required` double NOT NULL,
+    `unit` varchar(255) NOT NULL,
+    `description` text NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `material_id` (`material_id`),
+    KEY `medicine_id` (`medicine_id`),
+    CONSTRAINT `product_formulation_ibfk_1` FOREIGN KEY (`material_id`) REFERENCES `materials` (`id`) ON DELETE NO ACTION,
+    CONSTRAINT `product_formulation_ibfk_2` FOREIGN KEY (`medicine_id`) REFERENCES `medicines` (`id`) ON DELETE NO ACTION
+)

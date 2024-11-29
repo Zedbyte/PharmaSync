@@ -528,7 +528,7 @@ try {
         $medicineController->addMedicine();
     });
 
-    // Add Medicine Panel [GET]
+    // View Medicine Panel [GET]
     $router->respond('GET', '/view-medicine/[i:medicineID]', function($request) use ($medicineController) {
         AuthMiddleware::checkAuth();
         $data = $request->params();

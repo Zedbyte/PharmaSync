@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\User;
 use App\Models\Medicine;
+use App\Models\Formulation;
 use App\Models\MedicineBatch;
 use App\Models\Batch;
 use App\Models\Rack;
@@ -27,12 +28,18 @@ class MedicineController extends BaseController
     public function display($errors = [], $medicineSearch = null)
     {   
         $medicineObject = new Medicine();
+        $formulationObject = new Formulation();
+
         $medicineData = $medicineObject->getAllMedicines();
+
+        foreach($medicineData as &$medicine) {
+            $medicine['formulations'] =  $formulationObject->getFormulationByMedicine($medicine['id']);
+        }
 
         echo $this->twig->render('medicine-list.html.twig', [
             'ASSETS_URL' => ASSETS_URL,
             'medicineData' => $medicineData,
-            'errors' => $errors,
+            'errors' => $errors
         ]);
     }
 
