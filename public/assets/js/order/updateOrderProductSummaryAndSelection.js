@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Handle medicine type change
             medicineTypeSelect.addEventListener("change", () => {
-                medicineNameSelect.innerHTML = '<option value="" selected disabled>Select Batch Number</option>';
+                medicineNameSelect.innerHTML = '<option value="" selected disabled>Select Medicine Name</option>';
                 fetchMedicineNames(medicineNameSelect, batchNumberSelect, medicineTypeSelect.value);
             });
 
