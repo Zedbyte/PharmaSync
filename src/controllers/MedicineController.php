@@ -5,9 +5,7 @@ namespace App\Controllers;
 use App\Models\User;
 use App\Models\Medicine;
 use App\Models\Formulation;
-use App\Models\MedicineBatch;
-use App\Models\Batch;
-use App\Models\Rack;
+use App\Models\Material;
 
 require_once __DIR__ . '/../../config/config.php';
 require_once 'BaseController.php';
@@ -28,9 +26,11 @@ class MedicineController extends BaseController
     public function display($errors = [], $medicineSearch = null)
     {   
         $medicineObject = new Medicine();
+        $materialObject = new Material();
         $formulationObject = new Formulation();
 
         $medicineData = $medicineObject->getAllMedicines();
+        $materialData = $materialObject->getAllMaterials();
 
         foreach($medicineData as &$medicine) {
             $medicine['formulations'] =  $formulationObject->getFormulationByMedicine($medicine['id']);
@@ -39,6 +39,7 @@ class MedicineController extends BaseController
         echo $this->twig->render('medicine-list.html.twig', [
             'ASSETS_URL' => ASSETS_URL,
             'medicineData' => $medicineData,
+            'materialData' => $materialData,
             'errors' => $errors
         ]);
     }
@@ -132,6 +133,44 @@ class MedicineController extends BaseController
         echo $this->twig->render('update-medicine.html.twig', [
             'medicineData' => $medicineData
         ]);
+    }
+
+    public function addFormulation() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = $_POST;
+
+            // Validate the data
+            $errors = $this->validateFormulationData($data);
+            if (!empty($errors)) {
+                $_SESSION['formulation_errors'] = $errors;
+                // Redirect to the same route with GET (to prevent resubmission)
+                header('Location: /add-formulation');
+                exit;
+            }
+            
+            // Save Medicine information
+            $formulationObject = new Formulation();
+            foreach ($data['quantity_required'] as $index => $unit) {
+                $formulationObject->save([
+                    'unit' => $unit,
+                    'quantity_required' => $data['quantity_required'][$index],
+                    'description' => $data['description'][$index],
+                    'medicine_id' => $data['medicine_name'][$index],
+                    'material_id' => $data['material_name'][$index]
+                ]);
+            }
+
+            header("Location: /medicine-list");
+            exit;
+        }
+
+        $errors = isset($_SESSION['formulation_errors']) ? $_SESSION['formulation_errors'] : [];
+    
+        // Render the template with errors, if any
+        $this->display($errors);
+        
+        // Clear the errors from session after they are displayed
+        unset($_SESSION['formulation_errors']);
     }
 
     public function displayGroq() {
@@ -300,5 +339,52 @@ class MedicineController extends BaseController
         return $errors;
     }
 
+    private function validateFormulationData($data) {
+        $errors = [];
+        
+        // Ensure at least one formulation exists
+        if (empty($data['medicine_name']) || empty(array_filter($data['medicine_name'])) || 
+            empty($data['material_name']) || empty(array_filter($data['material_name']))) {
+            $errors[] = "At least one medicine and material name are required.";
+        }
+        
+        // Validate each formulation entry
+        $maxEntries = max(
+            isset($data['medicine_name']) ? count($data['medicine_name']) : 0,
+            isset($data['material_name']) ? count($data['material_name']) : 0,
+            isset($data['quantity_required']) ? count($data['quantity_required']) : 0
+        );
     
+        for ($index = 0; $index < $maxEntries; $index++) {
+            // Medicine name validation
+            if (!isset($data['medicine_name'][$index]) || empty($data['medicine_name'][$index])) {
+                $errors[] = "Medicine name for entry " . ($index + 1) . " is required.";
+            }
+    
+            // Material name validation
+            if (!isset($data['material_name'][$index]) || empty($data['material_name'][$index])) {
+                $errors[] = "Material name for entry " . ($index + 1) . " is required.";
+            }
+    
+            // Quantity required validation
+            if (!isset($data['quantity_required'][$index]) || $data['quantity_required'][$index] === '') {
+                $errors[] = "Quantity required for entry " . ($index + 1) . " is required.";
+            } elseif (!is_numeric($data['quantity_required'][$index]) || $data['quantity_required'][$index] <= 0) {
+                $errors[] = "Quantity required for entry " . ($index + 1) . " must be a positive number.";
+            }
+    
+            // Unit validation
+            if (!isset($data['unit'][$index]) || empty($data['unit'][$index])) {
+                $errors[] = "Unit for entry " . ($index + 1) . " is required.";
+            }
+    
+            // Description validation (optional but checked for completeness)
+            if (!isset($data['description'][$index]) || empty($data['description'][$index])) {
+                $errors[] = "Description for entry " . ($index + 1) . " is required.";
+            }
+        }
+    
+        return $errors;
+    }
+
 }

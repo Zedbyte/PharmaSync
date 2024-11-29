@@ -549,6 +549,19 @@ try {
         $medicineController->updateMedicine($data);
     });
 
+
+    // Add Formulation Panel [POST]
+    $router->respond('POST', '/add-formulation', function() use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        $medicineController->addFormulation();
+    });
+
+    // Add Formulation Panel [GET]
+    $router->respond('GET', '/add-formulation', function() use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        $medicineController->addFormulation();
+    });
+
     // Groq Page [GET]
     $router->respond('GET', '/ask-groq', function() use ($medicineController) {
         AuthMiddleware::checkAuth();
