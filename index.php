@@ -103,7 +103,7 @@ try {
 
     // Registration Page [GET]
     $router->respond('GET', '/registration', function() use ($registrationController) {
-        AuthMiddleware::checkRole(['hr_manager']);
+        // AuthMiddleware::checkRole(['hr_manager']);
         $registrationController->display();
     });
 
