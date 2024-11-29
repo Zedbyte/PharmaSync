@@ -519,10 +519,8 @@ class OrderController extends BaseController {
             }
     
             // Validate medicine type
-            if (isset($data['medicine_type'][$index]) && !empty($data['medicine_type'][$index])) {
-                if (!in_array($data['medicine_type'][$index], ['tablet', 'capsule', 'syrup', '%'], true)) {
-                    $errors[] = "Medicine type for item " . ($index + 1) . " is invalid.";
-                }
+            if (empty($data['medicine_type'][$index])) {
+                $errors[] = "Medicine type for item " . ($index + 1) . " is invalid.";
             }
         }
     
