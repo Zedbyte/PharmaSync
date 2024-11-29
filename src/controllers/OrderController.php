@@ -235,12 +235,15 @@ class OrderController extends BaseController {
             }
         }
 
-
+        $orderObject = new Order();
         $orderMedicineObject = new OrderMedicine();
         $customerObject = new Customer();
 
         $customerData = $customerObject->getAllCustomers();
         $orderData = $orderMedicineObject->getOrderData($data[1]);
+
+        // Used when medicine is deleted leaving the order an empty slate (orderData is empty as well).
+        $ordersFallback = $orderObject->getOrder($data[1]);
 
         $medicineBatchObject = new MedicineBatch();
         foreach ($orderData as &$order) {
@@ -253,7 +256,8 @@ class OrderController extends BaseController {
 
         echo $this->twig->render('update-order.html.twig', [
             'orderData' => $orderData,
-            'customers' => $customerData
+            'customers' => $customerData,
+            'orders' => $ordersFallback
         ]);
     }
 

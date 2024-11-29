@@ -11,7 +11,7 @@
     <!-- Order Information Section -->
     <form action="" method="post" class="update__form h-full space-y-6">
 
-        <input type="hidden" name="order_id" value="{{ orderData[0].order_id }}">
+        <input type="hidden" name="order_id" value="{{ orders.id }}">
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -19,7 +19,7 @@
                 <input type="text" id="order-date" name="order_date" placeholder="28 Jun, 2022 - 10:00"
                 class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-blue-400 
                 dark:focus:border-blue-500 dark:bg-gray-700 px-4" onfocus="(this.type='date')" onblur="(this.type='text')" 
-                value="{{ orderData[0].order_date }}">
+                value="{{ orders.date }}">
             </div>
 
             <div>
@@ -29,7 +29,7 @@
                     <option value="new">Add New Customer</option>
                     {% for customer in customers %}
                         <option value="{{ customer.id }}" 
-                            {% if customer.id == orderData[0].customer_id %} selected {% endif %}>
+                            {% if customer.id == orders.customer_id %} selected {% endif %}>
                             {{ customer.name }}
                         </option>
                     {% endfor %}
@@ -40,9 +40,9 @@
                 <label for="payment_status" class="block text-sm font-medium">Payment Status</label>
                 <select id="payment_status" name="payment_status" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
                     <option value="" disabled>Select Payment Status</option>
-                    <option value="paid" {% if orderData[0].payment_status == "paid" %} selected {% endif %}>Paid</option>
-                    <option value="pending" {% if orderData[0].payment_status == "pending" %} selected {% endif %}>Pending</option>
-                    <option value="failed" {% if orderData[0].payment_status == "failed" %} selected {% endif %}>Failed</option>
+                    <option value="paid" {% if orders.payment_status == "paid" %} selected {% endif %}>Paid</option>
+                    <option value="pending" {% if orders.payment_status == "pending" %} selected {% endif %}>Pending</option>
+                    <option value="failed" {% if orders.payment_status == "failed" %} selected {% endif %}>Failed</option>
                 </select>
             </div>
 
@@ -50,11 +50,11 @@
                 <label for="order_status" class="block text-sm font-medium">Order Status</label>
                 <select id="order_status" name="order_status" class="mt-1 block w-full h-12 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 px-4" >
                     <option value="" disabled>Select Order Status</option>
-                    <option value="processing" {% if orderData[0].order_status == "processing" %} selected {% endif %}>Processing</option>
-                    <option value="completed" {% if orderData[0].order_status == "completed" %} selected {% endif %}>Completed</option>
-                    <option value="backordered" {% if orderData[0].order_status == "backordered" %} selected {% endif %}>Backordered</option>
-                    <option value="failed" {% if orderData[0].order_status == "failed" %} selected {% endif %}>Failed</option>
-                    <option value="canceled" {% if orderData[0].order_status == "canceled" %} selected {% endif %}>Canceled</option>
+                    <option value="processing" {% if orders.order_status == "processing" %} selected {% endif %}>Processing</option>
+                    <option value="completed" {% if orders.order_status == "completed" %} selected {% endif %}>Completed</option>
+                    <option value="backordered" {% if orders.order_status == "backordered" %} selected {% endif %}>Backordered</option>
+                    <option value="failed" {% if orders.order_status == "failed" %} selected {% endif %}>Failed</option>
+                    <option value="canceled" {% if orders.order_status == "canceled" %} selected {% endif %}>Canceled</option>
                 </select>
             </div>
         </div>
