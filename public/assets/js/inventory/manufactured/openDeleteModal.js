@@ -15,14 +15,29 @@ function openDeleteModal(button) {
     const confirmButton = document.getElementById('confirmDeleteButton');
     
     confirmButton.onclick = function () { 
+
+        const deleteBatch = document.getElementById('delete-batch').checked;
+
+        // Prepare data for the request
+        const formData = new URLSearchParams();
+        formData.append('deleteBatch', deleteBatch);
+
         fetch(`/delete-batch/${medicineId}/${batchId}`, { 
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData.toString(),
         })        
-        .then(response => {
-            if (response.ok) {
-                window.location.href = '/inventory/manufactured';
+        .then(response => response.json())
+        .then(data => {            
+            if (data.success) {
+                // Redirect to the provided path on success
+                window.location.href = data.redirect;
             } else {
-                console.error("Failed to delete batch. Status:", response.status);
+                // Redirect to the provided path on failure
+                console.error('Errors occurred:', data);
+                window.location.href = data.redirect;
             }
         })
         .catch(error => console.error('Error:', error));

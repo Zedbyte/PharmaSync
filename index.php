@@ -378,6 +378,12 @@ try {
         $manufacturedController->deleteBatch($medicineID, $batchID);
     });
 
+    // Delete Batch [GET]
+    $router->respond('GET', '/delete-batch', function($request) use ($manufacturedController) {
+        AuthMiddleware::checkAuth();
+        $manufacturedController->deleteBatch(null, null);
+    });
+
     // Get Rack Details [GET]
     $router->respond('GET', '/batch-details/[i:batchID]', function($request) use ($manufacturedController) {
         AuthMiddleware::checkAuth();

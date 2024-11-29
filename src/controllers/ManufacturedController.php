@@ -214,11 +214,29 @@ class ManufacturedController extends BaseController
     }
 
     public function deleteBatch($medicineID, $batchID) {
-        $medicineBatchObject = new MedicineBatch();
-        $medicineBatchObject->delete($medicineID, $batchID);
-        
-        header('Location: /inventory/manufactured');
-        exit;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $medicineBatchObject = new MedicineBatch();
+            $errors = $medicineBatchObject->delete($medicineID, $batchID, $_POST['deleteBatch']);
+            
+            if (!empty($errors)) {
+                $_SESSION['delete_batch_errors'] = $errors;
+                echo json_encode(['success' => true, 'redirect' => '/delete-batch']);
+                exit;
+            }
+
+            // header('Location: /inventory/manufactured');
+            // exit;
+            echo json_encode(['success' => true, 'redirect' => '/inventory/manufactured']);
+            exit;
+        }
+
+        $errors = isset($_SESSION['delete_batch_errors']) ? $_SESSION['delete_batch_errors'] : [];
+
+        // Render the template with errors, if any
+        $this->display($errors);
+        // Clear the errors from session after they are displayed
+        unset($_SESSION['delete_batch_errors']);
     }
 
     public function viewBatch($medicineID, $batchID) {

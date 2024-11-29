@@ -35,9 +35,10 @@ class MedicineBatch extends BaseModel
         }
     }
 
-    public function delete($medicineId, $batchId)
+    public function delete($medicineId, $batchId, $deleteBatch)
     {
         try {
+            $errors = null;
             // Start transaction
             $this->db->beginTransaction();
     
@@ -51,12 +52,15 @@ class MedicineBatch extends BaseModel
                 'batch_id' => $batchId
             ]);
     
-            // Check and delete the batch if no associations remain
-            $this->deleteBatchIfUnused($batchId);
+            if ($deleteBatch === 'true') {
+                // Check and delete the batch if no associations remain
+                $errors = $this->deleteBatchIfUnused($batchId);
+            }
     
             // Commit the transaction
             $this->db->commit();
-    
+            
+            return $errors;
         } catch (PDOException $e) {
             // Rollback transaction on failure
             $this->db->rollBack();
@@ -106,30 +110,45 @@ class MedicineBatch extends BaseModel
 
     private function deleteBatchIfUnused($batchId)
     {
+        $errors = []; // Initialize the errors array to track any issues
+    
         try {
-            // Check if the batch still has any remaining associations
-            $checkSql = "SELECT COUNT(*) AS total 
-                            FROM `medicine_batch` 
-                            WHERE `batch_id` = :batch_id";
-            $checkStmt = $this->db->prepare($checkSql);
-            $checkStmt->execute(['batch_id' => $batchId]);
-            $row = $checkStmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($row && $row['total'] == 0) {
-                // If no associations remain, delete the batch
+            // Check if the batch has associations in the `order_medicine` table
+            $orderMedicineCheckSql = "SELECT COUNT(*) AS total 
+                                        FROM `order_medicine` 
+                                        WHERE `batch_id` = :batch_id";
+            $orderMedicineCheckStmt = $this->db->prepare($orderMedicineCheckSql);
+            $orderMedicineCheckStmt->execute(['batch_id' => $batchId]);
+            $orderMedicineRow = $orderMedicineCheckStmt->fetch(PDO::FETCH_ASSOC);
+    
+            if ($orderMedicineRow && $orderMedicineRow['total'] > 0) {
+                $errors[] = "Batch $batchId still has associations in the `order_medicine` table.";
+            }
+    
+            // Check if the batch has associations in the `medicine_batch` table
+            $medicineBatchCheckSql = "SELECT COUNT(*) AS total 
+                                        FROM `medicine_batch` 
+                                        WHERE `batch_id` = :batch_id";
+            $medicineBatchCheckStmt = $this->db->prepare($medicineBatchCheckSql);
+            $medicineBatchCheckStmt->execute(['batch_id' => $batchId]);
+            $medicineBatchRow = $medicineBatchCheckStmt->fetch(PDO::FETCH_ASSOC);
+    
+            if ($medicineBatchRow && $medicineBatchRow['total'] > 0) {
+                $errors[] = "Batch $batchId still has associations in the `medicine_batch` table.";
+            }
+    
+            // If no associations remain in either table, delete the batch
+            if (empty($errors)) {
                 $deleteBatchSql = "DELETE FROM `batches` 
                                     WHERE `id` = :batch_id";
                 $deleteBatchStmt = $this->db->prepare($deleteBatchSql);
                 $deleteBatchStmt->execute(['batch_id' => $batchId]);
-
-                error_log("Batch $batchId deleted as it has no remaining associations. [from deleteBatchIfUnused()]");
-            } else {
-                error_log("Batch $batchId still has associations and was not deleted. [from deleteBatchIfUnused()]");
             }
         } catch (PDOException $e) {
-            error_log("Error checking or deleting batch $batchId: " . $e->getMessage());
-            throw new Exception("Error managing batch $batchId: " . $e->getMessage(), (int)$e->getCode());
+            $errors[] = "Error while checking or deleting batch $batchId: " . $e->getMessage();
         }
+    
+        return $errors; // Return the errors array, empty if no issues occurred
     }
 
 
