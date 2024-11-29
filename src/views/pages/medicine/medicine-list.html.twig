@@ -50,11 +50,18 @@
         {% include 'add-formulation.html.twig' %}
     </div>
 
-    <!-- Update Panel -->
+    <!-- Update Medicine Panel -->
     <div id="updateMedicinePanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
     bg-white dark:bg-gray-800 opacity-0 scale-95 transition-all duration-300 shadow-lg z-50 overflow-y-auto hidden 
     w-full h-full xl:w-1/2 xl:h-auto xl:max-h-[56rem] xl:rounded-lg">
         {% include 'update-medicine.html.twig' %}
+    </div>
+
+    <!-- Update Formulation Panel -->
+    <div id="updateFormulationPanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+    bg-white dark:bg-gray-800 opacity-0 scale-95 transition-all duration-300 shadow-lg z-50 overflow-y-auto hidden 
+    w-full h-full xl:w-1/2 xl:h-auto xl:max-h-[56rem] xl:rounded-lg">
+        {% include 'update-formulation.html.twig' %}
     </div>
 
     <!-- Delete Modal -->
@@ -255,7 +262,7 @@
                                 </tr>
                                 <!-- Formulation Details (Hidden by Default) -->
                                 <tr id="details-{{ medicine.id }}" class="hidden">
-                                    <td colspan="9" class="bg-gray-50 p-4 dark:bg-gray-700">
+                                    <td colspan="10" class="bg-gray-50 p-4 dark:bg-gray-700">
                                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                                             <thead>
                                                 <tr>
@@ -283,9 +290,9 @@
                                                 {% for formula in medicine.formulations %}
                                                 <tr>
                                                     <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
-                                                        {{ formula.material_id }}
-                                                        <br/>
                                                         {{ formula.material_name }}
+                                                        <br/>
+                                                        <span class="text-gray-400">{{ formula.material_id }}</span>
                                                     </td>
                                                     <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                                                         {{ formula.material_type| title }} Material
@@ -301,9 +308,8 @@
                                                     </td>
                                                     <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap items-center">
                                                         <button 
-                                                        onclick="updateBatchPanel(this)"
-                                                        data-medicine-id="{{ medicine.id }}"
-                                                        data-batch-id="{{ batch.id  }}" 
+                                                        onclick="updateFormulationPanel(this)"
+                                                        data-formulation-id="{{ formula.formulation_id  }}" 
                                                         class="showUpdateBatchPanel text-blue-400 
                                                         dark:text-blue-700  dark:hover:text-blue-500
                                                         hover:text-blue-800 text-xs md:text-base transition-all duration-200">
@@ -311,11 +317,8 @@
                                                         </button>
                                                         
                                                         <button 
-                                                        onclick="openDeleteModal(this)" 
-                                                        data-batch-id="{{ batch.id }}" 
-                                                        data-batch-stock="{{ batch.stock_level }}"
-                                                        data-medicine-id="{{ medicine.id }}"
-                                                        data-medicine-name="{{ medicine.name }}"
+                                                        onclick="openDeleteModalFormulation(this)" 
+                                                        data-formulation-id="{{ formula.formulation.id  }}" 
                                                         class="text-red-400 hover:text-red-800 dark:text-red-700 
                                                         dark:hover:text-red-500
                                                         text-xs md:text-base transition-all duration-200">
@@ -323,9 +326,8 @@
                                                         </button>
                                                         
                                                         <button 
-                                                        onclick="viewBatchPanel(this)" 
-                                                        data-medicine-id="{{ medicine.id }}"
-                                                        data-batch-id="{{ batch.id }}" 
+                                                        onclick="viewFormulationPanel(this)" 
+                                                        data-formulation-id="{{ formula.formulation.id  }}" 
                                                         class="text-green-400 hover:text-green-800 dark:text-green-700 
                                                         dark:hover:text-green-500 text-xs md:text-base transition-all duration-200">
                                                             <i class="fa-solid fa-circle-info"></i>
@@ -376,5 +378,6 @@
     <script src="{{ ASSETS_URL }}/js/medicine/viewMedicineFormulations.js"></script>
     <script src="{{ ASSETS_URL }}/js/medicine/updateMedicinePanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/medicine/addRemoveFormulation.js"></script>
+    <script src="{{ ASSETS_URL }}/js/medicine/updateFormulationPanel.js"></script>
 
 {% endblock %}

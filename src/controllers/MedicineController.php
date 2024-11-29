@@ -152,7 +152,7 @@ class MedicineController extends BaseController
             $formulationObject = new Formulation();
             foreach ($data['quantity_required'] as $index => $unit) {
                 $formulationObject->save([
-                    'unit' => $unit,
+                    'unit' => $data['unit'][$index],
                     'quantity_required' => $data['quantity_required'][$index],
                     'description' => $data['description'][$index],
                     'medicine_id' => $data['medicine_name'][$index],
@@ -171,6 +171,48 @@ class MedicineController extends BaseController
         
         // Clear the errors from session after they are displayed
         unset($_SESSION['formulation_errors']);
+    }
+
+    public function updateFormulation($data) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            // Validate the data
+            $errors = $this->validateUpdateFormulationData($data);
+
+            if (!empty($errors)) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => $errors]);
+                return;
+            }
+    
+            // Update Medicine data
+            (new Formulation())->update($data['formulation_id'],
+                [
+                'medicine_id' => $data['medicine_name'],  
+                'material_id' => $data['material_name'],
+                'quantity_required' => $data['quantity_required'],
+                'unit' => $data['unit'],
+                'description' => $data['description'],
+                ]
+            );
+            
+    
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true]);
+            return;
+        }
+
+        $medicineData = (new Medicine())->getAllMedicines();
+        $materialData = (new Material())->getAllMaterials();
+
+        $formulationObject = new Formulation();
+        $formulationData = $formulationObject->getFormulationByID($data['formulationID']);
+
+        echo $this->twig->render('update-formulation.html.twig', [
+            'formulationData' => $formulationData,
+            'medicineData' => $medicineData,
+            'materialData' => $materialData
+        ]);
     }
 
     public function displayGroq() {
@@ -387,4 +429,41 @@ class MedicineController extends BaseController
         return $errors;
     }
 
+    private function validateUpdateFormulationData($data) {
+        $errors = [];
+        
+        // Ensure the formulation_id is present and valid
+        if (empty($data['formulation_id']) || !is_numeric($data['formulation_id']) || $data['formulation_id'] <= 0) {
+            $errors[] = "A valid formulation ID is required.";
+        }
+        
+        // Validate medicine_name
+        if (empty($data['medicine_name']) || !is_numeric($data['medicine_name']) || $data['medicine_name'] <= 0) {
+            $errors[] = "A valid medicine name is required.";
+        }
+    
+        // Validate material_name
+        if (empty($data['material_name']) || !is_numeric($data['material_name']) || $data['material_name'] <= 0) {
+            $errors[] = "A valid material name is required.";
+        }
+    
+        // Validate quantity_required
+        if (!isset($data['quantity_required']) || $data['quantity_required'] === '') {
+            $errors[] = "Quantity required is mandatory.";
+        } elseif (!is_numeric($data['quantity_required']) || $data['quantity_required'] <= 0) {
+            $errors[] = "Quantity required must be a positive number.";
+        }
+    
+        // Validate unit
+        if (empty($data['unit'])) {
+            $errors[] = "A valid unit is required.";
+        }
+    
+        // Validate description (optional but checked for completeness)
+        if (empty($data['description'])) {
+            $errors[] = "Description is required.";
+        }
+    
+        return $errors;
+    }
 }

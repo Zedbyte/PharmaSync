@@ -114,4 +114,38 @@ class Formulation extends BaseModel
         }
     }
 
+    public function getFormulationByID($formulationID)
+    {
+        $sql = "SELECT
+            pf.id AS formulation_id,
+            pf.quantity_required,
+            pf.unit,
+            pf.description,
+            mt.id AS material_id,
+            mt.name AS material_name,
+            mt.material_type,
+            md.id AS medicine_id,
+            md.name AS medicine_name,
+            md.type AS medicine_type,
+            md.composition
+        FROM 
+            product_formulation pf
+        JOIN
+            materials mt ON mt.id = pf.material_id
+        JOIN 
+            medicines md ON md.id = pf.medicine_id
+        WHERE 
+            pf.id = :formulationID";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'formulationID' => $formulationID
+            ]);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
 }

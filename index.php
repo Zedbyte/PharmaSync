@@ -49,7 +49,6 @@ try {
     // Add userRole as a global variable after session start
     $userObject = new User();
     $userRole = isset($_SESSION['user_id']) ? $userObject->getRoleById($_SESSION['user_id']) : null;
-    error_log($userRole);
     $twig->addGlobal('userRole', $userRole);
 
     /**
@@ -560,6 +559,20 @@ try {
     $router->respond('GET', '/add-formulation', function() use ($medicineController) {
         AuthMiddleware::checkAuth();
         $medicineController->addFormulation();
+    });
+
+    // Update Formulation [GET]
+    $router->respond('GET', '/update-formulation/[i:formulationID]', function($request) use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $medicineController->updateFormulation($data);
+    });
+
+    // Update Formulation [POST]
+    $router->respond('POST', '/update-formulation/[i:formulationID]', function($request) use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $medicineController->updateFormulation($data);
     });
 
     // Groq Page [GET]
