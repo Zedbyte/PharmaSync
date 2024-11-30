@@ -7,7 +7,7 @@
 }
 
 .dark .tab-item {
-    background-color: #64748b; /* Tailwind's dark:bg-slate-500equivalent */
+    background-color: #1E293B; /* Tailwind's dark:bg-slate-500equivalent */
     border: 1px solid #1E293B; /* Tailwind's dark:border-slate-800 equivalent */
     border-bottom: none; /* To create the tab effect */
     border-radius: 0.5rem 0.5rem 0 0; /* Tailwind's rounded-t-lg equivalent */
