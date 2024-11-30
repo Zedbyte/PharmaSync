@@ -81,6 +81,13 @@
         {% include 'view-medicine.html.twig' %}
     </div>
 
+    <!-- View Formulation Panel -->
+    <div id="viewFormulationPanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+    bg-white dark:bg-gray-800 opacity-0 scale-95 transition-all duration-300 shadow-lg z-50 overflow-y-auto hidden 
+    w-full h-full xl:w-1/2 xl:h-auto xl:max-h-[56rem] xl:rounded-lg">
+        {% include 'view-formulation.html.twig' %}
+    </div>
+
     <section class="medicine__list_container_head h-full space-y-5 mb-5">
         <div class="flex-grow rounded-lg p-6 border dark:border-slate-800 bg-gray-50 border-gray-300 dark:bg-slate-500">
             Chart 1
@@ -387,5 +394,6 @@
     <script src="{{ ASSETS_URL }}/js/medicine/updateFormulationPanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/medicine/deleteMedicineModal.js"></script>
     <script src="{{ ASSETS_URL }}/js/medicine/deleteFormulationModal.js"></script>
+    <script src="{{ ASSETS_URL }}/js/medicine/viewFormulationPanel.js"></script>
 
 {% endblock %}

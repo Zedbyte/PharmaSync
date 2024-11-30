@@ -258,6 +258,16 @@ class MedicineController extends BaseController
         header("Location: /medicine-list");
     }
 
+    public function viewFormulation($data) {
+        $formulationObject = new Formulation();
+        $formulationData = $formulationObject->getFormulationByID($data['formulationID']);
+        // var_dump($formulationData);
+        echo $this->twig->render('view-formulation.html.twig', [
+            'ASSETS_URL' => ASSETS_URL,
+            'formulationData' => $formulationData
+        ]);
+    }
+
     public function displayGroq() {
         echo $this->twig->render('ask-groq.html.twig', [
             'ASSETS_URL' => ASSETS_URL
