@@ -601,6 +601,13 @@ try {
         $formulationID = $request->param('formulationID');
         $medicineController->deleteFormulation($formulationID);
     });
+
+    // View Formulation Panel [GET]
+    $router->respond('GET', '/view-formulation/[i:formulationID]', function($request) use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $medicineController->viewFormulation($data);
+    });
     
 
     // Groq Page [GET]
