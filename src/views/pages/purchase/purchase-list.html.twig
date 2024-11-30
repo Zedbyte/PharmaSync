@@ -44,7 +44,7 @@
                     transition-all duration-200
                     focus:bg-gray-200 dark:focus:bg-slate-600
                     outline-none h-11 min-h-11
-                    dark:bg-slate-500 dark:border-slate-800
+                    dark:bg-slate-800 dark:border-slate-600
                     dark:placeholder-gray-400 dark:text-white 
                     " 
                     {% if (start_date) %} placeholder="{{ start_date }}" {% else %} placeholder="01 Jan, 2024 - 10:00" {% endif %}>
@@ -57,7 +57,7 @@
                     transition-all duration-200
                     focus:bg-gray-200 dark:focus:bg-slate-600
                     outline-none h-11 min-h-11
-                    dark:bg-slate-500 dark:border-slate-800
+                    dark:bg-slate-800 dark:border-slate-600
                     dark:placeholder-gray-400 dark:text-white 
                     " {% if (end_date) %} placeholder="{{ end_date }}" {% else %} placeholder="31 Dec, 2024 - 10:00" {% endif %}>
                 </div>
@@ -139,15 +139,15 @@
     </div>
     
     <section class="purchase__list_container_content mt-8 
-    flex-grow p-6 rounded-lg dark:border-slate-800
-    bg-gray-50 border border-gray-300 dark:bg-slate-500">
+    flex-grow p-6 rounded-lg dark:border-slate-600
+    bg-gray-50 border border-gray-300 dark:bg-slate-800">
         
         <div class="overflow-x-auto sm:rounded-lg overflow-y-hidden px-2">
             <div class="flex flex-col sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between py-4"> 
                 <div class="flex">
                     <button id="dropdownRadioButton" data-dropdown-toggle="dropdownRadio" class="inline-flex items-center text-gray-500 bg-white border 
                     border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 
-                    dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
+                    dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
                         <svg class="w-3 h-3 text-gray-500 dark:text-gray-400 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"/>
                         </svg>
@@ -197,7 +197,7 @@
                     <button id="dropdownDefault" data-dropdown-toggle="dropdown"
                         class="ml-5 inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none 
                         hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5
-                        dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                        dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                         type="button">
                         <svg class="w-5 h-4 text-gray-500 dark:text-gray-400 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12.25V1m0 11.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M4 19v-2.25m6-13.5V1m0 2.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M10 19V7.75m6 4.5V1m0 11.25a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5ZM16 19v-2"/>
@@ -320,7 +320,7 @@
                         <a href="/purchase-list">
                             <button class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 
                             focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 mr-5 
-                            dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                            dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                                 <ion-icon name="refresh-outline" class="add__icon text-gray-500 dark:text-gray-400 mr-2"></ion-icon>  
                                 <span class="hidden sm:inline">Clear Filters</span>
                             </button>
@@ -348,7 +348,7 @@
                         <a href="/export-purchase">
                             <button class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 
                             focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 ml-5 
-                            dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                            dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                                 <ion-icon name="arrow-down-outline" class="add__icon text-gray-500 dark:text-gray-400 mr-2"></ion-icon>    
                                 <span class="hidden sm:inline">Export Data</span>
                             </button>
@@ -497,7 +497,7 @@
                     <button id="entryDropdownButton" data-dropdown-toggle="entryDropdownMenu" data-dropdown-placement="bottom"
                         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none 
                         hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5
-                        dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                        dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                         <span id="selectedEntry" class="ms-2">{{ entryValue }} entries</span>
                         <svg class="w-2.5 h-2.5 ms-2.5 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
