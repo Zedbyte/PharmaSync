@@ -623,6 +623,18 @@ try {
         $medicineController->sendGroqRequest();
     });
 
+    // Bar Chart
+    $router->respond('GET', '/medicine-list/batch-stock', function() use ($inventoryController) {
+        AuthMiddleware::checkAuth();
+        $inventoryController->getTopMedicineStockByBatch();
+    });
+
+    // Bar Chart
+    $router->respond('GET', '/medicine-list/most-sold', function() use ($inventoryController) {
+        AuthMiddleware::checkAuth();
+        $inventoryController->getMostSoldMedicines();
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {

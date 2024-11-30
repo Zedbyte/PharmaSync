@@ -74,5 +74,62 @@ class Inventory extends BaseModel
         }
     }
     
+    public function getTopMedicineStockByBatch($limit = 5) {
+        $sql = "
+            SELECT 
+                m.name AS medicine_name,
+                b.id AS batch_id,
+                MAX(mb.stock_level) AS stock_level,
+                mb.expiry_date AS expiry_date
+            FROM 
+                medicines m
+            JOIN 
+                medicine_batch mb ON m.id = mb.medicine_id
+            JOIN 
+                batches b ON mb.batch_id = b.id
+            GROUP BY 
+                m.name, b.id, mb.expiry_date
+            ORDER BY 
+                MAX(mb.stock_level) DESC
+            LIMIT :limit
+        ";
+        
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getMostSoldMedicines() {
+        $sql = "
+            SELECT 
+                m.name AS medicine_name,
+                SUM(om.quantity) AS total_quantity_sold,
+                m.unit_price AS unit_price,
+                (SUM(om.quantity) * m.unit_price) AS total_revenue
+            FROM 
+                medicines m
+            JOIN 
+                order_medicine om ON m.id = om.medicine_id
+            GROUP BY 
+                m.id, m.name, m.unit_price
+            ORDER BY 
+                total_quantity_sold DESC
+            LIMIT 10
+        ";
+    
+        try {
+            $statement = $this->db->query($sql);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
     
 }

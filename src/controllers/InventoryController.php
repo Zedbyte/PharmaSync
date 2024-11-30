@@ -26,4 +26,16 @@ class InventoryController extends BaseController
         echo json_encode($inventoryData);
     }
 
+    public function getTopMedicineStockByBatch() {
+        $inventoryObject = new Inventory();
+        $inventoryData = $inventoryObject->getTopMedicineStockByBatch();
+        echo json_encode($inventoryData);
+    }
+
+    public function getMostSoldMedicines() {
+        $inventoryObject = new Inventory();
+        $inventoryData = $inventoryObject->getMostSoldMedicines();
+        echo json_encode($inventoryData);
+    }
+
 }
