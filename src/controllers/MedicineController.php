@@ -252,6 +252,12 @@ class MedicineController extends BaseController
         ]);
     }
 
+    public function deleteFormulation($formulationID) {
+        $formulationObject = new Formulation();
+        $formulationObject->delete($formulationID);
+        header("Location: /medicine-list");
+    }
+
     public function displayGroq() {
         echo $this->twig->render('ask-groq.html.twig', [
             'ASSETS_URL' => ASSETS_URL

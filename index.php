@@ -595,6 +595,14 @@ try {
         $medicineController->updateFormulation($data);
     });
 
+    // Delete Formulation [POST]
+    $router->respond('POST', '/delete-formulation/[i:formulationID]', function($request) use ($medicineController) {
+        AuthMiddleware::checkAuth();
+        $formulationID = $request->param('formulationID');
+        $medicineController->deleteFormulation($formulationID);
+    });
+    
+
     // Groq Page [GET]
     $router->respond('GET', '/ask-groq', function() use ($medicineController) {
         AuthMiddleware::checkAuth();
