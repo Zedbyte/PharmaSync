@@ -13,6 +13,8 @@
         __DIR__ . '\src\views\pages\inventory',
         __DIR__ . '\src\views\pages\inventory\raw',
         __DIR__ . '\src\views\pages\medicine',
+        __DIR__ . '\src\views\pages\medicine\batch',
+        __DIR__ . '\src\views\pages\medicine\rack',
         __DIR__ . '\src\views\pages\settings',
         __DIR__ . '\src\views\components',
         __DIR__ . '\src\views'

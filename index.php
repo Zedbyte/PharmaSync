@@ -635,6 +635,31 @@ try {
         $inventoryController->getMostSoldMedicines();
     });
 
+    /**
+     * 
+     * BATCHES AND RACKS
+     * 
+     */
+
+    // Batch List Page [GET]
+    $router->respond('GET', '/batch-list', function() use ($batchesController) {
+        AuthMiddleware::checkAuth();
+        AuthMiddleware::checkRole(['inventory_manager']);
+        $batchesController->display();
+    });
+
+    // Add Batch Panel [POST]
+    $router->respond('POST', '/add-batch/single', function($request) use ($batchesController) {
+        AuthMiddleware::checkAuth();
+        $batchesController->addBatch();
+    });
+
+    // Add Batch Panel [GET]
+    $router->respond('GET', '/add-batch/single', function($request) use ($batchesController) {
+        AuthMiddleware::checkAuth();
+        $batchesController->addBatch();
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {

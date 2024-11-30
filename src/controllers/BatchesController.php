@@ -24,6 +24,73 @@ class BatchesController extends BaseController
         // $this->db = returnDBCon(new MedicineBatch()); // Initialize DB connection once
     }
 
+    public function display($errors = [], $lotSearch = null)
+    {
+
+        // $materialObject = new Material();
+        // $materialData = $materialObject->getAllMaterials();
+
+        // $materialLotObject = new MaterialLot();
+        
+        // foreach ($materialData as &$material) {
+        //     $material['lots'] = $materialLotObject->getMaterialLotsAndLotData($material['id'], $lotSearch);
+        // }
+
+        // if ($lotSearch) {
+        //     $filteredMaterialData = array_filter($materialData, function($material) {
+        //         return !empty($material['lots']); // Keep only materials with non-empty lots
+        //     });
+    
+        //     $materialData = array_values($filteredMaterialData);
+        // }
+
+        $batchObject = new Batch();
+        $batchData = $batchObject->getAllBatches();
+
+        $rackObject = new Rack();
+        $rackData = $rackObject->getAllRacks();
+
+        echo $this->twig->render('batch-list.html.twig', [
+            'ASSETS_URL' => ASSETS_URL,
+            'batchData' => $batchData,
+            'rackData' => $rackData,
+            'errors' => $errors
+        ]);
+    }
+
+    public function addBatch() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = $_POST;
+            // Validate the data
+            $errors = $this->validateBatchData($data);
+
+            if (!empty($errors)) {
+                $_SESSION['batch_errors'] = $errors;
+                // Redirect to the same route with GET (to prevent resubmission)
+                header('Location: /add-batch/single');
+                exit;
+            }
+            
+            // Save batch information
+            $batchObject = new Batch();
+            $batchID = $batchObject->save([
+                'production_date' => str_replace(' - ', ' ', $data['production_date']),
+                'rack_id' => $data['rack']
+            ]);
+    
+            header("Location: /batch-list");
+            exit;
+        }
+
+        $errors = isset($_SESSION['batch_errors']) ? $_SESSION['batch_errors'] : [];
+    
+        // Render the template with errors, if any
+        $this->display($errors);
+        
+        // Clear the errors from session after they are displayed
+        unset($_SESSION['batch_errors']);
+    }
+
     public function getProductionRate() {
         $batchObject = new Batch();
         $batchData = $batchObject->getBatchProductionRate();
@@ -35,5 +102,25 @@ class BatchesController extends BaseController
         $medicineBatchData = $medicineBatchObject->getMedicineStockDistribution();
         echo json_encode($medicineBatchData);
     }
+
+
+    private function validateBatchData($data) {
+        $errors = [];
+    
+        // Validate production date
+        if (empty($data['production_date'])) {
+            $errors[] = "Production date is required.";
+        } elseif (!strtotime(str_replace(' - ', ' ', $data['production_date']))) {
+            $errors[] = "Production date is invalid.";
+        }
+    
+        // Validate rack (if applicable)
+        if (empty($data['rack'])) {
+            $errors[] = "Rack ID is required.";
+        }
+    
+        return $errors;
+    }
+    
 
 }

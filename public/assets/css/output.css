@@ -1059,6 +1059,22 @@ video {
   max-height: calc(100dvh - 450px);
 }
 
+.max-h-full {
+  max-height: 100%;
+}
+
+.max-h-\[35rem\] {
+  max-height: 35rem;
+}
+
+.max-h-\[36rem\] {
+  max-height: 36rem;
+}
+
+.max-h-\[37rem\] {
+  max-height: 37rem;
+}
+
 .min-h-11 {
   min-height: 2.75rem;
 }
