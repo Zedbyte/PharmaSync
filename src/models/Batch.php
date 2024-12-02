@@ -37,16 +37,14 @@ class Batch extends BaseModel
         $sql = "UPDATE `batches` 
                 SET
                     `production_date` = :production_date,
-                    `expiry_date` = :expiry_date,
-                    `quantity` = :quantity
+                    `rack_id` = :rack_id
                 WHERE `id` = :id";
 
         try {
             $statement = $this->db->prepare($sql);
             $statement->execute([
                 'production_date' => $data['production_date'],
-                'expiry_date' => $data['expiry_date'],
-                'quantity' => $data['quantity'],
+                'rack_id' => $data['rack'],
                 'id' => $batchId
             ]);
         } catch (PDOException $e) {

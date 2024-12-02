@@ -91,6 +91,43 @@ class BatchesController extends BaseController
         unset($_SESSION['batch_errors']);
     }
 
+    public function updateBatch($data) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            // Validate the data
+            $errors = $this->validateBatchData($data);
+
+            if (!empty($errors)) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => $errors]);
+                return;
+            }
+    
+            (new Batch())->update($data['batch_id'],
+                [
+                'production_date' => $data['production_date'],  
+                'rack' => $data['rack']
+                ]
+            );
+            
+    
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true]);
+            return;
+        }
+        
+        $batchObject = new Batch();
+        $batchData = $batchObject->getBatch($data['batchID']);
+
+        $rackObject = new Rack();
+        $rackData = $rackObject->getAllRacks();
+
+        echo $this->twig->render('update-batch.html.twig', [
+            'batchData' => $batchData,
+            'rackData' => $rackData
+        ]);
+    }
+
 
     public function addRack() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -107,7 +144,7 @@ class BatchesController extends BaseController
             
             // Save batch information
             $rackObject = new Rack();
-            $radID = $rackObject->save([
+            $rackID = $rackObject->save([
                 'location' => $data['location'],
                 'temperature_controlled' => $data['temperature_controlled']
             ]);

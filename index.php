@@ -672,6 +672,20 @@ try {
         $batchesController->addRack();
     });
 
+    // Update Batch [GET]
+    $router->respond('GET', '/update-batch/[i:batchID]', function($request) use ($batchesController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $batchesController->updateBatch($data);
+    });
+
+    // Update Batch [POST]
+    $router->respond('POST', '/update-batch/[i:batchID]', function($request) use ($batchesController) {
+        AuthMiddleware::checkAuth();
+        $data = $request->params();
+        $batchesController->updateBatch($data);
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {

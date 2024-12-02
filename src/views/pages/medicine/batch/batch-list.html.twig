@@ -47,14 +47,14 @@
     <div id="addRackPanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
     bg-white dark:bg-gray-800 opacity-0 scale-95 transition-all duration-300 shadow-lg z-50 overflow-y-auto hidden 
     w-full h-full xl:w-1/2 xl:h-auto xl:max-h-[56rem] xl:rounded-lg">
-    {% include 'add-rack.html.twig' %}
+        {% include 'add-rack.html.twig' %}
     </div>
 
     <!-- Update Medicine Panel -->
-    <div id="updateMedicinePanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+    <div id="updateBatchPanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
     bg-white dark:bg-gray-800 opacity-0 scale-95 transition-all duration-300 shadow-lg z-50 overflow-y-auto hidden 
     w-full h-full xl:w-1/2 xl:h-auto xl:max-h-[56rem] xl:rounded-lg">
-
+        {% include 'update-batch.html.twig' %}
     </div>
 
     <!-- Delete Modal -->
@@ -179,9 +179,9 @@
                                     </td> -->
                                     <td class="md:px-6 md:py-4 space-x-3 flex flex-wrap justify-center items-center">
                                         <button 
-                                        onclick="updateMedicinePanel(this)"
-                                        data-medicine-id="{{ medicine.id }}" 
-                                        class="showUpdateMedicinePanel text-blue-400 
+                                        onclick="updateBatchPanel(this)"
+                                        data-batch-id="{{ batch.id }}" 
+                                        class="showBatchMedicinePanel text-blue-400 
                                         dark:text-blue-700 dark:hover:text-blue-500
                                         hover:text-blue-800 text-xs md:text-base transition-all duration-200">
                                             <i class="fa-solid fa-pen-to-square"></i>
@@ -525,5 +525,6 @@
     <script src="{{ ASSETS_URL }}/js/batch_rack/calendarThemeBatchRack.js"></script>
     <script src="{{ ASSETS_URL }}/js/batch_rack/addBRPanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/rackDetails.js"></script>
+    <script src="{{ ASSETS_URL }}/js/batch_rack/updateBatchPanel.js"></script>
 
 {% endblock %}
