@@ -12,6 +12,27 @@ use \Exception;
 class Rack extends BaseModel
 {
 
+    public function save($data)
+    {
+        $sql = "INSERT INTO `racks` 
+                SET
+                    `location` = :location,
+                    `temperature_controlled` = :temperature_controlled";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'location' => $data['location'],
+                'temperature_controlled' => $data['temperature_controlled']
+            ]);
+
+            return $this->db->lastInsertId();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
     public function getAllRacks()
     {
         $sql = "SELECT * FROM racks";

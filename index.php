@@ -660,6 +660,18 @@ try {
         $batchesController->addBatch();
     });
 
+    // Add Rack Panel [POST]
+    $router->respond('POST', '/add-rack/single', function($request) use ($batchesController) {
+        AuthMiddleware::checkAuth();
+        $batchesController->addRack();
+    });
+
+    // Add Rack Panel [GET]
+    $router->respond('GET', '/add-rack/single', function($request) use ($batchesController) {
+        AuthMiddleware::checkAuth();
+        $batchesController->addRack();
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {

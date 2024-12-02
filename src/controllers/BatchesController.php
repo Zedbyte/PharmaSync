@@ -91,6 +91,40 @@ class BatchesController extends BaseController
         unset($_SESSION['batch_errors']);
     }
 
+
+    public function addRack() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = $_POST;
+            // Validate the data
+            $errors = $this->validateRackData($data);
+
+            if (!empty($errors)) {
+                $_SESSION['rack_errors'] = $errors;
+                // Redirect to the same route with GET (to prevent resubmission)
+                header('Location: /add-rack/single');
+                exit;
+            }
+            
+            // Save batch information
+            $rackObject = new Rack();
+            $radID = $rackObject->save([
+                'location' => $data['location'],
+                'temperature_controlled' => $data['temperature_controlled']
+            ]);
+    
+            header("Location: /batch-list");
+            exit;
+        }
+
+        $errors = isset($_SESSION['rack_errors']) ? $_SESSION['rack_errors'] : [];
+    
+        // Render the template with errors, if any
+        $this->display($errors);
+        
+        // Clear the errors from session after they are displayed
+        unset($_SESSION['rack_errors']);
+    }
+
     public function getProductionRate() {
         $batchObject = new Batch();
         $batchData = $batchObject->getBatchProductionRate();
@@ -117,6 +151,22 @@ class BatchesController extends BaseController
         // Validate rack (if applicable)
         if (empty($data['rack'])) {
             $errors[] = "Rack ID is required.";
+        }
+    
+        return $errors;
+    }
+
+    private function validateRackData($data) {
+        $errors = [];
+    
+        // Validate production date
+        if (empty($data['location'])) {
+            $errors[] = "Location is required.";
+        }
+    
+        // Validate rack (if applicable)
+        if (empty($data['temperature_controlled'])) {
+            $errors[] = "Specify if the rack is temperature controlled.";
         }
     
         return $errors;
