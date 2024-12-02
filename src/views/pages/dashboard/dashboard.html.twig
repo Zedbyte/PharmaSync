@@ -33,12 +33,23 @@
                 <span class="grid grid-cols-1 space-y-3">
                     <span class="text-start">
                         <h1 class="font-semibold text-[0.600rem] text-slate-500 dark:text-gray-300">Total</h1>
-                        <h1 class="font-semibold text-2xl">$98,000.53</h1>
+                        <h1 class="font-semibold text-2xl">{{ productionEfficiency.current_batch_count }}</h1>
                     </span>
                     <hr class="dark:border-gray-700" />
                     <span class="text-start text-nowrap">
-                        <span class="font-semibold text-green-500 flex space-x-5">
-                            <p><i class="fa-solid fa-arrow-trend-up"></i> 12.4%</p>
+                        <span class="font-semibold {% if productionEfficiency.percentage_change < 0 %}
+                                        text-red-500
+                                    {% else %}
+                                        text-green-500
+                                    {% endif %} flex space-x-5">
+                            <p>
+                                {% if productionEfficiency.percentage_change < 0 %}
+                                    <i class="fa-solid fa-arrow-trend-down"></i> 
+                                {% else %}
+                                    <i class="fa-solid fa-arrow-trend-up"></i> 
+                                {% endif %}
+                                {{ productionEfficiency.percentage_change|round(2, 'common') }}%
+                            </p>
                             <span class="text-gray-500">
                                 <small> - This month</small>
                             </span>
@@ -58,12 +69,23 @@
                 <span class="grid grid-cols-1 space-y-3">
                     <span class="text-start">
                         <h1 class="font-semibold text-[0.600rem] text-slate-500 dark:text-gray-300">Total</h1>
-                        <h1 class="font-semibold text-2xl">15,130</h1>
+                        <h1 class="font-semibold text-2xl">{{ totalOrders.current_order_count }}</h1>
                     </span>
                     <hr class="dark:border-gray-700" />
                     <span class="text-start text-nowrap">
-                        <span class="font-semibold text-red-500 flex space-x-5">
-                            <p><i class="fa-solid fa-arrow-trend-down"></i> 12.4%</p>
+                        <span class="font-semibold {% if totalOrders.percentage_change < 0 %}
+                                        text-red-500
+                                    {% else %}
+                                        text-green-500
+                                    {% endif %} flex space-x-5">
+                            <p>
+                                {% if totalOrders.percentage_change < 0 %}
+                                    <i class="fa-solid fa-arrow-trend-down"></i> 
+                                {% else %}
+                                    <i class="fa-solid fa-arrow-trend-up"></i> 
+                                {% endif %}
+                                {{ totalOrders.percentage_change|round(2, 'common') }}%
+                            </p>
                             <span class="text-gray-500">
                                 <small> - This month</small>
                             </span>
@@ -82,13 +104,26 @@
     
                 <span class="grid grid-cols-1 space-y-3">
                     <span class="text-start">
-                        <h1 class="font-semibold text-[0.600rem] text-slate-500 dark:text-gray-300">Total</h1>
-                        <h1 class="font-semibold text-2xl">$98,000.53</h1>
+                        <h1 class="font-semibold text-[0.600rem] text-slate-500 dark:text-gray-300">Total Revenue</h1>
+                        <h1 class="font-semibold text-2xl">${{ salesPerformance.current.total_revenue | number_format(2) }}</h1>
                     </span>
                     <hr class="dark:border-gray-700" />
                     <span class="text-start text-nowrap">
-                        <span class="font-semibold text-green-500 flex space-x-5">
-                            <p><i class="fa-solid fa-arrow-trend-up"></i> 12.4%</p>
+                        <span class="font-semibold flex space-x-5 
+                                    {% if salesPerformance.percentage_change < 0 %}
+                                        text-red-500
+                                    {% else %}
+                                        text-green-500
+                                    {% endif %}
+                                ">
+                            <p>
+                                {% if salesPerformance.percentage_change < 0 %}
+                                    <i class="fa-solid fa-arrow-trend-down"></i> 
+                                {% else %}
+                                    <i class="fa-solid fa-arrow-trend-up"></i> 
+                                {% endif %}
+                                {{ salesPerformance.percentage_change|round(2, 'common') }}%
+                            </p>
                             <span class="text-gray-500">
                                 <small> - This month</small>
                             </span>
@@ -107,13 +142,24 @@
     
                 <span class="grid grid-cols-1 space-y-3">
                     <span class="text-start">
-                        <h1 class="font-semibold text-[0.600rem] text-slate-500 dark:text-gray-300">Total</h1>
-                        <h1 class="font-semibold text-2xl">$98,000.53</h1>
+                        <h1 class="font-semibold text-[0.600rem] text-slate-500 dark:text-gray-300">Total Spending</h1>
+                        <h1 class="font-semibold text-2xl">${{ purchaseFrequency.current.total_spending | number_format(2) }}</h1>
                     </span>
                     <hr class="dark:border-gray-700" />
                     <span class="text-start text-nowrap">
-                        <span class="font-semibold text-green-500 flex space-x-5">
-                            <p><i class="fa-solid fa-arrow-trend-up"></i> 12.4%</p>
+                        <span class="font-semibold {% if purchaseFrequency.percentage_change < 0 %}
+                                        text-red-500
+                                    {% else %}
+                                        text-green-500
+                                    {% endif %} flex space-x-5">
+                            <p>
+                                {% if purchaseFrequency.percentage_change < 0 %}
+                                    <i class="fa-solid fa-arrow-trend-down"></i> 
+                                {% else %}
+                                    <i class="fa-solid fa-arrow-trend-up"></i> 
+                                {% endif %}
+                                {{ purchaseFrequency.percentage_change|round(2, 'common') }}%
+                            </p>
                             <span class="text-gray-500">
                                 <small> - This month</small>
                             </span>
