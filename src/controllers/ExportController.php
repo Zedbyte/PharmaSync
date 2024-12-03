@@ -5,6 +5,8 @@ use App\Models\Purchase;
 use App\Models\PurchaseMaterial;
 use App\Models\OrderMedicine;
 use App\Models\Supplier;
+use App\Models\Medicine;
+use App\Models\MedicineBatch;
 use Fpdf\Fpdf;
 
 require_once __DIR__ . '/../../config/config.php';
@@ -324,5 +326,92 @@ class ExportController extends BaseController
     
         // Output the PDF
         $pdf->Output('D', 'Order_Report_' . $orderID . '.pdf');
+    }
+
+    public function exportAllManufactured() {
+        $medicineObject = new Medicine();
+        $medicineBatchObject = new MedicineBatch();
+        // Fetch all medicines
+        $medicineData = $medicineObject->getAllMedicines();
+    
+        // Merge batches with medicines
+        foreach ($medicineData as &$medicine) {
+            $medicine['batches'] = $medicineBatchObject->getBatchMedicinesAndBatchData($medicine['id'], null);
+        }
+    
+        // Create instance of FPDF
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+    
+        // Header
+        $pdf->Image(LOGO_URL, 10, 10, 30);
+        $pdf->Cell(0, 10, 'PharmaSync Inc.', 0, 1, 'R');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'sales@pharmasync.com', 0, 1, 'R');
+        $pdf->Cell(0, 10, '+63-190-597-235', 0, 1, 'R');
+        $pdf->Cell(0, 10, 'ID: 1003', 0, 1, 'R');
+        $pdf->Ln(10);
+    
+        // Table Header
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetFillColor(164, 210, 255); // RGB for #2998FF
+        $pdf->Cell(40, 10, 'Medicine Name', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Type', 1, 0, 'C', true);
+        $pdf->Cell(40, 10, 'Composition', 1, 0, 'C', true);
+        $pdf->Cell(40, 10, 'Therapeutic Class', 1, 0, 'C', true);
+        $pdf->Cell(40, 10, 'Regulatory Class', 1, 0, 'C', true);
+        $pdf->Ln();
+    
+        // Table Body
+        $pdf->SetFont('Arial', '', 8);
+        $fill = false; // Boolean flag for alternating row colors
+        foreach ($medicineData as $medicine) {
+            $pdf->SetFillColor($fill ? 230 : 255, $fill ? 230 : 255, $fill ? 230 : 255); // Light grey color for alternate rows
+            $pdf->Cell(40, 10, $medicine['name'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $medicine['type'], 1, 0, 'C', true);
+            $pdf->Cell(40, 10, $medicine['composition'], 1, 0, 'C', true);
+            $pdf->Cell(40, 10, $medicine['therapeutic_class'], 1, 0, 'C', true);
+            $pdf->Cell(40, 10, $medicine['regulatory_class'], 1, 0, 'C', true);
+            $pdf->Ln();
+            $fill = !$fill; // Toggle the fill flag
+        }
+    
+        $pdf->AddPage();
+    
+        // Additional Details Header
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Additional Details', 0, 1, 'L');
+        $pdf->Ln(5);
+    
+        // Additional Details
+        $pdf->SetFont('Arial', '', 12);
+        foreach ($medicineData as $medicine) {
+            foreach ($medicine['batches'] as $batch) {
+                $pdf->Cell(50, 10, 'Medicine:', 0, 0, 'L');
+                $pdf->Cell(0, 10, $medicine['name'], 0, 1, 'R');
+                $pdf->Cell(50, 10, 'Batch ID:', 0, 0, 'L');
+                $pdf->Cell(0, 10, $batch['batch_id'], 0, 1, 'R');
+                $pdf->Cell(50, 10, 'Stock Level:', 0, 0, 'L');
+                $pdf->Cell(0, 10, $batch['stock_level'], 0, 1, 'R');
+                $pdf->Cell(50, 10, 'Expiry Date:', 0, 0, 'L');
+                $pdf->Cell(0, 10, $batch['expiry_date'], 0, 1, 'R');
+                $pdf->Cell(50, 10, 'Production Date:', 0, 0, 'L');
+                $pdf->Cell(0, 10, $batch['production_date'], 0, 1, 'R');
+                $pdf->Cell(50, 10, 'Rack ID:', 0, 0, 'L');
+                $pdf->Cell(0, 10, $batch['rack_id'], 0, 1, 'R');
+                $pdf->Ln(5);
+                $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY()); // Draw line
+                $pdf->Ln(5);
+            }
+        }
+        $pdf->Ln(10);
+    
+        // Footer
+        $pdf->SetFont('Arial', 'I', 8);
+        $pdf->Cell(0, 10, '2024 Pharmasync. All Rights Reserved.', 0, 1, 'C');
+    
+        // Output the PDF
+        $pdf->Output('D', 'Manufactured_Report.pdf');
     }
 }

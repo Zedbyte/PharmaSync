@@ -748,6 +748,19 @@ try {
         $exportController->exportAllOrder();
     });
 
+    // Export Manufactured [GET]
+    $router->respond('GET', '/export-manufactured', function($request) use ($exportController) {
+        AuthMiddleware::checkAuth();
+
+        // if (isset($_GET['manufacturedID'])) {
+        //     $manufacturedID = $_GET['manufacturedID'];
+        //     $exportController->exportManufacturedByID($manufacturedID);
+        //     return;
+        // }
+
+        $exportController->exportAllManufactured();
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {
