@@ -797,6 +797,10 @@ video {
   margin: 0px;
 }
 
+.m-5 {
+  margin: 1.25rem;
+}
+
 .-mx-4 {
   margin-left: -1rem;
   margin-right: -1rem;
