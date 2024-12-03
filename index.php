@@ -798,6 +798,15 @@ try {
         $exportController->exportAllMedicine();
     });
 
+    // Export Raw [GET]
+    $router->respond('GET', '/export-formulation', function($request) use ($exportController) {
+        AuthMiddleware::checkAuth();
+
+        $formulationID = $_GET['formulationID'];
+
+        $exportController->exportFormulationByID($formulationID);
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {
