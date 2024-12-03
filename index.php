@@ -21,6 +21,7 @@ use App\Controllers\InventoryController;
 use App\Controllers\ManufacturedController;
 use App\Controllers\MedicineController;
 use App\Controllers\RawController;
+use App\Controllers\ExportController;
 use \App\Middleware\AuthMiddleware;
 
 //Models
@@ -45,6 +46,7 @@ try {
     $manufacturedController = new ManufacturedController($twig);
     $rawController = new RawController($twig);
     $medicineController = new MedicineController($twig);
+    $exportController = new ExportController($twig);
 
     // Add userRole as a global variable after session start
     $userObject = new User();
@@ -712,6 +714,18 @@ try {
         AuthMiddleware::checkAuth();
         $rackID = $request->param('rackID');
         $batchesController->deleteRack($rackID);
+    });
+    
+    /**
+     * 
+     * EXPORTS
+     * 
+     */
+
+    // Delete Rack [GET]
+    $router->respond('GET', '/export-purchase', function($request) use ($exportController) {
+        AuthMiddleware::checkAuth();
+        $exportController->exportAllPurchase();
     });
 
     $router->dispatch();
