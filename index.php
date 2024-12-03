@@ -722,9 +722,16 @@ try {
      * 
      */
 
-    // Delete Rack [GET]
+    // Export Purchase [GET]
     $router->respond('GET', '/export-purchase', function($request) use ($exportController) {
         AuthMiddleware::checkAuth();
+
+        if (isset($_GET['purchaseID'])) {
+            $purchaseID = $_GET['purchaseID'];
+            $exportController->exportPurchaseByID($purchaseID);
+            return;
+        }
+
         $exportController->exportAllPurchase();
     });
 

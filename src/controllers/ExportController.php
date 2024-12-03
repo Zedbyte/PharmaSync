@@ -72,6 +72,86 @@ class ExportController extends BaseController
     }
 
     public function exportPurchaseByID($purchaseID) {
-            
+        $purchaseMaterialObject = new PurchaseMaterial();
+        $purchaseData = $purchaseMaterialObject->getPurchaseData($purchaseID);
+    
+        // Create instance of FPDF
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+    
+        // Header
+        $pdf->Image(LOGO_URL, 10, 10, 30);
+        $pdf->Cell(0, 10, 'PharmaSync Inc.', 0, 1, 'R');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'sales@pharmasync.com', 0, 1, 'R');
+        $pdf->Cell(0, 10, '+63-190-597-235', 0, 1, 'R');
+        $pdf->Cell(0, 10, 'ID: 1003', 0, 1, 'R');
+        $pdf->Ln(10);
+    
+        // Supplier Info
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Bill From:', 0, 1);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, $purchaseData[0]['supplier_name'], 0, 1);
+        $pdf->Cell(0, 10, $purchaseData[0]['supplier_address'], 0, 1);
+        $pdf->Cell(0, 10, $purchaseData[0]['supplier_email'], 0, 1);
+        $pdf->Cell(0, 10, $purchaseData[0]['supplier_contact_no'], 0, 1);
+    
+        // Purchase Info
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Purchase ID: ' . $purchaseData[0]['purchase_id'], 0, 1, 'R');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'Purchase date: ' . $purchaseData[0]['purchase_date'], 0, 1, 'R');
+        $pdf->Cell(0, 10, 'Status: ' . ucfirst($purchaseData[0]['purchase_status']), 0, 1, 'R');
+        $pdf->Ln(10);
+    
+        // Table Header
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetFillColor(164, 210, 255); // RGB for #2998FF
+        $pdf->Cell(70, 10, 'Material Name', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Quantity', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Unit Price', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Expiration', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Amount', 1, 0, 'C', true);
+        $pdf->Ln();
+    
+        // Table Body
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->SetFillColor(245, 245, 245);
+        $pdf->Cell(70, 10, $purchaseData[0]['material_name'], 1, 0, 'C', true);
+        $pdf->Cell(30, 10, $purchaseData[0]['quantity'], 1, 0, 'C', true);
+        $pdf->Cell(30, 10, '$' . number_format($purchaseData[0]['unit_price'], 2), 1, 0, 'C', true);
+        $pdf->Cell(30, 10, $purchaseData[0]['expiration_date'], 1, 0, 'C', true);
+        $pdf->Cell(30, 10, '$' . number_format($purchaseData[0]['material_total_price'], 2), 1, 0, 'C', true);
+        $pdf->Ln();
+
+        // Additional Details Header
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Additional Details', 0, 1, 'L');
+        $pdf->Ln(5);
+
+        // Additional Details
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(50, 10, 'Lot ID:', 0, 0, 'L');
+        $pdf->Cell(0, 10, $purchaseData[0]['lot_id'], 0, 1, 'R');
+        $pdf->Cell(50, 10, 'Lot Number:', 0, 0, 'L');
+        $pdf->Cell(0, 10, $purchaseData[0]['lot_number'], 0, 1, 'R');
+        $pdf->Cell(50, 10, 'Material Description:', 0, 0, 'L');
+        $pdf->Cell(0, 10, $purchaseData[0]['material_description'], 0, 1, 'R');
+        $pdf->Cell(50, 10, 'QC Status:', 0, 0, 'L');
+        $pdf->Cell(0, 10, ucfirst($purchaseData[0]['qc_status']), 0, 1, 'R');
+        $pdf->Cell(50, 10, 'QC Notes:', 0, 0, 'L');
+        $pdf->Cell(0, 10, $purchaseData[0]['qc_notes'], 0, 1, 'R');
+        $pdf->Cell(50, 10, 'Inspection Date:', 0, 0, 'L');
+        $pdf->Cell(0, 10, $purchaseData[0]['inspection_date'], 0, 1, 'R');
+        $pdf->Ln(10);
+    
+        // Footer
+        $pdf->SetFont('Arial', 'I', 8);
+        $pdf->Cell(0, 10, '2024 Pharmasync. All Rights Reserved.', 0, 1, 'C');
+    
+        // Output the PDF
+        $pdf->Output('D', 'Purchase_Report_' . $purchaseID . '.pdf');
     }
 }
