@@ -714,4 +714,111 @@ class ExportController extends BaseController
         // Output the PDF
         $pdf->Output('D', 'Raw_Material_Report_' . $materialId . '.pdf');
     }
+
+    public function exportRawByMaterialAndLotID($lotID, $materialID) {
+        $materialObject = new MaterialLot();
+        $LotMaterialData = $materialObject->getLotMaterialData($lotID, $materialID);
+    
+        // Create instance of FPDF
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+    
+        // Header
+        $pdf->Image(LOGO_URL, 10, 10, 30);
+        $pdf->Cell(0, 10, 'PharmaSync Inc.', 0, 1, 'R');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'sales@pharmasync.com', 0, 1, 'R');
+        $pdf->Cell(0, 10, '+63-190-597-235', 0, 1, 'R');
+        $pdf->Cell(0, 10, 'ID: 1003', 0, 1, 'R');
+        $pdf->Ln(10);
+    
+        // Material Info
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Material Info:', 0, 1);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'Name: ' . $LotMaterialData[0]['name'], 0, 1);
+        $pdf->Cell(0, 10, 'Description: ' . $LotMaterialData[0]['description'], 0, 1);
+        $pdf->Cell(0, 10, 'Type: ' . $LotMaterialData[0]['material_type'], 0, 1);
+        $pdf->Ln(10);
+    
+        // Supplier Info
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Supplier Info:', 0, 1);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'Name: ' . $LotMaterialData[0]['supplier_name'], 0, 1);
+        $pdf->Cell(0, 10, 'Email: ' . $LotMaterialData[0]['email'], 0, 1);
+        $pdf->Cell(0, 10, 'Address: ' . $LotMaterialData[0]['address'], 0, 1);
+        $pdf->Cell(0, 10, 'Contact No: ' . $LotMaterialData[0]['contact_no'], 0, 1);
+        $pdf->Ln(10);
+    
+        // Table Header
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFillColor(164, 210, 255); // RGB for #2998FF
+        $pdf->Cell(30, 10, 'Lot ID', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Stock Level', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'QC Status', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'QC Notes', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Inspection Date', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Expiration Date', 1, 0, 'C', true);
+        $pdf->Ln();
+    
+        // Table Body
+        $pdf->SetFont('Arial', '', 10);
+        $fill = false; // Boolean flag for alternating row colors
+        foreach ($LotMaterialData as $item) {
+            $pdf->SetFillColor($fill ? 230 : 255, $fill ? 230 : 255, $fill ? 230 : 255); // Light grey color for alternate rows
+            $pdf->Cell(30, 10, $item['lot_id'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $item['stock_level'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, ucfirst($item['qc_status']), 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $item['qc_notes'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $item['inspection_date'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $item['expiration_date'], 1, 0, 'C', true);
+            $pdf->Ln();
+            $fill = !$fill; // Toggle the fill flag
+        }
+    
+        $pdf->AddPage();
+    
+        // Additional Details Header
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Additional Details', 0, 1, 'L');
+        $pdf->Ln(5);
+    
+        // Additional Details
+        $pdf->SetFont('Arial', '', 12);
+        foreach ($LotMaterialData as $item) {
+            $pdf->Cell(50, 10, 'Material:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['name'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Lot ID:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['lot_id'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Stock Level:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['stock_level'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'QC Status:', 0, 0, 'L');
+            $pdf->Cell(0, 10, ucfirst($item['qc_status']), 0, 1, 'R');
+            $pdf->Cell(50, 10, 'QC Notes:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['qc_notes'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Inspection Date:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['inspection_date'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Expiration Date:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['expiration_date'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Production Date:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['production_date'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Lot Number:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['number'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Supplier Name:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['supplier_name'], 0, 1, 'R');
+            $pdf->Ln(5);
+            $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY()); // Draw line
+            $pdf->Ln(5);
+        }
+        $pdf->Ln(10);
+    
+        // Footer
+        $pdf->SetFont('Arial', 'I', 8);
+        $pdf->Cell(0, 10, '2024 Pharmasync. All Rights Reserved.', 0, 1, 'C');
+    
+        // Output the PDF
+        $pdf->Output('D', 'Raw_Material_Report_' . $materialID . '_' . $lotID . '.pdf');
+    }
 }

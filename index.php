@@ -775,6 +775,16 @@ try {
         $exportController->exportAllRaw();
     });
 
+    // Export Raw [GET]
+    $router->respond('GET', '/export-lot', function($request) use ($exportController) {
+        AuthMiddleware::checkAuth();
+
+        $materialID = $_GET['materialID'];
+        $lotID = $_GET['lotID'];
+
+        $exportController->exportRawByMaterialAndLotID($lotID, $materialID);
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {
