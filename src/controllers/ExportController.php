@@ -9,6 +9,7 @@ use App\Models\Medicine;
 use App\Models\MedicineBatch;
 use App\Models\Material;
 use App\Models\MaterialLot;
+use App\Models\Formulation;
 use Fpdf\Fpdf;
 
 require_once __DIR__ . '/../../config/config.php';
@@ -820,5 +821,91 @@ class ExportController extends BaseController
     
         // Output the PDF
         $pdf->Output('D', 'Raw_Material_Report_' . $materialID . '_' . $lotID . '.pdf');
+    }
+
+    public function exportAllMedicine() {
+        $medicineObject = new Medicine();
+        $formulationObject = new Formulation();
+    
+        $medicineData = $medicineObject->getAllMedicines();
+    
+        foreach ($medicineData as &$medicine) {
+            $medicine['formulations'] = $formulationObject->getFormulationByMedicine($medicine['id']);
+        }
+    
+        // Create instance of FPDF
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+    
+        // Header
+        $pdf->Image(LOGO_URL, 10, 10, 30);
+        $pdf->Cell(0, 10, 'PharmaSync Inc.', 0, 1, 'R');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'sales@pharmasync.com', 0, 1, 'R');
+        $pdf->Cell(0, 10, '+63-190-597-235', 0, 1, 'R');
+        $pdf->Cell(0, 10, 'ID: 1003', 0, 1, 'R');
+        $pdf->Ln(10);
+    
+        // Table Header
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetFillColor(164, 210, 255); // RGB for #2998FF
+        $pdf->Cell(40, 10, 'Medicine Name', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Type', 1, 0, 'C', true);
+        $pdf->Cell(40, 10, 'Composition', 1, 0, 'C', true);
+        $pdf->Cell(40, 10, 'Therapeutic Class', 1, 0, 'C', true);
+        $pdf->Cell(40, 10, 'Regulatory Class', 1, 0, 'C', true);
+        $pdf->Ln();
+    
+        // Table Body
+        $pdf->SetFont('Arial', '', 8);
+        $fill = false; // Boolean flag for alternating row colors
+        foreach ($medicineData as $medicine) {
+            $pdf->SetFillColor($fill ? 230 : 255, $fill ? 230 : 255, $fill ? 230 : 255); // Light grey color for alternate rows
+            $pdf->Cell(40, 10, $medicine['name'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $medicine['type'], 1, 0, 'C', true);
+            $pdf->Cell(40, 10, $medicine['composition'], 1, 0, 'C', true);
+            $pdf->Cell(40, 10, $medicine['therapeutic_class'], 1, 0, 'C', true);
+            $pdf->Cell(40, 10, $medicine['regulatory_class'], 1, 0, 'C', true);
+            $pdf->Ln();
+            $fill = !$fill; // Toggle the fill flag
+        }
+    
+        $pdf->AddPage();
+    
+        // Additional Details Header
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Additional Details', 0, 1, 'L');
+        $pdf->Ln(5);
+    
+        // Additional Details
+        $pdf->SetFont('Arial', '', 12);
+        foreach ($medicineData as $medicine) {
+            foreach ($medicine['formulations'] as $formulation) {
+                $pdf->Cell(50, 10, 'Medicine:', 0, 0, 'L');
+                $pdf->Cell(0, 10, $medicine['name'], 0, 1, 'R');
+                $pdf->Cell(50, 10, 'Formulation ID:', 0, 0, 'L');
+                $pdf->Cell(0, 10, $formulation['formulation_id'], 0, 1, 'R');
+                $pdf->Cell(50, 10, 'Quantity Required:', 0, 0, 'L');
+                $pdf->Cell(0, 10, $formulation['quantity_required'] . ' ' . $formulation['unit'], 0, 1, 'R');
+                $pdf->Cell(50, 10, 'Description:', 0, 0, 'L');
+                $pdf->Cell(0, 10, $formulation['description'], 0, 1, 'R');
+                $pdf->Cell(50, 10, 'Material Name:', 0, 0, 'L');
+                $pdf->Cell(0, 10, $formulation['material_name'], 0, 1, 'R');
+                $pdf->Cell(50, 10, 'Material Type:', 0, 0, 'L');
+                $pdf->Cell(0, 10, ucwords($formulation['material_type']) . " Material", 0, 1, 'R');
+                $pdf->Ln(5);
+                $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY()); // Draw line
+                $pdf->Ln(5);
+            }
+        }
+        $pdf->Ln(10);
+    
+        // Footer
+        $pdf->SetFont('Arial', 'I', 8);
+        $pdf->Cell(0, 10, '2024 Pharmasync. All Rights Reserved.', 0, 1, 'C');
+    
+        // Output the PDF
+        $pdf->Output('D', 'Medicine_Report.pdf');
     }
 }
