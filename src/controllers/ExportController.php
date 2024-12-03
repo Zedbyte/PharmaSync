@@ -119,13 +119,19 @@ class ExportController extends BaseController
     
         // Table Body
         $pdf->SetFont('Arial', '', 12);
-        $pdf->SetFillColor(245, 245, 245);
-        $pdf->Cell(70, 10, $purchaseData[0]['material_name'], 1, 0, 'C', true);
-        $pdf->Cell(30, 10, $purchaseData[0]['quantity'], 1, 0, 'C', true);
-        $pdf->Cell(30, 10, '$' . number_format($purchaseData[0]['unit_price'], 2), 1, 0, 'C', true);
-        $pdf->Cell(30, 10, $purchaseData[0]['expiration_date'], 1, 0, 'C', true);
-        $pdf->Cell(30, 10, '$' . number_format($purchaseData[0]['material_total_price'], 2), 1, 0, 'C', true);
-        $pdf->Ln();
+        $fill = false; // Boolean flag for alternating row colors
+        foreach ($purchaseData as $item) {
+            $pdf->SetFillColor($fill ? 230 : 255, $fill ? 230 : 255, $fill ? 230 : 255); // Light grey color for alternate rows
+            $pdf->Cell(70, 10, $item['material_name'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $item['quantity'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, '$' . number_format($item['unit_price'], 2), 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $item['expiration_date'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, '$' . number_format($item['material_total_price'], 2), 1, 0, 'C', true);
+            $pdf->Ln();
+            $fill = !$fill; // Toggle the fill flag
+        }
+
+        $pdf->AddPage();
 
         // Additional Details Header
         $pdf->SetFont('Arial', 'B', 12);
@@ -134,20 +140,33 @@ class ExportController extends BaseController
 
         // Additional Details
         $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(50, 10, 'Lot ID:', 0, 0, 'L');
-        $pdf->Cell(0, 10, $purchaseData[0]['lot_id'], 0, 1, 'R');
-        $pdf->Cell(50, 10, 'Lot Number:', 0, 0, 'L');
-        $pdf->Cell(0, 10, $purchaseData[0]['lot_number'], 0, 1, 'R');
-        $pdf->Cell(50, 10, 'Material Description:', 0, 0, 'L');
-        $pdf->Cell(0, 10, $purchaseData[0]['material_description'], 0, 1, 'R');
-        $pdf->Cell(50, 10, 'QC Status:', 0, 0, 'L');
-        $pdf->Cell(0, 10, ucfirst($purchaseData[0]['qc_status']), 0, 1, 'R');
-        $pdf->Cell(50, 10, 'QC Notes:', 0, 0, 'L');
-        $pdf->Cell(0, 10, $purchaseData[0]['qc_notes'], 0, 1, 'R');
-        $pdf->Cell(50, 10, 'Inspection Date:', 0, 0, 'L');
-        $pdf->Cell(0, 10, $purchaseData[0]['inspection_date'], 0, 1, 'R');
+        foreach ($purchaseData as $item) {
+            $pdf->Cell(50, 10, 'Material:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['material_name'], 0, 1, 'R');
+            $pdf->Ln(5);
+            $pdf->Cell(50, 10, 'Lot ID:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['lot_id'], 0, 1, 'R');
+            $pdf->Ln(5);
+            $pdf->Cell(50, 10, 'Lot Number:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['lot_number'], 0, 1, 'R');
+            $pdf->Ln(5);
+            $pdf->Cell(50, 10, 'Material Description:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['material_description'], 0, 1, 'R');
+            $pdf->Ln(5);
+            $pdf->Cell(50, 10, 'QC Status:', 0, 0, 'L');
+            $pdf->Cell(0, 10, ucfirst($item['qc_status']), 0, 1, 'R');
+            $pdf->Ln(5);
+            $pdf->Cell(50, 10, 'QC Notes:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['qc_notes'], 0, 1, 'R');
+            $pdf->Ln(5);
+            $pdf->Cell(50, 10, 'Inspection Date:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['inspection_date'], 0, 1, 'R');
+            $pdf->Ln(5);
+            $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY());
+            $pdf->Ln(5);
+        }
         $pdf->Ln(10);
-    
+            
         // Footer
         $pdf->SetFont('Arial', 'I', 8);
         $pdf->Cell(0, 10, '2024 Pharmasync. All Rights Reserved.', 0, 1, 'C');
@@ -208,7 +227,102 @@ class ExportController extends BaseController
         $pdf->Output('D', 'Order_Report.pdf');
     }
 
-    // public function exportOrderByID($orderID) {
+    public function exportOrderByID($orderID) {
+        $orderMedicineObject = new OrderMedicine();
+        $orderData = $orderMedicineObject->getOrderData($orderID);
+    
+        // Create instance of FPDF
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+    
+        // Header
+        $pdf->Image(LOGO_URL, 10, 10, 30);
+        $pdf->Cell(0, 10, 'PharmaSync Inc.', 0, 1, 'R');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'sales@pharmasync.com', 0, 1, 'R');
+        $pdf->Cell(0, 10, '+63-190-597-235', 0, 1, 'R');
+        $pdf->Cell(0, 10, 'ID: 1003', 0, 1, 'R');
+        $pdf->Ln(10);
+    
+        // Customer Info
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Bill To:', 0, 1);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, $orderData[0]['customer_name'], 0, 1);
+        $pdf->Cell(0, 10, $orderData[0]['customer_address'], 0, 1);
+        $pdf->Cell(0, 10, $orderData[0]['customer_email'], 0, 1);
+        $pdf->Cell(0, 10, $orderData[0]['customer_contact_no'], 0, 1);
+    
+        // Order Info
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Order ID: ' . $orderData[0]['order_id'], 0, 1, 'R');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'Order date: ' . $orderData[0]['order_date'], 0, 1, 'R');
+        $pdf->Cell(0, 10, 'Status: ' . ucfirst($orderData[0]['order_status']), 0, 1, 'R');
+        $pdf->Ln(10);
+    
+        // Table Header
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetFillColor(164, 210, 255); // RGB for #2998FF
+        $pdf->Cell(70, 10, 'Medicine Name', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Quantity', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Unit Price', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Expiration', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Amount', 1, 0, 'C', true);
+        $pdf->Ln();
+    
+        // Table Body
+        $pdf->SetFont('Arial', '', 12);
+        $fill = false; // Boolean flag for alternating row colors
+        foreach ($orderData as $item) {
+            $pdf->SetFillColor($fill ? 230 : 255, $fill ? 230 : 255, $fill ? 230 : 255); // Light grey color for alternate rows
+            $pdf->Cell(70, 10, $item['medicine_name'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $item['ordered_quantity'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, '$' . number_format($item['medicine_unit_price'], 2), 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $item['batch_expiry_date'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, '$' . number_format($item['medicine_total_price'], 2), 1, 0, 'C', true);
+            $pdf->Ln();
+            $fill = !$fill; // Toggle the fill flag
+        }
+    
+        $pdf->AddPage();
 
-    // }
+        // Additional Details Header
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Additional Details', 0, 1, 'L');
+        $pdf->Ln(5);
+    
+        // Additional Details
+        $pdf->SetFont('Arial', '', 12);
+        foreach ($orderData as $item) {
+            $pdf->Cell(50, 10, 'Medicine:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['medicine_name'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Batch ID:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['batch_id'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Medicine Type:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['medicine_type'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Composition:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['composition'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Therapeutic Class:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['therapeutic_class'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Regulatory Class:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['regulatory_class'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Manufacturing Details:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['manufacturing_details'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Production Date:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['production_date'], 0, 1, 'R');
+            $pdf->Ln(5);
+            $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY());
+            $pdf->Ln(5);
+        }
+        $pdf->Ln(10);
+    
+        // Footer
+        $pdf->SetFont('Arial', 'I', 8);
+        $pdf->Cell(0, 10, '2024 Pharmasync. All Rights Reserved.', 0, 1, 'C');
+    
+        // Output the PDF
+        $pdf->Output('D', 'Order_Report_' . $orderID . '.pdf');
+    }
 }
