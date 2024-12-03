@@ -176,13 +176,13 @@ class BatchesController extends BaseController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Validate the data
-            // $errors = $this->validateBatchData($data);
+            $errors = $this->validateRackData($data);
 
-            // if (!empty($errors)) {
-            //     header('Content-Type: application/json');
-            //     echo json_encode(['success' => false, 'errors' => $errors]);
-            //     return;
-            // }
+            if (!empty($errors)) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => $errors]);
+                return;
+            }
     
             (new Rack())->update($data['rack_id'],
                 [
@@ -245,7 +245,7 @@ class BatchesController extends BaseController
         }
     
         // Validate rack (if applicable)
-        if (empty($data['temperature_controlled'])) {
+        if (!isset($data['temperature_controlled'])) {
             $errors[] = "Specify if the rack is temperature controlled.";
         }
     
