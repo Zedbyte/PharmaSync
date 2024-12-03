@@ -128,6 +128,11 @@ class BatchesController extends BaseController
         ]);
     }
 
+    public function deleteBatch($batchID) {
+        (new Batch())->delete($batchID);
+        header("Location: /batch-list");
+    }
+
 
     public function addRack() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

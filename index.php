@@ -700,6 +700,13 @@ try {
         $batchesController->updateRack($data);
     });
 
+    // Delete Purchase [POST]
+    $router->respond('POST', '/delete-batch/[i:batchID]', function($request) use ($batchesController) {
+        AuthMiddleware::checkAuth();
+        $batchID = $request->param('batchID');
+        $batchesController->deleteBatch($batchID);
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {

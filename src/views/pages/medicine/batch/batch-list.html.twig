@@ -64,26 +64,12 @@
         {% include 'update-rack.html.twig' %}
     </div>
 
-    <!-- Delete Modal -->
-    <div id="deleteMedicineModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
-
+    <!-- Delete Batch Modal -->
+    <div id="deleteBatchModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
+        {% include 'delete-batch.html.twig' %}
     </div>
 
 
-    <!-- View Medicine Panel -->
-    <div id="viewMedicinePanel" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-    bg-white dark:bg-gray-800 opacity-0 scale-95 transition-all duration-300 shadow-lg z-50 overflow-y-auto hidden 
-    w-full h-full xl:w-1/2 xl:h-auto xl:max-h-[56rem] xl:rounded-lg">
-
-    </div>
-
-
-    <!-- <section class="medicine__list_container_head h-full space-y-5 mb-5">
-        <div class="flex-grow rounded-lg p-6 border dark:border-slate-800 bg-gray-50 border-gray-300 dark:bg-slate-800">
-            Chart 1
-            Real Time Disease Trend Chart
-        </div>
-    </section> -->
 
 
     <section class="medicine__list_container_content h-full space-y-5 mb-5">
@@ -195,21 +181,21 @@
                                         </button>
                                         
                                         <button 
-                                        onclick="openDeleteMedicineModal(this)" 
-                                        data-medicine-id="{{ medicine.id }}" 
+                                        onclick="openDeleteBatchModal(this)" 
+                                        data-batch-id="{{ batch.id }}" 
                                         class="text-red-400 hover:text-red-800 dark:text-red-700 
                                         dark:hover:text-red-500
                                         text-xs md:text-base transition-all duration-200">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
 
-                                        <button 
+                                        <!-- <button 
                                         onclick="viewMedicinePanel(this)" 
                                         data-medicine-id="{{ medicine.id }}" 
                                         class="text-green-400 hover:text-green-800 dark:text-green-700 
                                         dark:hover:text-green-500 text-xs md:text-base transition-all duration-200">
                                             <i class="fa-solid fa-circle-info"></i>
-                                        </button>
+                                        </button> -->
                                     </td>
                                 </tr>
                                 <!-- Formulation Details (Hidden by Default)
@@ -424,13 +410,13 @@
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
 
-                                        <button 
+                                        <!-- <button 
                                         onclick="viewMedicinePanel(this)" 
                                         data-medicine-id="{{ medicine.id }}" 
                                         class="text-green-400 hover:text-green-800 dark:text-green-700 
                                         dark:hover:text-green-500 text-xs md:text-base transition-all duration-200">
                                             <i class="fa-solid fa-circle-info"></i>
-                                        </button>
+                                        </button> -->
                                     </td>
                                 </tr>
                                 <!-- Formulation Details (Hidden by Default)
@@ -534,5 +520,6 @@
     <script src="{{ ASSETS_URL }}/js/inventory/manufactured/rackDetails.js"></script>
     <script src="{{ ASSETS_URL }}/js/batch_rack/updateBatchPanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/batch_rack/updateRackPanel.js"></script>
+    <script src="{{ ASSETS_URL }}/js/batch_rack/openDeleteBatchModal.js"></script>
 
 {% endblock %}

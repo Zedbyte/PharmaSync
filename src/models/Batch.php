@@ -55,12 +55,23 @@ class Batch extends BaseModel
 
     public function delete($batchId)
     {
-        $sql = "DELETE FROM `batches` WHERE `id` = :id";
-
+        $sqlDeleteMedicineBatch = "DELETE FROM `medicine_batch` WHERE `batch_id` = :id";
+        $sqlDeleteBatch = "DELETE FROM `batches` WHERE `id` = :id";
+    
         try {
-            $statement = $this->db->prepare($sql);
+            $this->db->beginTransaction();
+    
+            // Delete from medicine_batch first
+            $statement = $this->db->prepare($sqlDeleteMedicineBatch);
             $statement->execute(['id' => $batchId]);
+    
+            // Delete from batches
+            $statement = $this->db->prepare($sqlDeleteBatch);
+            $statement->execute(['id' => $batchId]);
+    
+            $this->db->commit();
         } catch (PDOException $e) {
+            $this->db->rollBack();
             error_log($e->getMessage());
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
