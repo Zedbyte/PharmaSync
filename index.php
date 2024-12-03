@@ -807,6 +807,12 @@ try {
         $exportController->exportFormulationByID($formulationID);
     });
 
+    // Export Batch [GET]
+    $router->respond('GET', '/export-batch', function($request) use ($exportController) {
+        AuthMiddleware::checkAuth();
+        $exportController->exportAllBatch();
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {
