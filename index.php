@@ -752,11 +752,12 @@ try {
     $router->respond('GET', '/export-manufactured', function($request) use ($exportController) {
         AuthMiddleware::checkAuth();
 
-        // if (isset($_GET['manufacturedID'])) {
-        //     $manufacturedID = $_GET['manufacturedID'];
-        //     $exportController->exportManufacturedByID($manufacturedID);
-        //     return;
-        // }
+        if (isset($_GET['medicineID']) && isset($_GET['batchID'])) {
+            $medicineID = $_GET['medicineID'];
+            $batchID = $_GET['batchID'];
+            $exportController->exportManufacturedByBatchAndMedicineID($medicineID, $batchID);
+            return;
+        }
 
         $exportController->exportAllManufactured();
     });

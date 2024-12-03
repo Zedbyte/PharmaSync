@@ -414,4 +414,104 @@ class ExportController extends BaseController
         // Output the PDF
         $pdf->Output('D', 'Manufactured_Report.pdf');
     }
+
+    public function exportManufacturedByBatchAndMedicineID($medicineID, $batchID) {
+        $medicineBatchObject = new MedicineBatch();
+        $medicineBatchData = $medicineBatchObject->getMedicineBatchData($medicineID, $batchID);
+    
+        // Create instance of FPDF
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+    
+        // Header
+        $pdf->Image(LOGO_URL, 10, 10, 30);
+        $pdf->Cell(0, 10, 'PharmaSync Inc.', 0, 1, 'R');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'sales@pharmasync.com', 0, 1, 'R');
+        $pdf->Cell(0, 10, '+63-190-597-235', 0, 1, 'R');
+        $pdf->Cell(0, 10, 'ID: 1003', 0, 1, 'R');
+        $pdf->Ln(10);
+    
+        // Medicine Info
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Medicine Info:', 0, 1);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'Name: ' . $medicineBatchData[0]['name'], 0, 1);
+        $pdf->Cell(0, 10, 'Type: ' . $medicineBatchData[0]['type'], 0, 1);
+        $pdf->Cell(0, 10, 'Composition: ' . $medicineBatchData[0]['composition'], 0, 1);
+        $pdf->Cell(0, 10, 'Therapeutic Class: ' . $medicineBatchData[0]['therapeutic_class'], 0, 1);
+        $pdf->Cell(0, 10, 'Regulatory Class: ' . $medicineBatchData[0]['regulatory_class'], 0, 1);
+        $pdf->Cell(0, 10, 'Manufacturing Details: ' . $medicineBatchData[0]['manufacturing_details'], 0, 1);
+        $pdf->Ln(10);
+    
+        // Table Header
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFillColor(164, 210, 255); // RGB for #2998FF
+        $pdf->Cell(20, 10, 'Batch ID', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Stock Level', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Expiry Date', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Production Date', 1, 0, 'C', true);
+        $pdf->Cell(40, 10, 'Location', 1, 0, 'C', true);
+        $pdf->Cell(40, 10, 'Temperature Controlled', 1, 0, 'C', true);
+        $pdf->Ln();
+    
+        // Table Body
+        $pdf->SetFont('Arial', '', 8);
+        $fill = false; // Boolean flag for alternating row colors
+        foreach ($medicineBatchData as $item) {
+            $pdf->SetFillColor($fill ? 230 : 255, $fill ? 230 : 255, $fill ? 230 : 255); // Light grey color for alternate rows
+            $pdf->Cell(20, 10, $item['batch_id'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $item['stock_level'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $item['expiry_date'], 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $item['production_date'], 1, 0, 'C', true);
+            $pdf->Cell(40, 10, $item['location'], 1, 0, 'C', true);
+            $pdf->Cell(40, 10, $item['temperature_controlled'] ? 'Yes' : 'No', 1, 0, 'C', true);
+            $pdf->Ln();
+            $fill = !$fill; // Toggle the fill flag
+        }
+    
+        $pdf->AddPage();
+    
+        // Additional Details Header
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Additional Details', 0, 1, 'L');
+        $pdf->Ln(5);
+    
+        // Additional Details
+        $pdf->SetFont('Arial', '', 12);
+        foreach ($medicineBatchData as $item) {
+            $pdf->Cell(50, 10, 'Medicine:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['name'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Batch ID:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['batch_id'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Medicine Type:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['type'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Composition:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['composition'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Therapeutic Class:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['therapeutic_class'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Regulatory Class:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['regulatory_class'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Manufacturing Details:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['manufacturing_details'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Production Date:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['production_date'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Location:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['location'], 0, 1, 'R');
+            $pdf->Cell(50, 10, 'Temperature Controlled:', 0, 0, 'L');
+            $pdf->Cell(0, 10, $item['temperature_controlled'] ? 'Yes' : 'No', 0, 1, 'R');
+            $pdf->Ln(5);
+            $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY()); // Draw line
+            $pdf->Ln(5);
+        }
+        $pdf->Ln(10);
+    
+        // Footer
+        $pdf->SetFont('Arial', 'I', 8);
+        $pdf->Cell(0, 10, '2024 Pharmasync. All Rights Reserved.', 0, 1, 'C');
+    
+        // Output the PDF
+        $pdf->Output('D', 'Manufactured_Report_' . $medicineID . '_' . $batchID . '.pdf');
+    }
 }
