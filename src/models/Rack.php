@@ -33,6 +33,27 @@ class Rack extends BaseModel
         }
     }
 
+    public function update($rackID, $data)
+    {
+        $sql = "UPDATE `racks` 
+                SET
+                    `location` = :location,
+                    `temperature_controlled` = :temperature_controlled
+                WHERE `id` = :id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'location' => $data['location'],
+                'temperature_controlled' => $data['temperature_controlled'],
+                'id' => $rackID
+            ]);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
     public function getAllRacks()
     {
         $sql = "SELECT * FROM racks";

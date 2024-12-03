@@ -162,6 +162,39 @@ class BatchesController extends BaseController
         unset($_SESSION['rack_errors']);
     }
 
+    public function updateRack($data) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            // Validate the data
+            // $errors = $this->validateBatchData($data);
+
+            // if (!empty($errors)) {
+            //     header('Content-Type: application/json');
+            //     echo json_encode(['success' => false, 'errors' => $errors]);
+            //     return;
+            // }
+    
+            (new Rack())->update($data['rack_id'],
+                [
+                'location' => $data['location'],  
+                'temperature_controlled' => $data['temperature_controlled']
+                ]
+            );
+            
+    
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true]);
+            return;
+        }
+        
+        $rackObject = new Rack();
+        $rackData = $rackObject->getRack($data['rackID']);
+
+        echo $this->twig->render('update-rack.html.twig', [
+            'rackData' => $rackData
+        ]);
+    }
+
     public function getProductionRate() {
         $batchObject = new Batch();
         $batchData = $batchObject->getBatchProductionRate();
