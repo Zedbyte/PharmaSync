@@ -39,24 +39,28 @@ class ExportController extends BaseController
         
         // Table Header
         $pdf->SetFont('Arial', 'B', 12);
-        $pdf->Cell(20, 10, 'ID', 1);
-        $pdf->Cell(50, 10, 'Vendor', 1, 0, 'R');
-        $pdf->Cell(30, 10, 'Count', 1, 0, 'R');
-        $pdf->Cell(30, 10, 'Date', 1, 0, 'R');
-        $pdf->Cell(30, 10, 'Total', 1, 0, 'R');
-        $pdf->Cell(30, 10, 'Status', 1, 0, 'R');
+        $pdf->SetFillColor(164, 210, 255); // RGB for #2998FF
+        $pdf->Cell(20, 10, 'ID', 1, 0, 'C', true);
+        $pdf->Cell(50, 10, 'Vendor', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Count', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Date', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Total', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Status', 1, 0, 'C', true);
         $pdf->Ln();
     
         // Table Body
         $pdf->SetFont('Arial', '', 12);
+        $fill = false; // Boolean flag for alternating row colors
         foreach ($purchaseMaterialData as $item) {
-            $pdf->Cell(20, 10, $item['purchase_id'], 1);
-            $pdf->Cell(50, 10, $item['vendor_name'], 1, 0, 'R');
-            $pdf->Cell(30, 10, $item['material_count'], 1, 0, 'R');
-            $pdf->Cell(30, 10, $item['date_of_purchase'], 1, 0, 'R');
-            $pdf->Cell(30, 10, '$' . number_format($item['total_cost'], 2), 1, 0, 'R');
-            $pdf->Cell(30, 10, ucwords($item['status']), 1, 0, 'R');
+            $pdf->SetFillColor($fill ? 230 : 255, $fill ? 230 : 255, $fill ? 230 : 255); // Light grey color for alternate rows
+            $pdf->Cell(20, 10, $item['purchase_id'], 1, 0, 'C', true);
+            $pdf->Cell(50, 10, $item['vendor_name'], 1, 0, 'R', true);
+            $pdf->Cell(30, 10, $item['material_count'], 1, 0, 'R', true);
+            $pdf->Cell(30, 10, $item['date_of_purchase'], 1, 0, 'R', true);
+            $pdf->Cell(30, 10, '$' . number_format($item['total_cost'], 2), 1, 0, 'R', true);
+            $pdf->Cell(30, 10, ucwords($item['status']), 1, 0, 'R', true);
             $pdf->Ln();
+            $fill = !$fill; // Toggle the fill flag
         }
     
         // Footer
@@ -65,5 +69,9 @@ class ExportController extends BaseController
     
         // Output the PDF
         $pdf->Output('D', 'Purchase_Report.pdf');
+    }
+
+    public function exportPurchaseByID($purchaseID) {
+            
     }
 }
