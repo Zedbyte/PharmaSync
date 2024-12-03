@@ -1138,4 +1138,55 @@ class ExportController extends BaseController
         // Output the PDF
         $pdf->Output('D', 'Batch_Report.pdf');
     }
+
+    public function exportAllRack() {
+        $rackObject = new Rack();
+        $rackData = $rackObject->getAllRacks();
+    
+        // Create instance of FPDF
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+    
+        // Header
+        $pdf->Image(LOGO_URL, 10, 10, 30);
+        $pdf->Cell(0, 10, 'PharmaSync Inc.', 0, 1, 'R');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'sales@pharmasync.com', 0, 1, 'R');
+        $pdf->Cell(0, 10, '+63-190-597-235', 0, 1, 'R');
+        $pdf->Cell(0, 10, 'ID: 1003', 0, 1, 'R');
+        $pdf->Ln(20);
+    
+        // Center the table
+        $tableWidth = 130; // Total width of the table
+        $pdf->SetX(($pdf->GetPageWidth() - $tableWidth) / 2);
+    
+        // Table Header
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetFillColor(164, 210, 255); // RGB for #2998FF
+        $pdf->Cell(20, 10, 'ID', 1, 0, 'C', true);
+        $pdf->Cell(70, 10, 'Location', 1, 0, 'C', true);
+        $pdf->Cell(60, 10, 'Temperature Controlled', 1, 0, 'C', true);
+        $pdf->Ln();
+    
+        // Table Body
+        $pdf->SetFont('Arial', '', 12);
+        $fill = false; // Boolean flag for alternating row colors
+        foreach ($rackData as $item) {
+            $pdf->SetX(($pdf->GetPageWidth() - $tableWidth) / 2);
+            $pdf->SetFillColor($fill ? 230 : 255, $fill ? 230 : 255, $fill ? 230 : 255); // Light grey color for alternate rows
+            $pdf->Cell(20, 10, $item['id'], 1, 0, 'C', true);
+            $pdf->Cell(70, 10, $item['location'], 1, 0, 'R', true);
+            $pdf->Cell(60, 10, $item['temperature_controlled'] ? 'Yes' : 'No', 1, 0, 'R', true);
+            $pdf->Ln();
+            $fill = !$fill; // Toggle the fill flag
+        }
+    
+        // Footer
+        $pdf->SetFont('Arial', 'I', 8);
+        $pdf->Cell(0, 10, '2024 Pharmasync. All Rights Reserved.', 0, 1, 'C');
+    
+        // Output the PDF
+        $pdf->Output('D', 'Rack_Report.pdf');
+    }
 }

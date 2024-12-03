@@ -813,6 +813,12 @@ try {
         $exportController->exportAllBatch();
     });
 
+    // Export Rack [GET]
+    $router->respond('GET', '/export-rack', function($request) use ($exportController) {
+        AuthMiddleware::checkAuth();
+        $exportController->exportAllRack();
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {
