@@ -762,6 +762,20 @@ try {
         $exportController->exportAllManufactured();
     });
 
+    // Export Raw [GET]
+    $router->respond('GET', '/export-raw', function($request) use ($exportController) {
+        AuthMiddleware::checkAuth();
+
+        // if (isset($_GET['medicineID']) && isset($_GET['batchID'])) {
+        //     $medicineID = $_GET['medicineID'];
+        //     $batchID = $_GET['batchID'];
+        //     $exportController->exportManufacturedByBatchAndMedicineID($medicineID, $batchID);
+        //     return;
+        // }
+
+        $exportController->exportAllRaw();
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {
