@@ -735,6 +735,19 @@ try {
         $exportController->exportAllPurchase();
     });
 
+    // Export Order [GET]
+    $router->respond('GET', '/export-order', function($request) use ($exportController) {
+        AuthMiddleware::checkAuth();
+
+        // if (isset($_GET['orderID'])) {
+        //     $orderID = $_GET['orderID'];
+        //     $exportController->exportOrderByID($orderID);
+        //     return;
+        // }
+
+        $exportController->exportAllOrder();
+    });
+
     $router->dispatch();
 
 } catch (Exception $e) {
