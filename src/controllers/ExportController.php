@@ -908,4 +908,91 @@ class ExportController extends BaseController
         // Output the PDF
         $pdf->Output('D', 'Medicine_Report.pdf');
     }
+
+    public function exportMedicineByID($medicineID) {
+        $medicineObject = new Medicine();
+        $medicineData = $medicineObject->getMedicine($medicineID);
+    
+        // Create instance of FPDF
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+    
+        // Header
+        $pdf->Image(LOGO_URL, 10, 10, 30);
+        $pdf->Cell(0, 10, 'PharmaSync Inc.', 0, 1, 'R');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'sales@pharmasync.com', 0, 1, 'R');
+        $pdf->Cell(0, 10, '+63-190-597-235', 0, 1, 'R');
+        $pdf->Cell(0, 10, 'ID: 1003', 0, 1, 'R');
+        $pdf->Ln(10);
+    
+        // Medicine Info
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Medicine Info:', 0, 1);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'Name: ' . $medicineData['name'], 0, 1);
+        $pdf->Cell(0, 10, 'Type: ' . $medicineData['type'], 0, 1);
+        $pdf->Cell(0, 10, 'Composition: ' . $medicineData['composition'], 0, 1);
+        $pdf->Cell(0, 10, 'Therapeutic Class: ' . $medicineData['therapeutic_class'], 0, 1);
+        $pdf->Cell(0, 10, 'Regulatory Class: ' . $medicineData['regulatory_class'], 0, 1);
+        $pdf->Cell(0, 10, 'Manufacturing Details: ' . $medicineData['manufacturing_details'], 0, 1);
+        $pdf->Ln(10);
+    
+        // Table Header
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetFillColor(164, 210, 255); // RGB for #2998FF
+        $pdf->Cell(30, 10, 'Unit Price', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Name', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Type', 1, 0, 'C', true);
+        $pdf->Cell(50, 10, 'Therapeutic Class', 1, 0, 'C', true);
+        $pdf->Cell(50, 10, 'Regulatory Class', 1, 0, 'C', true);
+        $pdf->Ln();
+    
+        // Table Body
+        $pdf->SetFont('Arial', '', 12);
+        $fill = false; // Boolean flag for alternating row colors
+        $pdf->SetFillColor($fill ? 230 : 255, $fill ? 230 : 255, $fill ? 230 : 255); // Light grey color for alternate rows
+        $pdf->Cell(30, 10, '$' . number_format($medicineData['unit_price'], 2), 1, 0, 'C', true);
+        $pdf->Cell(30, 10, $medicineData['name'], 1, 0, 'C', true);
+        $pdf->Cell(30, 10, $medicineData['type'], 1, 0, 'C', true);
+        $pdf->Cell(50, 10, $medicineData['therapeutic_class'], 1, 0, 'C', true);
+        $pdf->Cell(50, 10, $medicineData['regulatory_class'], 1, 0, 'C', true);
+        $pdf->Ln();
+        $fill = !$fill; // Toggle the fill flag
+    
+        $pdf->AddPage();
+    
+        // Additional Details Header
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Additional Details', 0, 1, 'L');
+        $pdf->Ln(5);
+    
+        // Additional Details
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(50, 10, 'Medicine:', 0, 0, 'L');
+        $pdf->Cell(0, 10, $medicineData['name'], 0, 1, 'R');
+        $pdf->Cell(50, 10, 'Type:', 0, 0, 'L');
+        $pdf->Cell(0, 10, $medicineData['type'], 0, 1, 'R');
+        $pdf->Cell(50, 10, 'Composition:', 0, 0, 'L');
+        $pdf->Cell(0, 10, $medicineData['composition'], 0, 1, 'R');
+        $pdf->Cell(50, 10, 'Therapeutic Class:', 0, 0, 'L');
+        $pdf->Cell(0, 10, $medicineData['therapeutic_class'], 0, 1, 'R');
+        $pdf->Cell(50, 10, 'Regulatory Class:', 0, 0, 'L');
+        $pdf->Cell(0, 10, $medicineData['regulatory_class'], 0, 1, 'R');
+        $pdf->Cell(50, 10, 'Manufacturing Details:', 0, 0, 'L');
+        $pdf->Cell(0, 10, $medicineData['manufacturing_details'], 0, 1, 'R');
+        $pdf->Ln(5);
+        $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY()); // Draw line
+        $pdf->Ln(5);
+    
+        $pdf->Ln(10);
+    
+        // Footer
+        $pdf->SetFont('Arial', 'I', 8);
+        $pdf->Cell(0, 10, '2024 Pharmasync. All Rights Reserved.', 0, 1, 'C');
+    
+        // Output the PDF
+        $pdf->Output('D', 'Medicine_Report_' . $medicineID . '.pdf');
+    }
 }

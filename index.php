@@ -789,12 +789,11 @@ try {
     $router->respond('GET', '/export-medicine', function($request) use ($exportController) {
         AuthMiddleware::checkAuth();
 
-        // if (isset($_GET['medicineID']) && isset($_GET['batchID'])) {
-        //     $medicineID = $_GET['medicineID'];
-        //     $batchID = $_GET['batchID'];
-        //     $exportController->exportManufacturedByBatchAndMedicineID($medicineID, $batchID);
-        //     return;
-        // }
+        if (isset($_GET['medicineID'])) {
+            $medicineID = $_GET['medicineID'];
+            $exportController->exportMedicineByID($medicineID);
+            return;
+        }
 
         $exportController->exportAllMedicine();
     });
