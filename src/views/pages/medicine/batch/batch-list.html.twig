@@ -69,6 +69,11 @@
         {% include 'delete-batch.html.twig' %}
     </div>
 
+    <!-- Delete Rack Modal -->
+    <div id="deleteRackModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full">
+        {% include 'delete-rack.html.twig' %}
+    </div>
+
 
 
 
@@ -402,8 +407,8 @@
                                         </button>
                                         
                                         <button 
-                                        onclick="openDeleteMedicineModal(this)" 
-                                        data-medicine-id="{{ medicine.id }}" 
+                                        onclick="openDeleteRackModal(this)" 
+                                        data-rack-id="{{ rack.id }}" 
                                         class="text-red-400 hover:text-red-800 dark:text-red-700 
                                         dark:hover:text-red-500
                                         text-xs md:text-base transition-all duration-200">
@@ -521,5 +526,6 @@
     <script src="{{ ASSETS_URL }}/js/batch_rack/updateBatchPanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/batch_rack/updateRackPanel.js"></script>
     <script src="{{ ASSETS_URL }}/js/batch_rack/openDeleteBatchModal.js"></script>
+    <script src="{{ ASSETS_URL }}/js/batch_rack/openDeleteRackModal.js"></script>
 
 {% endblock %}

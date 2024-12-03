@@ -133,6 +133,11 @@ class BatchesController extends BaseController
         header("Location: /batch-list");
     }
 
+    public function deleteRack($rackID) {
+        (new Rack())->delete($rackID);
+        header("Location: /batch-list");
+    }
+
 
     public function addRack() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

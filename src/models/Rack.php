@@ -54,6 +54,45 @@ class Rack extends BaseModel
         }
     }
 
+    public function delete($rackId)
+    {
+        $sqlSelectBatchIds = "SELECT `id` FROM `batches` WHERE `rack_id` = :rackId";
+        $sqlDeleteMedicineBatch = "DELETE FROM `medicine_batch` WHERE `batch_id` = :batchId";
+        $sqlDeleteBatch = "DELETE FROM `batches` WHERE `id` = :batchId";
+        $sqlDeleteRack = "DELETE FROM `racks` WHERE `id` = :rackId";
+    
+        try {
+            $this->db->beginTransaction();
+    
+            // Get all batch IDs associated with the rack
+            $statement = $this->db->prepare($sqlSelectBatchIds);
+            $statement->execute(['rackId' => $rackId]);
+            $batchIds = $statement->fetchAll(PDO::FETCH_COLUMN, 0);
+    
+            // Delete from medicine_batch for each batch
+            $statement = $this->db->prepare($sqlDeleteMedicineBatch);
+            foreach ($batchIds as $batchId) {
+                $statement->execute(['batchId' => $batchId]);
+            }
+    
+            // Delete from batches for each batch
+            $statement = $this->db->prepare($sqlDeleteBatch);
+            foreach ($batchIds as $batchId) {
+                $statement->execute(['batchId' => $batchId]);
+            }
+    
+            // Delete the rack
+            $statement = $this->db->prepare($sqlDeleteRack);
+            $statement->execute(['rackId' => $rackId]);
+    
+            $this->db->commit();
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
     public function getAllRacks()
     {
         $sql = "SELECT * FROM racks";

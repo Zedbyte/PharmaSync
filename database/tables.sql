@@ -177,15 +177,6 @@ CREATE TABLE `racks` (
     PRIMARY KEY (`id`)
 )
 
-CREATE TABLE `batch_rack` (
-    `rack_id` int(11) NOT NULL,
-    `batch_id` int(11) NOT NULL,
-    PRIMARY KEY (`rack_id`,`batch_id`) USING BTREE,
-    KEY `batch_id` (`batch_id`),
-    CONSTRAINT `batch_rack_ibfk_1` FOREIGN KEY (`batch_id`) REFERENCES `batches` (`id`) ON DELETE NO ACTION,
-    CONSTRAINT `batch_rack_ibfk_2` FOREIGN KEY (`rack_id`) REFERENCES `racks` (`id`) ON DELETE NO ACTION
-) 
-
 CREATE TABLE `product_formulation` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `medicine_id` int(11) NOT NULL,
