@@ -109,9 +109,9 @@ class UserController extends BaseController
             // Save the user
             $userModel->save($data);
     
-            // Log the activity
-            $description = "Added a new user: {$data['first_name']} {$data['last_name']}.";
-            $userModel->logActivity('Add', $userId, $description);
+                // Log the activity
+                $description = "Updated user: {$data['first_name']} {$data['last_name']}.";
+                $userModel->logActivity('Edit', $userId, $description);
 
             // Redirect back to the user list with a success message
             header("Location: /users-list?status=success");
@@ -136,7 +136,7 @@ class UserController extends BaseController
             // Attempt to delete the user
             if ($userModel->deleteById($id)) {
                 // Log the activity
-                $description = "Deleted user: {$data['first_name']} {$data['last_name']}.";
+                $description = "Deleted a user: {$data['first_name']} {$data['last_name']}.";
                 $userModel->logActivity('Delete', $userId, $description);
 
                 // Redirect back to the user list with a success message
