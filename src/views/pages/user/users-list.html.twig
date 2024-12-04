@@ -1,0 +1,165 @@
+{% extends 'root.twig' %}
+
+{% block title %}
+    Users List
+{% endblock %}
+
+{% block headers %}
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/users/users-list.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/link.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/scrollbar.css">
+    <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block panel_title %}
+    Users List
+{% endblock %}
+
+{% block body %}
+
+    <!-- Includes -->
+    {% include '/add-user-modal.html.twig' %}
+    {% include '/delete-user-modal.html.twig' %}
+    {% include '/update-user-modal.html.twig' %}
+
+<!-- Card Section -->
+<section class="p-4 bg-gray-100 dark:bg-gray-900 mb-6 rounded-lg">
+    <div class="container mx-auto">
+        <div class="flex flex-wrap justify-between space-x-2">
+            <!-- Total Users -->
+            <div class="flex-1 bg-white dark:bg-gray-800 shadow-md rounded-lg p-3 flex justify-between items-center max-w-sm">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-700 dark:text-white">Total Users</h3>
+                    <p class="text-lg font-bold text-blue-500">{{ total_users }}</p>
+                </div>
+                <i class="fas fa-users text-blue-500 text-xl"></i>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="flex-1 bg-white dark:bg-gray-800 shadow-md rounded-lg p-3 flex justify-between items-center max-w-sm">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-700 dark:text-white">Recent Activity</h3>
+                    <p class="text-xs text-gray-600 dark:text-gray-400">No recent activity.</p>
+                </div>
+                <i class="fas fa-clock text-gray-400 text-xl"></i>
+            </div>
+
+            <!-- Role Statistics -->
+            <div class="flex-1 bg-white dark:bg-gray-800 shadow-md rounded-lg p-3 flex justify-between items-center max-w-sm">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-700 dark:text-white">Role Statistics</h3>
+                    <ul class="text-xs text-gray-600 dark:text-gray-400 space-y-1">
+                        {% for role, count in role_counts %}
+                            <li>{{ role|capitalize }}: <span class="font-bold text-blue-500">{{ count }}</span></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <i class="fas fa-chart-pie text-purple-500 text-xl"></i>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+    <!-- Users Table Section -->
+    <section class="p-6 bg-gray-100 dark:bg-gray-900 rounded-lg">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-gray-700 dark:text-white"></h2>
+                <!-- Add User Button -->
+                <button onclick="openAddUserModal()"
+                        class="flex items-center bg-blue-500 text-white px-5 py-3 rounded-lg hover:bg-blue-600 transition shadow">
+                    <i class="fas fa-plus mr-2"></i> Add User
+                </button>
+            </div>
+            <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase text-xs">
+                        <tr>
+                            <th class="px-4 py-3">ID</th>
+                            <th class="px-4 py-3">Profile</th>
+                            <th class="px-4 py-3">Name</th>
+                            <th class="px-4 py-3">Email</th>
+                            <th class="px-4 py-3">Contact No</th>
+                            <th class="px-4 py-3">Gender</th>
+                            <th class="px-4 py-3">Role</th>
+                            <th class="px-4 py-3 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        {% for user in users %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-4 py-4 text-gray-700 dark:text-gray-300">{{ user.id }}</td>
+                                <td class="px-4 py-4">
+                                    <img src="data:image/jpeg;base64,{{ user.profile_picture }}" 
+                                        alt="Profile Picture" 
+                                        class="w-10 h-10 rounded-full"
+                                        onerror="this.onerror=null;this.src='{{ ASSETS_URL }}/images/default-profile.png';">
+                                </td>
+                                <td class="px-4 py-4 font-medium text-gray-900 dark:text-gray-200">
+                                    {{ user.first_name }} {{ user.last_name }}
+                                    <br>
+                                    <span class="text-sm text-gray-500 dark:text-gray-400">{{ user.username }}</span>
+                                </td>
+                                <td class="px-4 py-4">{{ user.email_address }}</td>
+                                <td class="px-4 py-4">{{ user.contact_no }}</td>
+                                <td class="px-4 py-4 capitalize">{{ user.gender }}</td>
+                                <td class="px-4 py-4">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-lg"
+                                          style="background-color: {{ user.role == 'administrator' ? '#007BFF' : 
+                                                  user.role == 'finance_manager' ? '#FFC107' : 
+                                                  user.role == 'inventory_manager' ? '#28A745' : 
+                                                  user.role == 'hr_manager' ? '#E83E8C' : '#6C757D' }};
+                                          color: white;">
+                                        {{ user.role|capitalize }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-4 text-center">
+                                    <div class="flex justify-center space-x-4">
+                                        <!-- Edit Action -->
+                                        <button type="button" 
+                                                onclick="console.log('Edit button clicked for user:', '{{ user.id }}'); openUpdateUserModal({
+                                                    id: {{ user.id }},
+                                                    profile_picture: '{{ user.profile_picture|e('js') }}',
+                                                    first_name: '{{ user.first_name|e('js') }}',
+                                                    last_name: '{{ user.last_name|e('js') }}',
+                                                    email_address: '{{ user.email_address|e('js') }}',
+                                                    contact_no: '{{ user.contact_no|e('js') }}',
+                                                    gender: '{{ user.gender|e('js') }}',
+                                                    role: '{{ user.role|e('js') }}'
+                                                })"
+                                                class="text-blue-500 hover:text-blue-700">
+                                            <i class="fas fa-edit mr-2"></i>
+                                        </button>
+                                        <!-- Delete Action -->
+                                        <button onclick="openDeleteUserModal({{ user.id }})"
+                                                class="text-red-500 hover:text-red-700">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="9" class="text-center px-6 py-4 text-gray-500 dark:text-gray-300">
+                                    No users found.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ ASSETS_URL }}/js/user/addUser.js"></script>
+    <script src="{{ ASSETS_URL }}/js/user/deleteUser.js"></script>
+    <script src="{{ ASSETS_URL }}/js/user/updateUser.js"></script>
+{% endblock %}

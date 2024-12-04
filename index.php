@@ -24,6 +24,7 @@ use App\Controllers\RawController;
 use \App\Middleware\AuthMiddleware;
 use App\Controllers\CustomerController;
 use App\Controllers\SupplierController;
+use App\Controllers\UserController;
 
 //Models
 use App\Models\User;
@@ -49,6 +50,7 @@ try {
     $medicineController = new MedicineController($twig);
     $customerController = new CustomerController($twig);
     $supplierController = new SupplierController($twig, $db);
+    $userController = new UserController($twig);
 
     // Add userRole as a global variable after session start
     $userObject = new User();
@@ -711,7 +713,7 @@ try {
     $router->respond('POST', '/update-customer', function() use ($customerController) {
         $customerController->updateCustomer($_POST);
     });
-    
+
     /**
      * SUPPLIER
      */
@@ -734,7 +736,27 @@ try {
         $supplierController->updateSupplier($_POST);
     });
 
+    /**
+     * USER
+     */
+    $router->respond('GET', '/users-list', function() use ($userController) {
+        $userController->displayUsers();
+    });
+    
+    $router->respond('POST', '/add-user', function() use ($userController) {
+        $userController->addUser($_POST);
+    });
+    
+    $router->respond('POST', '/delete-user', function() use ($userController) {
+        $userController->deleteUser((int)$_POST['user_id']);
+    });
+    
+    $router->respond('POST', '/update-user', function() use ($userController) {
+        $userController->updateUser($_POST);
+    });
 
+
+    
     $router->dispatch();
 
 } catch (Exception $e) {

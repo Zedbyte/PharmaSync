@@ -22,176 +22,204 @@ class UserController extends BaseController
         $this->userModel = new User();
     }
 
-    // Render View with Error Handling
-    private function renderView(string $template, array $data = []): void
+    public function displayUsers(array $errors = [])
     {
         try {
-            echo $this->twig->render($template, array_merge(['ASSETS_URL' => ASSETS_URL], $data));
-        } catch (Exception $e) {
-            echo "Error rendering view: " . $e->getMessage();
-        }
-    }
-
-    // Display User List Page
-    public function display(array $errors = []): void
-    {
-        try {
-            // Fetch data
-            $userData = $this->userModel->getAllUsers();
-            $totalUsers = $this->userModel->getTotalUsers();
-            $totalNewUsers = $this->userModel->getTotalUsers("created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)");
-            $roleStatistics = $this->userModel->getRoleStatistics(); // Fetch role stats
+            $userModel = new User();
+            $users = $userModel->getAllUsersWithBase64Pictures();
+            $totalUsers = $userModel->getTotalUsersCount(); // Get total users count
+            $roleCounts = $userModel->countRoles();
     
-            // Render view with data
-            $this->renderView('user-list.html.twig', [
-                'users' => $userData,
+            echo $this->twig->render('users-list.html.twig', [
+                'ASSETS_URL' => ASSETS_URL,
+                'users' => $users,
                 'total_users' => $totalUsers,
-                'total_new_users' => $totalNewUsers,
-                'role_statistics' => $roleStatistics, // Pass role stats to the template
+                'role_counts' => $roleCounts,
                 'errors' => $errors,
             ]);
         } catch (Exception $e) {
-            $this->renderView('user-list.html.twig', [
+            $errors[] = "Error fetching user data: " . $e->getMessage();
+            echo $this->twig->render('users-list.html.twig', [
+                'ASSETS_URL' => ASSETS_URL,
                 'users' => [],
-                'total_users' => 0,
-                'total_new_users' => 0,
-                'role_statistics' => [],
-                'errors' => ["Error: " . $e->getMessage()],
+                'role_counts' => [],
+                'total_users' => 0, // Pass 0 on error
+                'errors' => $errors,
             ]);
         }
     }
     
-    
 
-    // Add User Logic
-    public function addUser(array $data): void
+    public function addUser($data)
     {
         try {
-            $errors = $this->userModel->checkUniqueConstraints($data);
+            // Validate the incoming data
+            $errors = [];
+            if (empty($data['first_name'])) {
+                $errors[] = "First name is required.";
+            }
+            if (empty($data['last_name'])) {
+                $errors[] = "Last name is required.";
+            }
+            if (empty($data['email_address']) || !filter_var($data['email_address'], FILTER_VALIDATE_EMAIL)) {
+                $errors[] = "A valid email address is required.";
+            }
+            if (empty($data['contact_no'])) {
+                $errors[] = "Contact number is required.";
+            }
+            if (empty($data['username'])) {
+                $errors[] = "Username is required.";
+            }
+            if (empty($data['password'])) {
+                $errors[] = "Password is required.";
+            }
+            if (empty($data['role'])) {
+                $errors[] = "Role is required.";
+            }
+            if (empty($data['gender'])) {
+                $errors[] = "Gender is required.";
+            }
+    
+            // Check for unique constraints
+            $userModel = new User();
+            $uniqueErrors = $userModel->checkUniqueConstraints($data);
+            $errors = array_merge($errors, $uniqueErrors);
     
             if (!empty($errors)) {
-                $this->display($errors);
+                // Return errors to the form
+                echo $this->twig->render('users-list.html.twig', [
+                    'errors' => $errors,
+                    'users' => $userModel->getAllUsers(),
+                ]);
                 return;
             }
     
-            // Handle optional profile picture
-            if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
-                $data['profile_picture'] = $_FILES['profile_picture'];
+            // Handle file upload for profile picture
+            $profilePicture = null;
+            if (!empty($_FILES['profile_picture']['tmp_name'])) {
+                $profilePicture = file_get_contents($_FILES['profile_picture']['tmp_name']);
             } else {
-                $data['profile_picture'] = null; // No file uploaded
+                // Use default profile picture if none is uploaded
+                $profilePicture = file_get_contents(__DIR__ . '/../../public/assets/images/default-profile.png');
             }
+            $data['profile_picture'] = $profilePicture;
     
-            $this->userModel->save($data);
+            // Save the user
+            $userModel->save($data);
     
-            $this->renderView('user-list.html.twig', [
-                'users' => $this->userModel->getAllUsers(),
-                'success' => 'User added successfully!',
-            ]);
+            // Redirect back to the user list with a success message
+            header("Location: /users-list?status=success");
+            exit;
         } catch (Exception $e) {
-            $this->display(['error' => 'Failed to add user: ' . $e->getMessage()]);
+            // Handle exceptions and return errors
+            $errors[] = "Error adding user: " . $e->getMessage();
+            echo $this->twig->render('users-list.html.twig', [
+                'errors' => $errors,
+                'users' => [],
+            ]);
         }
     }
     
 
-    // Fetch Users with Profile Picture Handling
-    public function getUsers(): array
+    public function deleteUser($id)
     {
         try {
-            $users = $this->userModel->getAllUsers();
+            // Initialize the User model
+            $userModel = new User();
 
-            foreach ($users as &$user) {
-                $user['profile_picture'] = $user['profile_picture']
-                    ? 'data:image/jpeg;base64,' . base64_encode($user['profile_picture'])
-                    : $this->getDefaultAvatarBase64();
+            // Attempt to delete the user
+            if ($userModel->deleteById($id)) {
+                // Redirect back to the user list with a success message
+                header("Location: /users-list?status=deleted");
+                exit;
+            } else {
+                throw new Exception("Failed to delete user.");
             }
-
-            return $users;
         } catch (Exception $e) {
-            return [];
+            // Handle errors and return to the list page with an error message
+            $errors[] = "Error deleting user: " . $e->getMessage();
+            echo $this->twig->render('users-list.html.twig', [
+                'errors' => $errors,
+                'users' => [],
+            ]);
         }
     }
 
-    private function getDefaultAvatarBase64(): string
-    {
-        $defaultAvatarPath = __DIR__ . '/../../assets/images/default-avatar.png';
-        if (file_exists($defaultAvatarPath)) {
-            return 'data:image/jpeg;base64,' . base64_encode(file_get_contents($defaultAvatarPath));
-        }
-        return '';
-    }
-
-    public function deleteUser(array $data): void
+        public function updateUser($data)
     {
         try {
-            if (!isset($data['user_id'])) {
-                throw new Exception("User ID is required for deletion.");
+            // Validate input data
+            $errors = [];
+            if (empty($data['first_name'])) {
+                $errors[] = "First name is required.";
             }
-    
-            $this->userModel->delete($data['user_id']);
-    
-            $this->renderView('user-list.html.twig', [
-                'users' => $this->userModel->getAllUsers(),
-                'success' => 'User deleted successfully!',
+            if (empty($data['last_name'])) {
+                $errors[] = "Last name is required.";
+            }
+            if (empty($data['email_address']) || !filter_var($data['email_address'], FILTER_VALIDATE_EMAIL)) {
+                $errors[] = "A valid email address is required.";
+            }
+            if (empty($data['contact_no'])) {
+                $errors[] = "Contact number is required.";
+            }
+            if (empty($data['role'])) {
+                $errors[] = "Role is required.";
+            }
+            if (empty($data['gender'])) {
+                $errors[] = "Gender is required.";
+            }
+
+            // Handle errors
+            if (!empty($errors)) {
+                $userModel = new User();
+                echo $this->twig->render('users-list.html.twig', [
+                    'errors' => $errors,
+                    'users' => $userModel->getAllUsers(),
+                ]);
+                return;
+            }
+
+            // Prepare profile picture
+            $profilePicture = null;
+            if (!empty($_FILES['profile_picture']['tmp_name'])) {
+                $profilePicture = file_get_contents($_FILES['profile_picture']['tmp_name']);
+            }
+
+            // Update user in the database
+            $userModel = new User();
+            $userModel->update([
+                'id' => $data['id'],
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'email_address' => $data['email_address'],
+                'contact_no' => $data['contact_no'],
+                'role' => $data['role'],
+                'gender' => $data['gender'],
+                'profile_picture' => $profilePicture,
             ]);
+
+            // Redirect to user list
+            header("Location: /users-list?status=updated");
+            exit;
         } catch (Exception $e) {
-            $this->renderView('user-list.html.twig', [
-                'users' => $this->userModel->getAllUsers(),
-                'error' => 'Failed to delete user: ' . $e->getMessage(),
+            // Handle errors
+            $errors[] = "Error updating user: " . $e->getMessage();
+            echo $this->twig->render('users-list.html.twig', [
+                'errors' => $errors,
+                'users' => [],
             ]);
         }
     }
-    
-    public function updateUser(array $data): void
+
+    public function getTotalUsers()
     {
         try {
-            if (!isset($data['id'])) {
-                throw new Exception("User ID is required for update.");
-            }
-    
-            // Fetch existing user
-            $existingUser = $this->userModel->findById($data['id']);
-            if (!$existingUser) {
-                throw new Exception("User not found.");
-            }
-    
-            // Populate missing fields with existing user data
-            $data = array_merge($existingUser, $data);
-    
-            // Check for unique constraints only when critical fields change
-            if ($data['email_address'] !== $existingUser['email_address'] ||
-                $data['contact_no'] !== $existingUser['contact_no'] ||
-                $data['username'] !== $existingUser['username']) {
-                $errors = $this->userModel->checkUniqueConstraints($data);
-                if (!empty($errors)) {
-                    $this->renderView('user-list.html.twig', [
-                        'users' => $this->userModel->getAllUsers(),
-                        'errors' => $errors,
-                    ]);
-                    return;
-                }
-            }
-    
-            // Handle Profile Picture Upload
-            if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
-                $data['profile_picture'] = $_FILES['profile_picture'];
-            }
-    
-            // Update the user
-            $this->userModel->update($data);
-    
-            // Redirect to the user list with success message
-            $this->renderView('user-list.html.twig', [
-                'users' => $this->userModel->getAllUsers(),
-                'success' => 'User updated successfully!',
-            ]);
+            $userModel = new User();
+            return $userModel->getTotalUsersCount();
         } catch (Exception $e) {
-            // Render with error message
-            $this->renderView('user-list.html.twig', [
-                'users' => $this->userModel->getAllUsers(),
-                'error' => 'Failed to update user: ' . $e->getMessage(),
-            ]);
+            error_log("Error fetching total user count: " . $e->getMessage());
+            return 0; // Return 0 on error
         }
     }
-    
- 
+
 }

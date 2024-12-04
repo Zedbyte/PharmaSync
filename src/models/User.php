@@ -13,25 +13,38 @@ use \Exception;
 class User extends BaseModel
 {
     public function save($data)
-    {   
+    {
         $this->db->beginTransaction();
         $sql = "INSERT INTO users 
-        SET
-            first_name = :first_name,
-            last_name = :last_name,
-            username = :username,
-            contact_no = :contact_no,
-            email_address = :email_address,
-            password_hash = :password_hash,
-            role = :role,
-            gender = :gender";
-
+            SET
+                first_name = :first_name,
+                last_name = :last_name,
+                username = :username,
+                contact_no = :contact_no,
+                email_address = :email_address,
+                password_hash = :password_hash,
+                role = :role,
+                gender = :gender,
+                profile_picture = :profile_picture";
+    
         try {
             $statement = $this->db->prepare($sql);
-
+    
             // Hash password before saving
             $password_hash = hashPassword($data['password']);
-            
+    
+            // Check if profile picture is provided
+            $profile_picture = null;
+            if (!empty($data['profile_picture'])) {
+                $profile_picture = $data['profile_picture'];
+            } else {
+                // Use default profile picture
+                $defaultProfilePicturePath = __DIR__ . '/../../public/assets/images/default-profile.png';
+                if (file_exists($defaultProfilePicturePath)) {
+                    $profile_picture = file_get_contents($defaultProfilePicturePath);
+                }
+            }
+    
             $statement->execute([
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
@@ -40,8 +53,10 @@ class User extends BaseModel
                 'email_address' => $data['email_address'],
                 'password_hash' => $password_hash,
                 'role' => $data['role'],
-                'gender' => $data['gender']
+                'gender' => $data['gender'],
+                'profile_picture' => $profile_picture,
             ]);
+    
             $this->db->commit();
             return $this->db->lastInsertId();
         } catch (PDOException $e) {
@@ -50,6 +65,8 @@ class User extends BaseModel
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
+    
+    
 
 
     public function verifyAccess($email, $password)
@@ -145,4 +162,144 @@ class User extends BaseModel
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
+
+    public function getAllUsers()
+    {
+        $sql = "SELECT 
+                    id, 
+                    profile_picture, 
+                    first_name, 
+                    last_name, 
+                    email_address, 
+                    contact_no, 
+                    gender, 
+                    username, 
+                    role 
+                FROM users";
+    
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error fetching users: " . $e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+    
+        public function deleteById($id)
+    {
+        $sql = "DELETE FROM users WHERE id = :id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->bindParam(':id', $id, PDO::PARAM_INT);
+            return $statement->execute();
+        } catch (PDOException $e) {
+            error_log("Error deleting user: " . $e->getMessage());
+            throw new Exception("Error deleting user: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+        public function getAllUsersWithBase64Pictures()
+    {
+        $sql = "SELECT 
+                    id, 
+                    TO_BASE64(profile_picture) AS profile_picture, 
+                    first_name, 
+                    last_name, 
+                    email_address, 
+                    contact_no, 
+                    gender, 
+                    username, 
+                    role 
+                FROM users";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            $users = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            // Process fallback for empty profile pictures
+            foreach ($users as &$user) {
+                if (empty($user['profile_picture'])) {
+                    $user['profile_picture'] = base64_encode(file_get_contents(__DIR__ . '/../../public/assets/images/default-profile.png'));
+                }
+            }
+
+            return $users;
+        } catch (PDOException $e) {
+            error_log("Error fetching users: " . $e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function update($data)
+    {
+        try {
+            $sql = "UPDATE users 
+                    SET first_name = :first_name,
+                        last_name = :last_name,
+                        email_address = :email_address,
+                        contact_no = :contact_no,
+                        role = :role,
+                        gender = :gender,
+                        profile_picture = :profile_picture
+                    WHERE id = :id";
+    
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'id' => $data['id'],
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'email_address' => $data['email_address'],
+                'contact_no' => $data['contact_no'],
+                'role' => $data['role'],
+                'gender' => $data['gender'],
+                'profile_picture' => $data['profile_picture'],
+            ]);
+        } catch (PDOException $e) {
+            error_log("Error updating user: " . $e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+    
+        public function getTotalUsersCount()
+    {
+        try {
+            $sql = "SELECT COUNT(*) AS total_users FROM users";
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            return $result['total_users'] ?? 0; // Return 0 if no rows found
+        } catch (PDOException $e) {
+            error_log("Error counting total users: " . $e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function countRoles()
+    {
+        $sql = "SELECT role, COUNT(*) as count FROM users GROUP BY role";
+    
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+            // Format the result into a key-value pair
+            $roleCounts = [];
+            foreach ($result as $row) {
+                $roleCounts[$row['role']] = $row['count'];
+            }
+    
+            return $roleCounts;
+        } catch (PDOException $e) {
+            error_log("Error counting roles: " . $e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+    
+
 }
