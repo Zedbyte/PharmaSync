@@ -57,4 +57,41 @@ class Customer extends BaseModel
             throw new Exception("Error deleting customer: " . $e->getMessage(), (int)$e->getCode());
         }
     }
+
+    public function updateCustomer(int $id, string $name, string $email, string $address, string $contact_no): bool
+    {
+        $sql = "UPDATE customers 
+                SET name = :name, email = :email, address = :address, contact_no = :contact_no 
+                WHERE id = :id";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->bindParam(':id', $id, PDO::PARAM_INT);
+            $statement->bindParam(':name', $name);
+            $statement->bindParam(':email', $email);
+            $statement->bindParam(':address', $address);
+            $statement->bindParam(':contact_no', $contact_no);
+
+            return $statement->execute();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Error updating customer: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function getTotalCustomers(): int
+    {
+        $sql = "SELECT COUNT(*) as total FROM customers";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+            return (int) $result['total'];
+        } catch (PDOException $e) {
+            error_log("Error fetching total customers: " . $e->getMessage());
+            return 0; // Return 0 if there's an error
+        }
+    }
 }

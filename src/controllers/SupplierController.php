@@ -18,101 +18,137 @@ class SupplierController extends BaseController {
         $this->db = returnDBCon(new Supplier());
     }
 
-    // Display Suppliers Page
-    public function display(array $errors = []): void {
+    // Display supplier Page
+    public function display(array $errors = []): void
+    {
         $status = $_GET['tab'] ?? 'all';
 
         try {
-            $supplierObject = new Supplier();
-            $supplierData = $supplierObject->getAllSuppliers();
+            $supplierModel = new Supplier();
+
+            // Fetch suppliers and total count
+            $supplierData = $supplierModel->getAllSuppliers();
+            $totalSuppliers = $supplierModel->getTotalSuppliers();
 
             echo $this->twig->render('supplier-list.html.twig', [
                 'ASSETS_URL' => ASSETS_URL,
                 'suppliers' => $supplierData,
+                'total_suppliers' => $totalSuppliers,
                 'errors' => $errors,
-                'status' => $status
+                'status' => $status,
             ]);
         } catch (Exception $e) {
             $errors[] = "Error fetching supplier data: " . $e->getMessage();
             echo $this->twig->render('supplier-list.html.twig', [
                 'ASSETS_URL' => ASSETS_URL,
                 'suppliers' => [],
+                'total_suppliers' => 0,
                 'errors' => $errors,
             ]);
         }
     }
 
-    // Add Supplier Logic
-    public function addSupplier(string $name, string $email, string $address, string $contact_no): void {
-        try {
-            $this->validateSupplierData($name, $email, $address, $contact_no);
+    // Add supplier
+    public function addSupplier(array $data): void
+    {
+        $errors = [];
 
-            $supplierObject = new Supplier();
-            $supplierObject->addSupplier($name, $email, $address, $contact_no);
-
-            $this->redirectWithStatus('/supplier-list', 'success');
-        } catch (Exception $e) {
-            $this->display(['Error adding supplier: ' . $e->getMessage()]);
+        // Validate the supplier data
+        if (empty($data['name'])) {
+            $errors[] = 'Name is required';
         }
-    }
+        if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'Valid email is required';
+        }
+        if (empty($data['address'])) {
+            $errors[] = 'Address is required';
+        }
+        if (empty($data['contact_no'])) {
+            $errors[] = 'Contact number is required';
+        }
 
-    // Update Supplier Logic
-    public function updateSupplier(): void {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'];
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $address = $_POST['address'];
-            $contact_no = $_POST['contact_no'];
-
+        if (count($errors) > 0) {
+            // Return errors to the view
+            $this->display($errors);
+        } else {
+            // Proceed to add supplier to the database
             try {
-                $this->validateSupplierData($name, $email, $address, $contact_no);
+                $supplierModel = new Supplier();
+                $supplierModel->addSupplier($data['name'], $data['email'], $data['address'], $data['contact_no']);
 
-                $supplierObject = new Supplier();
-                if ($supplierObject->updateSupplier($id, $name, $email, $address, $contact_no)) {
-                    $this->redirectWithStatus('/supplier-list', 'updated');
-                } else {
-                    throw new Exception('Failed to update supplier.');
-                }
+                // Redirect or show success message
+                header('Location: /supplier-list');
+                exit;
             } catch (Exception $e) {
-                $this->display(['Error updating supplier: ' . $e->getMessage()]);
+                $errors[] = 'Error adding supplier: ' . $e->getMessage();
+                $this->display($errors);
             }
         }
     }
 
-    // Delete Supplier Logic
-    public function deleteSupplier(int $supplierId): void {
+    // Delete supplier
+    public function deleteSupplier(int $supplierId): void
+    {
         try {
-            $supplierObject = new Supplier();
-            if ($supplierObject->deleteSupplier($supplierId)) {
-                $this->redirectWithStatus('/supplier-list', 'deleted');
+            $supplierModel = new Supplier();
+            if ($supplierModel->deleteSupplier($supplierId)) {
+                // Redirect to supplier list with success message
+                header('Location: /supplier-list?status=deleted');
+                exit;
             } else {
                 throw new Exception('Failed to delete supplier.');
             }
         } catch (Exception $e) {
-            $this->display(['Error deleting supplier: ' . $e->getMessage()]);
+            $errors[] = 'Error deleting supplier: ' . $e->getMessage();
+            $this->display($errors);
         }
     }
 
-    // Validation for Supplier Data
-    private function validateSupplierData(string $name, string $email, string $address, string $contact_no): void {
+    // Update supplier
+    public function updateSupplier(array $data): void
+    {
         $errors = [];
 
-        if (empty($name)) $errors[] = "Name is required.";
-        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "A valid email is required.";
-        if (empty($address)) $errors[] = "Address is required.";
-        if (empty($contact_no) || !preg_match('/^\+?[0-9]{7,15}$/', $contact_no)) {
-            $errors[] = "Contact number must be between 7-15 digits and can optionally start with '+'.";
+        // Validation
+        if (empty($data['id'])) {
+            $errors[] = 'Supplier ID is required.';
+        }
+        if (empty($data['name'])) {
+            $errors[] = 'Name is required.';
+        }
+        if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'Valid email is required.';
+        }
+        if (empty($data['address'])) {
+            $errors[] = 'Address is required.';
+        }
+        if (empty($data['contact_no'])) {
+            $errors[] = 'Contact number is required.';
         }
 
-        if ($errors) {
-            throw new Exception(implode(' ', $errors));
+        if (!empty($errors)) {
+            $this->display($errors);
+            return;
         }
-    }
 
-    // Helper Method: Redirect with Status
-    private function redirectWithStatus(string $url, string $status): void {
-        header('Location: ' . $url . '?status=' . $status);
-        exit;
+        // Perform update
+        try {
+            $supplierModel = new Supplier();
+            if ($supplierModel->updateSupplier(
+                (int) $data['id'],
+                $data['name'],
+                $data['email'],
+                $data['address'],
+                $data['contact_no']
+            )) {
+                header('Location: /supplier-list?status=updated');
+                exit;
+            } else {
+                throw new Exception('Failed to update supplier.');
+            }
+        } catch (Exception $e) {
+            $errors[] = 'Error updating supplier: ' . $e->getMessage();
+            $this->display($errors);
+        }
     }
 }

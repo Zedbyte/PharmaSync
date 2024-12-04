@@ -1,5 +1,6 @@
-function openAddSupplierModal() {
-    const modal = document.getElementById('addSupplierModal');
+function openDeleteSupplierModal(supplierId) {
+    const modal = document.getElementById('deleteSupplierModal');
+    document.getElementById('deleteSupplierId').value = supplierId;
     modal.classList.remove('hidden');
     setTimeout(() => {
         modal.classList.add('opacity-100');
@@ -7,8 +8,8 @@ function openAddSupplierModal() {
     }, 10);
 }
 
-function closeAddSupplierModal() {
-    const modal = document.getElementById('addSupplierModal');
+function closeDeleteSupplierModal() {
+    const modal = document.getElementById('deleteSupplierModal');
     modal.classList.remove('opacity-100');
     modal.querySelector('.transform').classList.add('scale-95');
     setTimeout(() => {

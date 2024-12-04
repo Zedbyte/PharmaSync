@@ -5,75 +5,93 @@ namespace App\Models;
 require_once __DIR__ . '/../../config/config.php';
 
 use App\Models\BaseModel;
-use PDO;
-use PDOException;
-use Exception;
+use \PDO;
+use \PDOException;
+use \Exception;
 
 class Supplier extends BaseModel
 {
-    // Fetch all suppliers
-    public function getAllSuppliers(): array {
+    public function getAllSuppliers()
+    {
         $sql = "SELECT * FROM suppliers";
 
         try {
-            $statement = $this->db->query($sql);
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            $this->handleDatabaseException($e, "Error fetching suppliers.");
+            error_log($e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
     }
 
-    // Add a new supplier
-    public function addSupplier(string $name, string $email, string $address, string $contact_no): void {
+        // Method to add a supplier to the database
+        public function addSupplier(string $name, string $email, string $address, string $contact_no): bool
+    {
         $sql = "INSERT INTO suppliers (name, email, address, contact_no) 
                 VALUES (:name, :email, :address, :contact_no)";
 
-        $this->executeStatement($sql, [
-            ':name' => $name,
-            ':email' => $email,
-            ':address' => $address,
-            ':contact_no' => $contact_no
-        ]);
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->bindParam(':name', $name);
+            $statement->bindParam(':email', $email);
+            $statement->bindParam(':address', $address);
+            $statement->bindParam(':contact_no', $contact_no);
+            return $statement->execute();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Error adding supplier: " . $e->getMessage(), (int)$e->getCode());
+        }
     }
 
-    // Delete a supplier by ID
-    public function deleteSupplier(int $supplierId): bool {
+    public function deleteSupplier(int $supplierId): bool
+    {
         $sql = "DELETE FROM suppliers WHERE id = :id";
 
-        $this->executeStatement($sql, [':id' => $supplierId]);
-        return true;
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->bindParam(':id', $supplierId, PDO::PARAM_INT);
+            return $statement->execute();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Error deleting supplier: " . $e->getMessage(), (int)$e->getCode());
+        }
     }
 
-    // Update an existing supplier's details
-    public function updateSupplier(int $id, string $name, string $email, string $address, string $contact_no): bool {
+    public function updateSupplier(int $id, string $name, string $email, string $address, string $contact_no): bool
+    {
         $sql = "UPDATE suppliers 
                 SET name = :name, email = :email, address = :address, contact_no = :contact_no 
                 WHERE id = :id";
 
-        $this->executeStatement($sql, [
-            ':id' => $id,
-            ':name' => $name,
-            ':email' => $email,
-            ':address' => $address,
-            ':contact_no' => $contact_no
-        ]);
-
-        return true;
-    }
-
-    // General method for executing prepared statements
-    private function executeStatement(string $sql, array $params): void {
         try {
             $statement = $this->db->prepare($sql);
-            $statement->execute($params);
+            $statement->bindParam(':id', $id, PDO::PARAM_INT);
+            $statement->bindParam(':name', $name);
+            $statement->bindParam(':email', $email);
+            $statement->bindParam(':address', $address);
+            $statement->bindParam(':contact_no', $contact_no);
+
+            return $statement->execute();
         } catch (PDOException $e) {
-            $this->handleDatabaseException($e, "Error executing query.");
+            error_log($e->getMessage());
+            throw new Exception("Error updating supplier: " . $e->getMessage(), (int)$e->getCode());
         }
     }
 
-    // Handle database-related exceptions
-    private function handleDatabaseException(PDOException $e, string $customMessage): void {
-        error_log($e->getMessage());
-        throw new Exception($customMessage . " Details: " . $e->getMessage(), (int)$e->getCode());
+    public function getTotalSuppliers(): int
+    {
+        $sql = "SELECT COUNT(*) as total FROM suppliers";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+            return (int) $result['total'];
+        } catch (PDOException $e) {
+            error_log("Error fetching total suppliers: " . $e->getMessage());
+            return 0; // Return 0 if there's an error
+        }
     }
 }

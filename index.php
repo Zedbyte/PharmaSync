@@ -707,6 +707,33 @@ try {
         $customerController->deleteCustomer((int) $_POST['customer_id']);
     });
 
+        // Update customer route
+    $router->respond('POST', '/update-customer', function() use ($customerController) {
+        $customerController->updateCustomer($_POST);
+    });
+    
+    /**
+     * SUPPLIER
+     */
+    $router->respond('GET', '/supplier-list', function() use ($supplierController) {
+        $supplierController->display();
+    });
+
+    // Add supplier route
+    $router->respond('POST', '/add-supplier', function() use ($supplierController) {
+        $supplierController->addSupplier($_POST);
+    });
+
+    // Delete supplier route
+    $router->respond('POST', '/delete-supplier', function() use ($supplierController) {
+        $supplierController->deleteSupplier((int) $_POST['supplier_id']);
+    });
+
+    // Update supplier route
+    $router->respond('POST', '/update-supplier', function() use ($supplierController) {
+        $supplierController->updateSupplier($_POST);
+    });
+
 
     $router->dispatch();
 

@@ -19,24 +19,30 @@ class CustomerController extends BaseController {
     }
 
     // Display Customers Page
-    public function display(array $errors = []): void {
+    public function display(array $errors = []): void
+    {
         $status = $_GET['tab'] ?? 'all';
 
         try {
-            $customerObject = new Customer();
-            $customerData = $customerObject->getAllCustomers();
+            $customerModel = new Customer();
+
+            // Fetch customers and total count
+            $customerData = $customerModel->getAllCustomers();
+            $totalCustomers = $customerModel->getTotalCustomers();
 
             echo $this->twig->render('customer-list.html.twig', [
                 'ASSETS_URL' => ASSETS_URL,
                 'customers' => $customerData,
+                'total_customers' => $totalCustomers, // Pass total customers
                 'errors' => $errors,
-                'status' => $status
+                'status' => $status,
             ]);
         } catch (Exception $e) {
             $errors[] = "Error fetching customer data: " . $e->getMessage();
             echo $this->twig->render('customer-list.html.twig', [
                 'ASSETS_URL' => ASSETS_URL,
                 'customers' => [],
+                'total_customers' => 0, // Pass 0 if there's an error
                 'errors' => $errors,
             ]);
         }
@@ -106,4 +112,59 @@ class CustomerController extends BaseController {
             ]);
         }
     }
+
+        // Update Customer
+        public function updateCustomer(array $data): void
+        {
+            $errors = [];
+        
+            // Validation
+            if (empty($data['id'])) {
+                $errors[] = 'Customer ID is required.';
+            }
+            if (empty($data['name'])) {
+                $errors[] = 'Name is required.';
+            }
+            if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors[] = 'Valid email is required.';
+            }
+            if (empty($data['address'])) {
+                $errors[] = 'Address is required.';
+            }
+            if (empty($data['contact_no'])) {
+                $errors[] = 'Contact number is required.';
+            }
+        
+            if (!empty($errors)) {
+                echo $this->twig->render('customer-list.html.twig', [
+                    'ASSETS_URL' => ASSETS_URL,
+                    'errors' => $errors,
+                ]);
+                return;
+            }
+        
+            // Perform update
+            try {
+                $customerModel = new Customer();
+                if ($customerModel->updateCustomer(
+                    (int) $data['id'],
+                    $data['name'],
+                    $data['email'],
+                    $data['address'],
+                    $data['contact_no']
+                )) {
+                    header('Location: /customer-list?status=updated');
+                    exit;
+                } else {
+                    throw new Exception('Failed to update customer.');
+                }
+            } catch (Exception $e) {
+                $errors[] = 'Error updating customer: ' . $e->getMessage();
+                echo $this->twig->render('customer-list.html.twig', [
+                    'ASSETS_URL' => ASSETS_URL,
+                    'errors' => $errors,
+                ]);
+            }
+        }
+        
 }
