@@ -1,0 +1,138 @@
+<div id="updateUserModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-11/12 max-w-lg">
+        <form id="updateUserForm" method="POST" enctype="multipart/form-data" action="/users/update" class="p-6">
+            <input type="hidden" id="updateUserId" name="id" />
+
+            <!-- Close Button -->
+            <button 
+                type="button" 
+                onclick="closeUpdateUserModal()" 
+                class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+            >
+                <span class="text-2xl">&times;</span>
+            </button>
+
+            <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-4 text-center">Update User</h2>
+
+            <!-- Profile Picture -->
+            <div class="mb-6 text-center">
+                <img 
+                    id="profilePreview" 
+                    src="{{ user.profile_picture or '/path/to/default-profile.png' }}" 
+                    alt="Profile Picture Preview" 
+                    class="w-24 h-24 rounded-full border border-gray-300 dark:border-gray-600 mx-auto"
+                />
+            </div>
+            <div class="mb-6">
+                <label 
+                    for="updateProfilePicture" 
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-400 text-center mb-2"
+                >
+                    Change Profile Picture
+                </label>
+                <input 
+                    type="file" 
+                    id="updateProfilePicture" 
+                    name="profile_picture" 
+                    class="block w-full border border-gray-300 dark:border-gray-600 rounded-lg py-2 px-3 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500 text-center dark:bg-gray-700 dark:text-white"
+                    accept="image/*"
+                    onchange="updateProfilePreview(event)"
+                />
+            </div>
+
+            <!-- Personal Information -->
+            <div class="mb-4 grid grid-cols-2 gap-4">
+                <div>
+                    <label for="updateFirstName" class="block text-sm font-medium text-gray-700 dark:text-gray-400">First Name</label>
+                    <input 
+                        type="text" 
+                        id="updateFirstName" 
+                        name="first_name" 
+                        class="block w-full border border-gray-300 dark:border-gray-600 rounded-lg py-2 px-3 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500 dark:bg-gray-700 dark:text-white" 
+                        required 
+                    />
+                </div>
+                <div>
+                    <label for="updateLastName" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Last Name</label>
+                    <input 
+                        type="text" 
+                        id="updateLastName" 
+                        name="last_name" 
+                        class="block w-full border border-gray-300 dark:border-gray-600 rounded-lg py-2 px-3 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500 dark:bg-gray-700 dark:text-white" 
+                        required 
+                    />
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="mb-4">
+                <label for="updateEmailAddress" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Email Address</label>
+                <input 
+                    type="email" 
+                    id="updateEmailAddress" 
+                    name="email_address" 
+                    class="block w-full border border-gray-300 dark:border-gray-600 rounded-lg py-2 px-3 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500 dark:bg-gray-700 dark:text-white" 
+                    required 
+                />
+            </div>
+            <div class="mb-4">
+                <label for="updateContactNo" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Contact No</label>
+                <input 
+                    type="text" 
+                    id="updateContactNo" 
+                    name="contact_no" 
+                    class="block w-full border border-gray-300 dark:border-gray-600 rounded-lg py-2 px-3 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500 dark:bg-gray-700 dark:text-white" 
+                    required 
+                />
+            </div>
+
+            <!-- Additional Details -->
+            <div class="mb-4 grid grid-cols-2 gap-4">
+                <div>
+                    <label for="updateGender" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Gender</label>
+                    <select 
+                        id="updateGender" 
+                        name="gender" 
+                        class="block w-full border border-gray-300 dark:border-gray-600 rounded-lg py-2 px-3 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500 dark:bg-gray-700 dark:text-white" 
+                        required
+                    >
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="updateRole" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Role</label>
+                    <select 
+                        id="updateRole" 
+                        name="role" 
+                        class="block w-full border border-gray-300 dark:border-gray-600 rounded-lg py-2 px-3 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500 dark:bg-gray-700 dark:text-white" 
+                        required
+                    >
+                        <option value="administrator">Administrator</option>
+                        <option value="inventory_manager">Inventory Manager</option>
+                        <option value="finance_manager">Finance Manager</option>
+                        <option value="hr_manager">HR Manager</option>
+                        <option value="staff">Staff</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-end space-x-4">
+                <button 
+                    type="button" 
+                    class="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-2 px-4 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-600" 
+                    onclick="closeUpdateUserModal()"
+                >
+                    Cancel
+                </button>
+                <button 
+                    type="submit" 
+                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700"
+                >
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

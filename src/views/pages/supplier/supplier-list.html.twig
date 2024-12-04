@@ -1,0 +1,157 @@
+{% extends 'root.twig' %}
+
+{% block title %}
+    Supplier List
+{% endblock %}
+
+{% block headers %}
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/supplier/supplier-list.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/order/tabbed-nav.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/link.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/scrollbar.css">
+    <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
+    <style>
+        table {
+            border-collapse: collapse; /* Ensure no borders between table cells */
+        }
+        thead th {
+            border: none; /* Remove borders from header */
+        }
+        tbody td {
+            border: none; /* Remove borders from table rows */
+        }
+        tbody tr {
+            border-bottom: 1px solid transparent; /* Remove row borders */
+        }
+        tbody tr:hover {
+            background-color: #f3f4f6; /* Optional: Keep hover styling consistent */
+        }
+    </style>
+{% endblock %}
+
+{% block panel_title %}
+    Supplier List
+{% endblock %}
+
+{% set paths = [
+    { 'name': 'Dashboard', 'url': '/dashboard' },
+    { 'name': 'Supplier List', 'url': '/suppliers' }
+] %}
+
+{% block body %}
+    {% if errors %}
+        <div class="error-container bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 fixed top-0 left-0 right-0 z-[999] transition-all duration-300"
+            role="alert">
+            <p class="font-bold">Warning</p>
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <!-- Includes -->
+    {% include 'add-supplier.html.twig' %}
+    {% include 'supplier/delete-supplier-modal.html.twig' %}
+    {% include 'supplier/update-supplier-modal.html.twig' %}
+
+    <!-- Supplier List Header -->
+    <section class="flex justify-between items-center mb-6 px-6 py-4 bg-white dark:bg-gray-700 shadow-md rounded-lg">
+        <h1 class="text-lg font-bold text-gray-800 dark:text-white">Suppliers</h1>
+        <div class="flex items-center space-x-4">
+            <!-- Search Field -->
+            <div class="relative">
+                <input 
+                    type="text" 
+                    placeholder="Search..." 
+                    class="border border-gray-300 rounded-lg px-4 py-2 w-48 sm:w-64 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500"
+                />
+                <button 
+                    class="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 hover:text-gray-800 dark:hover:text-white">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+
+            <!-- Filter Button -->
+            <button 
+                class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                <i class="fa-solid fa-filter"></i>
+                <span>Filter</span>
+            </button>
+
+            <!-- Add Supplier Button -->
+            <button 
+                class="bg-blue-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-600 transition"
+                onclick="openAddSupplierModal()">
+                Add Supplier
+            </button>
+        </div>
+    </section>
+
+    <!-- Supplier Table -->
+    <section class="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+        <table class="w-full text-sm text-left text-gray-500">
+            <thead class="bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase text-xs">
+                <tr>
+                    <th class="p-4">
+                        <div class="flex items-center">
+                            <input id="checkbox-all-supplier" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <label for="checkbox-all-supplier" class="sr-only">Select All</label>
+                        </div>
+                    </th>
+                    <th class="px-6 py-3">ID</th>
+                    <th class="px-6 py-3">Name</th>
+                    <th class="px-6 py-3">Email</th>
+                    <th class="px-6 py-3">Address</th>
+                    <th class="px-6 py-3">Contact No</th>
+                    <th class="px-6 py-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for supplier in suppliers %}
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <td class="p-4">
+                            <div class="flex items-center">
+                                <input id="supplier-{{ supplier.id }}" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                <label for="supplier-{{ supplier.id }}" class="sr-only">Select Supplier</label>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-gray-900 dark:text-white">{{ supplier.id }}</td>
+                        <td class="px-6 py-4">{{ supplier.name }}</td>
+                        <td class="px-6 py-4">{{ supplier.email }}</td>
+                        <td class="px-6 py-4">{{ supplier.address }}</td>
+                        <td class="px-6 py-4">{{ supplier.contact_no }}</td>
+                        <td class="px-6 py-4 flex space-x-3 justify-center items-center">
+                            <button 
+                                onclick="openUpdateSupplierPanel({
+                                    id: {{ supplier.id }},
+                                    name: '{{ supplier.name }}',
+                                    email: '{{ supplier.email }}',
+                                    address: '{{ supplier.address }}',
+                                    contact_no: '{{ supplier.contact_no }}'
+                                })"
+                                class="text-blue-500 hover:text-blue-700">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button 
+                                onclick="openDeleteModal({{ supplier.id }})"
+                                class="text-red-500 hover:text-red-700">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center px-6 py-4 text-gray-500 dark:text-gray-300">No suppliers found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ ASSETS_URL }}/js/supplier/updateSupplierPanel.js"></script>
+    <script src="{{ ASSETS_URL }}/js/supplier/addSupplier.js"></script>
+{% endblock %}

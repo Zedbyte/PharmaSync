@@ -22,6 +22,8 @@ use App\Controllers\ManufacturedController;
 use App\Controllers\MedicineController;
 use App\Controllers\RawController;
 use \App\Middleware\AuthMiddleware;
+use App\Controllers\CustomerController;
+use App\Controllers\SupplierController;
 
 //Models
 use App\Models\User;
@@ -45,6 +47,8 @@ try {
     $manufacturedController = new ManufacturedController($twig);
     $rawController = new RawController($twig);
     $medicineController = new MedicineController($twig);
+    $customerController = new CustomerController($twig);
+    $supplierController = new SupplierController($twig, $db);
 
     // Add userRole as a global variable after session start
     $userObject = new User();
@@ -685,6 +689,24 @@ try {
         $data = $request->params();
         $batchesController->updateBatch($data);
     });
+
+
+    /**
+     * CUSTOMER
+     */
+    $router->respond('GET', '/customer-list', function() use ($customerController) {
+        $customerController->display();
+    });
+
+        // Add customer route
+    $router->respond('POST', '/add-customer', function() use ($customerController) {
+        $customerController->addCustomer($_POST);
+    });
+        
+    $router->respond('POST', '/delete-customer', function() use ($customerController) {
+        $customerController->deleteCustomer((int) $_POST['customer_id']);
+    });
+
 
     $router->dispatch();
 
