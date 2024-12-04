@@ -27,14 +27,16 @@ class UserController extends BaseController
         try {
             $userModel = new User();
             $users = $userModel->getAllUsersWithBase64Pictures();
-            $totalUsers = $userModel->getTotalUsersCount(); // Get total users count
+            $totalUsers = $userModel->getTotalUsersCount();
             $roleCounts = $userModel->countRoles();
-    
+            $recentActivities = $userModel->getRecentActivities();
+
             echo $this->twig->render('users-list.html.twig', [
                 'ASSETS_URL' => ASSETS_URL,
                 'users' => $users,
                 'total_users' => $totalUsers,
                 'role_counts' => $roleCounts,
+                'recent_activities' => $recentActivities,
                 'errors' => $errors,
             ]);
         } catch (Exception $e) {
@@ -42,13 +44,13 @@ class UserController extends BaseController
             echo $this->twig->render('users-list.html.twig', [
                 'ASSETS_URL' => ASSETS_URL,
                 'users' => [],
+                'recent_activities' => [],
                 'role_counts' => [],
-                'total_users' => 0, // Pass 0 on error
+                'total_users' => 0,
                 'errors' => $errors,
             ]);
         }
     }
-    
 
     public function addUser($data)
     {
@@ -107,6 +109,10 @@ class UserController extends BaseController
             // Save the user
             $userModel->save($data);
     
+            // Log the activity
+            $description = "Added a new user: {$data['first_name']} {$data['last_name']}.";
+            $userModel->logActivity('Add', $userId, $description);
+
             // Redirect back to the user list with a success message
             header("Location: /users-list?status=success");
             exit;
@@ -129,6 +135,10 @@ class UserController extends BaseController
 
             // Attempt to delete the user
             if ($userModel->deleteById($id)) {
+                // Log the activity
+                $description = "Deleted user: {$data['first_name']} {$data['last_name']}.";
+                $userModel->logActivity('Delete', $userId, $description);
+
                 // Redirect back to the user list with a success message
                 header("Location: /users-list?status=deleted");
                 exit;
@@ -145,7 +155,7 @@ class UserController extends BaseController
         }
     }
 
-        public function updateUser($data)
+    public function updateUser($data)
     {
         try {
             // Validate input data
@@ -197,7 +207,9 @@ class UserController extends BaseController
                 'gender' => $data['gender'],
                 'profile_picture' => $profilePicture,
             ]);
-
+                // Log the activity
+                $description = "Updated user: {$data['first_name']} {$data['last_name']}.";
+                $userModel->logActivity('Edit', $userId, $description);
             // Redirect to user list
             header("Location: /users-list?status=updated");
             exit;
@@ -209,7 +221,8 @@ class UserController extends BaseController
                 'users' => [],
             ]);
         }
-    }
+    }  
+
 
     public function getTotalUsers()
     {
@@ -218,8 +231,32 @@ class UserController extends BaseController
             return $userModel->getTotalUsersCount();
         } catch (Exception $e) {
             error_log("Error fetching total user count: " . $e->getMessage());
-            return 0; // Return 0 on error
+            return 0;
         }
     }
 
+    private function validateUserData($data, $isUpdate = false)
+    {
+        $errors = [];
+        if (empty($data['first_name'])) $errors[] = "First name is required.";
+        if (empty($data['last_name'])) $errors[] = "Last name is required.";
+        if (empty($data['email_address']) || !filter_var($data['email_address'], FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "A valid email address is required.";
+        }
+        if (empty($data['contact_no'])) $errors[] = "Contact number is required.";
+        if (!$isUpdate && empty($data['password'])) $errors[] = "Password is required.";
+        if (empty($data['role'])) $errors[] = "Role is required.";
+        if (empty($data['gender'])) $errors[] = "Gender is required.";
+
+        return $errors;
+    }
+
+    private function prepareProfilePicture()
+    {
+        if (!empty($_FILES['profile_picture']['tmp_name'])) {
+            return file_get_contents($_FILES['profile_picture']['tmp_name']);
+        }
+
+        return file_get_contents(__DIR__ . '/../../public/assets/images/default-profile.png');
+    }
 }

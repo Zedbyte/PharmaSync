@@ -301,5 +301,36 @@ class User extends BaseModel
         }
     }
     
+        public function logActivity($action, $userId = null, $description)
+    {
+        $sql = "INSERT INTO activity_log (action, user_id, description) VALUES (:action, :user_id, :description)";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'action' => $action,
+                'user_id' => $userId,
+                'description' => $description,
+            ]);
+        } catch (PDOException $e) {
+            error_log("Error logging activity: " . $e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+        public function getRecentActivities($limit = 5)
+    {
+        $sql = "SELECT action, user_id, description, timestamp FROM activity_log ORDER BY timestamp DESC LIMIT :limit";
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error fetching recent activities: " . $e->getMessage());
+            throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
+        }
+    }
 
 }

@@ -2293,6 +2293,11 @@ video {
   color: rgb(236 72 153 / var(--tw-text-opacity, 1));
 }
 
+.text-purple-800 {
+  --tw-text-opacity: 1;
+  color: rgb(107 33 168 / var(--tw-text-opacity, 1));
+}
+
 .placeholder-transparent::-moz-placeholder {
   color: transparent;
 }
