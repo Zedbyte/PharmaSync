@@ -527,8 +527,8 @@ class ExportController extends BaseController
     
         $materialLotObject = new MaterialLot();
         
-        foreach ($materialData as &$material) {
-            $material['lots'] = $materialLotObject->getMaterialLotsAndLotData($material['id'], null);
+        foreach ($materialData as $key => $material) {
+            $materialData[$key]['lots'] = $materialLotObject->getMaterialLotsAndLotData($material['id'], null);
         }
     
         // Create instance of FPDF

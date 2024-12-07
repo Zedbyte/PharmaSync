@@ -138,13 +138,13 @@ class MaterialLot extends BaseModel
         $sql = "SELECT ml.*, l.*, pm.*, s.name AS supplier_name 
             FROM 
                 material_lot ml
-            JOIN 
+            LEFT JOIN 
                 lots l ON ml.lot_id = l.id
-            JOIN 
+            LEFT JOIN 
                 purchase_material pm ON pm.lot_id = l.id
-            JOIN
+            LEFT JOIN
                 purchases p ON p.id = pm.pm_purchase_id
-            JOIN
+            LEFT JOIN
                 suppliers s ON s.id = p.p_supplier_id
             WHERE 
                 ml.material_id = :material_id";
