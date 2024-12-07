@@ -42,14 +42,23 @@
                 </div>
             </div>
 
-            <!-- Recent Activity -->
-            <div class="col-span-4 bg-white dark:bg-gray-800 shadow-md rounded-lg p-3 flex justify-between items-center">
-                <div>
-                    <h3 class="text-md font-semibold text-gray-700 dark:text-white">Recent Activity</h3>
-                    <p class="text-xs text-gray-600 dark:text-gray-400">No recent activity.</p>
-                </div>
-                <i class="fas fa-clock text-gray-400 text-xl"></i>
-            </div>
+        <!-- Recent Activity -->
+        <div class="col-span-4 bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 flex flex-col overflow-y-auto max-h-40">
+            <h3 class="text-lg font-semibold text-gray-700 dark:text-white mb-2">Recent Activity</h3>
+            <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                {% for activity in recent_activities|slice(0, 3) %}
+                    <li>
+                        <span class="font-bold">{{ activity.action|capitalize }}</span>: {{ activity.description }}
+                        <br>
+                        <span class="text-xs text-gray-500">{{ activity.timestamp }}</span>
+                    </li>
+                {% else %}
+                    <li>No recent activity.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+
 
             <!-- Role Statistics -->
             <div class="col-span-4 bg-white dark:bg-gray-800 shadow-md rounded-lg p-3 flex justify-between items-center">
@@ -61,7 +70,7 @@
                         {% endfor %}
                     </ul>
                 </div>
-                <i class="fas fa-chart-pie text-purple-500 text-xl"></i>
+                <i class="fas fa-chart-pie text-purple-500 text-2xl"></i>
             </div>
 
         </div>

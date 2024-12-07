@@ -1095,6 +1095,10 @@ video {
   max-height: calc(100dvh - 450px);
 }
 
+.max-h-40 {
+  max-height: 10rem;
+}
+
 .min-h-11 {
   min-height: 2.75rem;
 }
@@ -1105,6 +1109,10 @@ video {
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.min-h-40 {
+  min-height: 10rem;
 }
 
 .w-10 {
