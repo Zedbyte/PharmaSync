@@ -38,6 +38,11 @@
                 dark:placeholder-gray-400 dark:text-white outline-none
                 placeholder-transparent md:placeholder-gray-500" 
                 placeholder="Search here" required />
+
+                <!-- Dropdown Menu -->
+                <ul id="search-options" class="hidden absolute w-5/12 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+                    <!-- Options will be dynamically added -->
+                </ul>
             </div>
         </form>
     </section>
@@ -162,5 +167,61 @@
             window.location.href = routes[searchInput];
         }
     }
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("search");
+        const searchOptions = document.getElementById("search-options");
+    
+        // Define the routes and their descriptions
+        const options = [
+            { label: "Dashboard", value: "/dashboard" },
+            { label: "Purchase List", value: "/purchase-list" },
+            { label: "Order List", value: "/order-list" },
+            { label: "Inventory Manufactured", value: "/inventory/manufactured" },
+            { label: "Inventory Raw", value: "/inventory/raw" },
+            { label: "Medicine List", value: "/medicine-list" },
+            { label: "Batches and Racks", value: "/batch-list" },
+            { label: "Groq AI", value: "/ask-groq" },
+            { label: "Customers", value: "/customer-list" },
+            { label: "Suppliers", value: "/supplier-list" },
+            { label: "Users", value: "/users-list" },
+            { label: "Logout (Secret Code)", value: "/logout" },
+        ];
+    
+        // Populate the dropdown
+        options.forEach(option => {
+            const li = document.createElement("li");
+            li.textContent = option.label;
+            li.dataset.value = option.value;
+            li.className = "p-2 cursor-pointer hover:bg-gray-100";
+            li.addEventListener("click", () => {
+                window.location.href = option.value; // Redirect to the selected route
+            });
+            searchOptions.appendChild(li);
+        });
+    
+        // Show dropdown on focus
+        searchInput.addEventListener("focus", () => {
+            searchOptions.classList.remove("hidden");
+        });
+    
+        // Hide dropdown on blur (with a small delay to allow clicks)
+        searchInput.addEventListener("blur", () => {
+            setTimeout(() => searchOptions.classList.add("hidden"), 100);
+        });
+    
+        // Filter dropdown options based on user input
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.trim().toLowerCase();
+            Array.from(searchOptions.children).forEach(li => {
+                if (li.textContent.toLowerCase().includes(query)) {
+                    li.classList.remove("hidden");
+                } else {
+                    li.classList.add("hidden");
+                }
+            });
+        });
+    });
+    
     
 </script>
