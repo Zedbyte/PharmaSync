@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\MedicineBatch;
+use App\Models\MaterialLot;
 use App\Models\Order;
 use App\Models\Inventory;
 
@@ -45,5 +46,33 @@ class DashboardController extends BaseController
             'salesPerformance' => $salesPerformance,
             'productionEfficiency' => $productionEfficiency
         ]);
+    }
+
+    public function getAlerts() {
+
+        $medicineBatchObject = new MedicineBatch();
+        $materialLotObject = new MaterialLot();
+
+        $medicineNearingOutOfStock = $medicineBatchObject->getNearingOutOfStock();
+        $medicineExpiringSoon = $medicineBatchObject->getExpiringSoon();
+
+        $materialNearingOutOfStock = $materialLotObject->getNearingOutOfStock();
+        $materialOutOfStock = $materialLotObject->getOutOfStock();
+
+        // Prepare response
+        $alerts = [
+            "manufactured" => [
+                "nearingOutOfStock" => $medicineNearingOutOfStock,
+                "expiringSoon" => $medicineExpiringSoon,
+            ],
+            "raw" => [
+                "nearingOutOfStock" => $materialNearingOutOfStock,
+                "outOfStock" => $materialOutOfStock,
+            ],
+        ];
+
+        // Return as JSON
+        header('Content-Type: application/json');
+        echo json_encode($alerts);
     }
 }

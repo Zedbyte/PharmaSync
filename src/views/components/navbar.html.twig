@@ -40,7 +40,7 @@
                 placeholder="Search here" required />
 
                 <!-- Dropdown Menu -->
-                <ul id="search-options" class="hidden absolute w-5/12 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+                <ul id="search-options" class="hidden absolute w-5/12 mt-2 ml-5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-500 rounded-lg shadow-lg z-10 dark:text-white">
                     <!-- Options will be dynamically added -->
                 </ul>
             </div>
@@ -48,13 +48,30 @@
     </section>
 
     <section class="profile__container col-span-5 lg:col-span-3 flex justify-evenly items-center">
-        <!-- Notification Container (30% width) -->
-        <div class="notification__container hidden xl:!block border dark:border-gray-700 border-gray-300 
-        bg-[#F1F4F9] dark:bg-gray-700 p-4 rounded-xl">
-            <div class="icon__container flex justify-center items-center h-full">
-                <ion-icon name="notifications-outline" class="text-gray-500 dark:text-[#fdfdfd]"></ion-icon>
+        <!-- Notification Button with Dropdown -->
+        <div class="relative">
+            <!-- Notification Button -->
+            <div class="notification__container xl:!block border dark:border-gray-700 border-gray-300 
+                bg-[#F1F4F9] hover:bg-[#dde0e6] dark:bg-gray-700 dark:hover:bg-gray-800 transition-all duration-150 p-4 rounded-xl cursor-pointer" id="notification-btn">
+                <div class="icon__container flex justify-center items-center h-full relative">
+                    <ion-icon name="notifications-outline" class="text-gray-500 dark:text-[#fdfdfd]"></ion-icon>
+                    <!-- Notification Indicator -->
+                    <div id="notification-indicator" class="hidden absolute top-0 right-0 h-2 w-2 bg-red-600 rounded-full"></div>
+                </div>
+            </div>
+        
+            <!-- Notification Dropdown -->
+            <div id="notification-dropdown" class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg z-10">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Notifications</h3>
+                </div>
+                <ul id="notification-list" class="max-h-64 overflow-y-auto">
+                    <!-- Notifications will be dynamically added here -->
+                </ul>
             </div>
         </div>
+        
+
 
         <!-- Image Container (70% width) -->
         <div class="image__container flex flex-grow-[0.1] justify-center items-center">
@@ -193,7 +210,7 @@
             const li = document.createElement("li");
             li.textContent = option.label;
             li.dataset.value = option.value;
-            li.className = "p-2 cursor-pointer hover:bg-gray-100";
+            li.className = "p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600";
             li.addEventListener("click", () => {
                 window.location.href = option.value; // Redirect to the selected route
             });
@@ -222,6 +239,110 @@
             });
         });
     });
+    
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        const notificationBtn = document.getElementById("notification-btn");
+        const notificationDropdown = document.getElementById("notification-dropdown");
+        const notificationList = document.getElementById("notification-list");
+        const notificationIndicator = document.getElementById("notification-indicator");
+    
+        fetchAlerts(); // Fetch alerts
+
+        // Toggle the visibility of the dropdown
+        notificationBtn.addEventListener("click", () => {
+            notificationDropdown.classList.toggle("hidden");
+        });
+
+    
+        // Fetch alerts data from the /alerts route
+        async function fetchAlerts() {
+            try {
+                const response = await fetch("/alerts");
+                const data = await response.json();
+    
+                // Clear existing notifications
+                notificationList.innerHTML = "";
+    
+                let totalNotifications = 0;
+    
+                // Add Manufactured alerts
+                if (data.manufactured.nearingOutOfStock > 0 || data.manufactured.expiringSoon > 0) {
+                    notificationList.innerHTML += `
+                        <li class="p-2 text-sm text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 font-semibold">
+                            Manufactured
+                        </li>
+                    `;
+                    if (data.manufactured.nearingOutOfStock > 0) {
+                        notificationList.innerHTML += `
+                            <li class="p-2 text-sm text-orange-600 dark:text-orange-300">
+                                Nearing Out of Stock: ${data.manufactured.nearingOutOfStock}
+                            </li>
+                        `;
+                        totalNotifications += data.manufactured.nearingOutOfStock;
+                    }
+                    if (data.manufactured.expiringSoon > 0) {
+                        notificationList.innerHTML += `
+                            <li class="p-2 text-sm text-orange-600 dark:text-orange-300">
+                                Expiring Soon: ${data.manufactured.expiringSoon}
+                            </li>
+                        `;
+                        totalNotifications += data.manufactured.expiringSoon;
+                    }
+                }
+    
+                // Add Raw Material alerts
+                if (data.raw.nearingOutOfStock > 0 || data.raw.outOfStock > 0) {
+                    notificationList.innerHTML += `
+                        <li class="p-2 text-sm text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 font-semibold">
+                            Raw Materials
+                        </li>
+                    `;
+                    if (data.raw.nearingOutOfStock > 0) {
+                        notificationList.innerHTML += `
+                            <li class="p-2 text-sm text-orange-600 dark:text-orange-300">
+                                Nearing Out of Stock: ${data.raw.nearingOutOfStock}
+                            </li>
+                        `;
+                        totalNotifications += data.raw.nearingOutOfStock;
+                    }
+                    if (data.raw.outOfStock > 0) {
+                        notificationList.innerHTML += `
+                            <li class="p-2 text-sm text-orange-600 dark:text-orange-300">
+                                Out of Stock: ${data.raw.outOfStock}
+                            </li>
+                        `;
+                        totalNotifications += data.raw.outOfStock;
+                    }
+                }
+    
+                // Show notification indicator if there are notifications
+                if (totalNotifications > 0) {
+                    notificationIndicator.classList.remove("hidden");
+                } else {
+                    notificationIndicator.classList.add("hidden");
+                }
+    
+                // Handle empty notifications
+                if (totalNotifications === 0) {
+                    notificationList.innerHTML = `
+                        <li class="p-2 text-sm text-gray-600 dark:text-gray-300">
+                            No notifications at this time.
+                        </li>
+                    `;
+                }
+            } catch (error) {
+                console.error("Error fetching alerts:", error);
+                notificationList.innerHTML = `
+                    <li class="p-2 text-sm text-red-600 dark:text-red-400">
+                        Failed to load notifications.
+                    </li>
+                `;
+                notificationIndicator.classList.add("hidden");
+            }
+        }
+    });
+    
     
     
 </script>

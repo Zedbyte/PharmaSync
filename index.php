@@ -143,6 +143,12 @@ try {
         $dashboardController->display();
     });
 
+    // Alerts [GET]
+    $router->respond('GET', '/alerts', function() use ($dashboardController) {
+        AuthMiddleware::checkAuth();
+        $dashboardController->getAlerts();
+    });
+
     // Line Chart
     $router->respond('GET', '/dashboard/production-rate', function() use ($batchesController) {
         AuthMiddleware::checkAuth();
