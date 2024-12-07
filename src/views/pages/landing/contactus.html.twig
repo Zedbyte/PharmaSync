@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ ASSETS_URL }}/css/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/main.css">
+    <title>Contact Us - PharmaSync</title>
+    <style>
+        body {
+            background-image: url('{{ ASSETS_URL }}/images/landingPage/pharma-BG.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar Include -->
+    {% include 'pages/landing/navbar.html.twig' %}
+
+    <!-- Contact Us Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-6 bg-white bg-opacity-90 rounded-lg shadow-lg p-8">
+            <!-- Title -->
+            <h1 class="text-4xl font-bold text-[#234A6B] mb-8 text-center">Contact Us</h1>
+            <p class="text-lg text-[#5A5A5A] mb-12 text-center">
+                Have questions or need help? Reach out to us and we'll get back to you as soon as possible!
+            </p>
+
+            <!-- Contact Form -->
+            <form action="https://formspree.io/f/mnnqynvz" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Name -->
+                <div class="col-span-1">
+                    <label for="name" class="block text-sm font-bold text-[#234A6B]">Your Name</label>
+                    <input type="text" id="name" name="name" required
+                        class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Email -->
+                <div class="col-span-1">
+                    <label for="email" class="block text-sm font-bold text-[#234A6B]">Your Email</label>
+                    <input type="email" id="email" name="email" required
+                        class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Subject -->
+                <div class="col-span-2">
+                    <label for="subject" class="block text-sm font-bold text-[#234A6B]">Subject</label>
+                    <input type="text" id="subject" name="subject" required
+                        class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Message -->
+                <div class="col-span-2">
+                    <label for="message" class="block text-sm font-bold text-[#234A6B]">Message</label>
+                    <textarea id="message" name="message" rows="5" required
+                        class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-span-2 text-center">
+                    <button type="submit"
+                        class="bg-[#234A6B] text-white px-6 py-3 rounded-md shadow hover:bg-blue-700 transition">
+                        Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer Include -->
+    {% include 'pages/landing/footer.html.twig' %}
+
+</body>
+</html>

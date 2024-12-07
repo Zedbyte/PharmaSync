@@ -1,0 +1,31 @@
+<nav class="shadow-md bg-white">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <!-- Logo with Text -->
+        <a href="/" class="flex items-center text-2xl font-bold">
+            <img 
+                src="{{ ASSETS_URL }}/images/landingPage/Pharmasync_LOGO.png" 
+                alt="PharmaSync Logo" 
+                class="h-8 mr-2" 
+                onerror="this.style.display='none';">
+            <span class="text-[#41B5F7]">PharmaSync</span>
+        </a>
+
+        <!-- Navigation Links -->
+        <ul class="flex space-x-6">
+            <li><a href="/" class="text-[#184363] font-bold opacity-80 hover:opacity-100 hover:text-[#41B5F7]">Home</a></li>
+            <li><a href="/about" class="text-[#184363] font-bold opacity-80 hover:opacity-100 hover:text-[#41B5F7]">About Us</a></li>
+            <li><a href="/clients" class="text-[#184363] font-bold opacity-80 hover:opacity-100 hover:text-[#41B5F7]">Clients</a></li>
+            <li><a href="/contact-us" class="text-[#184363] font-bold opacity-80 hover:opacity-100 hover:text-[#41B5F7]">Contact Us</a></li>
+        </ul>
+
+        <!-- Account Links -->
+        <div class="flex items-center space-x-4">
+            <a href="/registration" class="text-sm font-bold text-[#184363] opacity-80 hover:opacity-100 hover:text-[#41B5F7]">
+                Create an account
+            </a>
+            <a href="/login" class="bg-[#41B5F7] text-white px-4 py-2 rounded-md hover:bg-blue-700" style="border-radius: 17px;">
+                Login
+            </a>
+        </div>
+    </div>
+</nav>

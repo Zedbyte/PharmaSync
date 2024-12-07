@@ -6,6 +6,7 @@
 
     // Initialize Twig
     $loader = new FilesystemLoader([
+        __DIR__ . '/src/views/pages/landing',
         __DIR__ . '/src/views/pages',
         __DIR__ . '/src/views/pages/dashboard',
         __DIR__ . '/src/views/pages/purchase',

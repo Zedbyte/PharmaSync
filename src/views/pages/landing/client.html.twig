@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ ASSETS_URL }}/css/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/main.css">
+    <title>Our Clients - PharmaSync</title>
+    <style>
+        body {
+            background-image: url('{{ ASSETS_URL }}/images/landingPage/pharma-BG.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar Include -->
+    {% include 'pages/landing/navbar.html.twig' %}
+
+    <!-- Clients Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-6 text-center ">
+            <!-- Title -->
+            <h1 class="text-4xl font-bold text-[#234A6B] mb-8">Our Clients</h1>
+            <p class="text-lg text-[#5A5A5A] mb-12">
+                We are proud to work with leading pharmacies, hospitals, and distributors across the globe. 
+                Our platform empowers them to achieve operational excellence and ensure patient safety.
+            </p>
+
+            <!-- Clients Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+                <!-- Famous Brand Logos -->
+                <img src="{{ ASSETS_URL }}/images/clients/pfizer.svg" alt="Pfizer Logo" class="max-w-full h-16 mx-auto">
+                <img src="{{ ASSETS_URL }}/images/clients/johnson-johnson.svg" alt="Johnson & Johnson Logo" class="max-w-full h-16 mx-auto">
+                <img src="{{ ASSETS_URL }}/images/clients/novartis-logo.svg" alt="Novartis Logo" class="max-w-full h-16 mx-auto">
+                <img src="{{ ASSETS_URL }}/images/clients/roche.svg" alt="Roche Logo" class="max-w-full h-16 mx-auto">
+                <img src="{{ ASSETS_URL }}/images/clients/astrazeneca.svg" alt="AstraZeneca Logo" class="max-w-full h-16 mx-auto">
+                <img src="{{ ASSETS_URL }}/images/clients/gsk.svg" alt="GSK Logo" class="max-w-full h-16 mx-auto">
+                <img src="{{ ASSETS_URL }}/images/clients/sanofi-logo.svg" alt="Sanofi Logo" class="max-w-full h-16 mx-auto">
+                <img src="{{ ASSETS_URL }}/images/clients/merck.svg" alt="Merck Logo" class="max-w-full h-16 mx-auto">
+            </div>
+        </div>
+    </section>
+
+        <!-- Testimonies Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-6 text-center">
+            <!-- Title -->
+            <h2 class="text-3xl font-bold text-[#234A6B] mb-8">What Our Clients Say</h2>
+
+            <!-- Testimonies Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimony Card 1 -->
+                <div class="relative bg-white rounded-lg shadow-lg p-6">
+                    <!-- Profile Picture -->
+                    <div class="absolute -top-8 left-6">
+                        <img src="{{ ASSETS_URL }}/images/clients/client1.png" alt="Client" class="w-16 h-16 rounded-full shadow-md border-4 border-white">
+                    </div>
+                    <!-- Rating -->
+                    <div class="absolute top-4 right-6">
+                        <div class="flex space-x-1">
+                            <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <p class="text-[#5A5A5A] text-base mb-4 mt-8">
+                        "PharmaSync revolutionized our inventory management process. With its automated reordering and real-time tracking features, we’ve significantly reduced wastage and improved operational efficiency."
+                    </p>
+                    <h3 class="font-bold text-[#234A6B]">Emily Carter</h3>
+                    <p class="text-sm text-[#5A5A5A]">Logistics Manager</p>
+                </div>
+
+                <!-- Testimony Card 2 -->
+                <div class="relative bg-white rounded-lg shadow-lg p-6">
+                    <!-- Profile Picture -->
+                    <div class="absolute -top-8 left-6">
+                        <img src="{{ ASSETS_URL }}/images/clients/client2.png" alt="Client" class="w-16 h-16 rounded-full shadow-md border-4 border-white">
+                    </div>
+                    <!-- Rating -->
+                    <div class="absolute top-4 right-6">
+                        <div class="flex space-x-1">
+                            <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <p class="text-[#5A5A5A] text-base mb-4 mt-8">
+                        "As a local pharmacy chain, tracking inventory and compliance has always been challenging. PharmaSync has streamlined our operations and allowed us to focus more on serving our customers."
+                    </p>
+                    <h3 class="font-bold text-[#234A6B]">John Delgado</h3>
+                    <p class="text-sm text-[#5A5A5A]">Operations Lead</p>
+                </div>
+
+                <!-- Testimony Card 3 -->
+                <div class="relative bg-white rounded-lg shadow-lg p-6">
+                    <!-- Profile Picture -->
+                    <div class="absolute -top-8 left-6">
+                        <img src="{{ ASSETS_URL }}/images/clients/client3.png" alt="Client" class="w-16 h-16 rounded-full shadow-md border-4 border-white">
+                    </div>
+                    <!-- Rating -->
+                    <div class="absolute top-4 right-6">
+                        <div class="flex space-x-1">
+                            <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <p class="text-[#5A5A5A] text-base mb-4 mt-8">
+                        "We’ve relied on PharmaSync to manage our medicine stocks and ensure compliance with regulations. Its intuitive interface and alerts system have made a huge difference for our team."
+                    </p>
+                    <h3 class="font-bold text-[#234A6B]">Dr. Angela Morales</h3>
+                    <p class="text-sm text-[#5A5A5A]">Chief Pharmacist</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer Include -->
+    {% include 'pages/landing/footer.html.twig' %}
+
+</body>
+</html>

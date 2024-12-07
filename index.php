@@ -10,6 +10,7 @@ use Klein\Klein as Route;
 use Twig\Environment;
 
 // Controllers
+use App\Controllers\LandingController;
 use App\Controllers\ErrorController;
 use App\Controllers\LoginController;
 use App\Controllers\RegistrationController;
@@ -37,6 +38,7 @@ try {
     //$loader came from init.php
     $twig = new Environment($loader);
 
+    $landingController = new LandingController($twig);
     $errorController = new ErrorController($twig);
     $loginController = new LoginController($twig);
     $registrationController = new RegistrationController($twig);
@@ -76,8 +78,20 @@ try {
      * 
      */
     
-    $router->respond('GET', '/', function() use ($loginController) {
-        $loginController->display();
+    $router->respond('GET', '/', function() use ($landingController) {
+        $landingController->showLandingPage();
+    });
+
+    $router->respond('GET', '/about', function() use ($landingController) {
+        $landingController->showAboutPage();
+    });
+
+    $router->respond('GET', '/clients', function() use ($landingController) {
+        $landingController->showClientsPage();
+    });
+
+    $router->respond('GET', '/contact-us', function () use ($landingController) {
+        $landingController->showContactUsPage();
     });
 
     /**

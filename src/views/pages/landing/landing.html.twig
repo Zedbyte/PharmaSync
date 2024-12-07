@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ ASSETS_URL }}/css/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/main.css">
+    <title>PharmaSync - Landing</title>
+    <style>
+        .bg-pharma {
+            background-image: url('{{ ASSETS_URL }}/images/landingPage/pharma-BG.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-pharma">
+
+    <!-- Navbar Include -->
+    {% include 'pages/landing/navbar.html.twig' %}
+
+    {% block content %}
+    <section class="min-h-screen flex items-center">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 px-6">
+            <!-- Left Content -->
+            <div class="flex flex-col justify-center space-y-6">
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight" style="color: #234A6B;">
+                    Transforming Pharmaceutical Inventory Management with <span style="color: #41B5F7;">PharmaSync</span>
+                </h1>
+                <p class="text-lg text-dark">
+                    Streamline inventory, ensure compliance, and manage procurement—all in one intuitive platform.
+                </p>
+                <div class="flex items-center space-x-4">
+                    <!-- "Get Started" as a navlink -->
+                    <a href="#" class="text-lg font-semibold hover:underline" style="color: #234A6B;">
+                        Get Started
+                    </a>
+                    <!-- "Learn More" button -->
+                    <a href="#" class="bg-[#3F70ED] text-white px-6 py-3 border border-[#3F70ED] rounded-md shadow hover:bg-blue-700" style="border-radius: 17px;">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Content -->
+            <div class="flex justify-center">
+                <img src="{{ ASSETS_URL }}/images/landingPage/landing1.png" alt="PharmaSync Illustration" class="max-w-full">
+            </div>
+        </div>
+    </section>
+
+        <!-- Footer Include -->
+        {% include 'pages/landing/footer.html.twig' %}
+    {% endblock %}
+</body>
+</html>
