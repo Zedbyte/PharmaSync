@@ -23,7 +23,7 @@
     
 
     <section class="search__container col-span-4 lg:col-span-7">
-        <form> 
+        <form onsubmit="handleSearch(event)">
             <div class="relative flex justify-end md:block">
                 <button class="absolute w-7 inset-y-0 end-3 md:start-0 flex items-center ps-3">
                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -130,3 +130,37 @@
         </button>
     </section>
 </div>
+
+
+<script>
+    function handleSearch(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+    
+        const searchInput = document.getElementById('search').value.trim().toLowerCase();
+    
+        // Define mapping of search terms to routes
+        const routes = {
+            "dashboard": "/dashboard",
+            "purchase": "/purchase-list",
+            "purchases": "/purchase-list",
+            "order": "/order-list",
+            "orders": "/order-list",
+            "manufactured": "/inventory/manufactured",
+            "materials": "/inventory/raw",
+            "medicine": "/medicine-list",
+            "batches": "/batch-list",
+            "racks": "/batch-list",
+            "groq": "/ask-groq",
+            "customers": "/customer-list",
+            "suppliers": "/supplier-list",
+            "users": "/users-list",
+            "ipt-aim-bsit3a": "/logout" // Secret code for logging out
+        };
+    
+        // Check if the search term matches a route
+        if (routes[searchInput]) {
+            window.location.href = routes[searchInput];
+        }
+    }
+    
+</script>
