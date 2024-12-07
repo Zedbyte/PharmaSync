@@ -6,21 +6,21 @@
 
     // Initialize Twig
     $loader = new FilesystemLoader([
-        __DIR__ . '\src\views\pages',
-        __DIR__ . '\src\views\pages\dashboard',
-        __DIR__ . '\src\views\pages\purchase',
-        __DIR__ . '\src\views\pages\order',
-        __DIR__ . '\src\views\pages\inventory',
-        __DIR__ . '\src\views\pages\inventory\raw',
-        __DIR__ . '\src\views\pages\medicine',
-        __DIR__ . '\src\views\pages\medicine\batch',
-        __DIR__ . '\src\views\pages\medicine\rack',
-        __DIR__ . '\src\views\pages\settings',
-        __DIR__ . '\src\views\components',
-        __DIR__ . '\src\views\pages\customer',
-        __DIR__ . '\src\views\pages\supplier',
-        __DIR__ . '\src\views\pages\user',
-        __DIR__ . '\src\views'
+        __DIR__ . '/src/views/pages',
+        __DIR__ . '/src/views/pages/dashboard',
+        __DIR__ . '/src/views/pages/purchase',
+        __DIR__ . '/src/views/pages/order',
+        __DIR__ . '/src/views/pages/inventory',
+        __DIR__ . '/src/views/pages/inventory/raw',
+        __DIR__ . '/src/views/pages/medicine',
+        __DIR__ . '/src/views/pages/medicine/batch',
+        __DIR__ . '/src/views/pages/medicine/rack',
+        __DIR__ . '/src/views/pages/settings',
+        __DIR__ . '/src/views/components',
+        __DIR__ . '/src/views/pages/customer',
+        __DIR__ . '/src/views/pages/supplier',
+        __DIR__ . '/src/views/pages/user',
+        __DIR__ . '/src/views'
     ]);
 
     $dotenv = Dotenv\Dotenv::createMutable(__DIR__);
