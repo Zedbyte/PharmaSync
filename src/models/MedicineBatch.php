@@ -122,7 +122,7 @@ class MedicineBatch extends BaseModel
             $orderMedicineRow = $orderMedicineCheckStmt->fetch(PDO::FETCH_ASSOC);
     
             if ($orderMedicineRow && $orderMedicineRow['total'] > 0) {
-                $errors[] = "Batch $batchId still has associations in the `order_medicine` table.";
+                $errors[] = "Batch $batchId still has associations in the Orders.";
             }
     
             // Check if the batch has associations in the `medicine_batch` table
@@ -134,7 +134,7 @@ class MedicineBatch extends BaseModel
             $medicineBatchRow = $medicineBatchCheckStmt->fetch(PDO::FETCH_ASSOC);
     
             if ($medicineBatchRow && $medicineBatchRow['total'] > 0) {
-                $errors[] = "Batch $batchId still has associations in the `medicine_batch` table.";
+                $errors[] = "Batch $batchId still has associations in the Medicine Batchs.";
             }
     
             // If no associations remain in either table, delete the batch
