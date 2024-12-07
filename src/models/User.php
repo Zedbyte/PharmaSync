@@ -66,6 +66,38 @@ class User extends BaseModel
         }
     }
     
+    public function getUserDetails($id) {
+        $sql = "SELECT profile_picture, username FROM users WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        $profile_picture = null;
+    
+        // Check if profile picture is provided
+        if (!empty($result['profile_picture'])) {
+            $profile_picture = $result['profile_picture'];
+        } else {
+            // Use default profile picture
+            $defaultProfilePicturePath = __DIR__ . '/../../public/assets/images/default-profile.png';
+            if (file_exists($defaultProfilePicturePath)) {
+                $profile_picture = file_get_contents($defaultProfilePicturePath);
+            }
+        }
+    
+        // Convert profile picture to base64 for embedding in Twig
+        if ($profile_picture) {
+            $profile_picture = 'data:image/png;base64,' . base64_encode($profile_picture);
+        }
+    
+        return [
+            'username' => $result['username'] ?? null,
+            'profile_picture' => $profile_picture,
+        ];
+    }
+    
+    
     
 
 

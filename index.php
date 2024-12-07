@@ -56,8 +56,19 @@ try {
 
     // Add userRole as a global variable after session start
     $userObject = new User();
-    $userRole = isset($_SESSION['user_id']) ? $userObject->getRoleById($_SESSION['user_id']) : null;
-    $twig->addGlobal('userRole', $userRole);
+    if (isset($_SESSION['user_id'])) {
+        $userDetails = $userObject->getUserDetails($_SESSION['user_id']);
+        $userRole = $userObject->getRoleById($_SESSION['user_id']);
+    
+        // Add user details to Twig globals
+        $twig->addGlobal('userRole', $userRole);
+        $twig->addGlobal('profilePicture', $userDetails['profile_picture'] ?? null);
+        $twig->addGlobal('username', $userDetails['username'] ?? null);
+    } else {
+        $twig->addGlobal('userRole', null);
+        $twig->addGlobal('profilePicture', null);
+        $twig->addGlobal('username', null);
+    }
 
     /**
      * 

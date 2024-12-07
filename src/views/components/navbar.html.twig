@@ -57,9 +57,9 @@
             class="person__container w-full flex justify-between items-center border dark:border-gray-700 border-gray-300 transition-all duration-200
             bg-[#F1F4F9] hover:bg-[#ced0d4] dark:bg-gray-700 dark:hover:bg-gray-500 rounded-full p-1 pr-3">
                 <span class="flex items-center">
-                    <img class="rounded-full object-cover w-[40px] h-[40px]" src="https://uploads.dailydot.com/2024/07/side-eye-cat.jpg?q=65&auto=format&w=1600&ar=2:1&fit=crop" alt="Profile Picture">
+                    <img class="rounded-full object-cover w-[40px] h-[40px]" src="{{ profilePicture }}" alt="Profile Picture">
                     <h2 class="ml-1 hidden md:!block
-                    font-bold text-gray-900 dark:text-white">Zucker</h2>
+                    font-bold text-gray-900 dark:text-white">{{ username }}</h2>
                 </span>
                 <ion-icon name="chevron-down-outline" class="arrow expanded__label text-gray-500 dark:!text-white"></ion-icon>
             </div>
