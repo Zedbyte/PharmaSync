@@ -1,0 +1,70 @@
+<!-- Update Supplier Modal -->
+<div id="updateSupplierModal" 
+     class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300">
+    <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg w-full max-w-md p-6 transform scale-95 transition-transform duration-300">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center border-b pb-4 mb-4 dark:border-gray-600">
+            <h2 class="text-lg font-semibold text-gray-700 dark:text-white">Update Supplier</h2>
+            <button type="button" 
+                    onclick="closeUpdateSupplierModal()" 
+                    class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Modal Form -->
+        <form id="updateSupplierForm" method="POST" action="/update-supplier">
+            <!-- Hidden Input for Supplier ID -->
+            <input type="hidden" name="id" id="updateSupplierId">
+
+            <!-- Name -->
+            <div class="mb-4">
+                <label for="updateSupplierName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Name
+                </label>
+                <input type="text" id="updateSupplierName" name="name" required
+                       class="block w-full mt-1 p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Email -->
+            <div class="mb-4">
+                <label for="updateSupplierEmail" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Email
+                </label>
+                <input type="email" id="updateSupplierEmail" name="email" required
+                       class="block w-full mt-1 p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Address -->
+            <div class="mb-4">
+                <label for="updateSupplierAddress" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Address
+                </label>
+                <textarea id="updateSupplierAddress" name="address" rows="3" required
+                          class="block w-full mt-1 p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <!-- Contact No -->
+            <div class="mb-4">
+                <label for="updateSupplierContact" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Contact No
+                </label>
+                <input type="text" id="updateSupplierContact" name="contact_no" required
+                       class="block w-full mt-1 p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Form Buttons -->
+            <div class="flex justify-end space-x-4">
+                <button type="button" 
+                        onclick="closeUpdateSupplierModal()" 
+                        class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+                    Cancel
+                </button>
+                <button type="submit" 
+                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,143 @@
+{% extends 'root.twig' %}
+
+{% block title %}
+    Customer List
+{% endblock %}
+
+{% block headers %}
+    <!-- <link rel="stylesheet" href="{{ ASSETS_URL }}/css/supplier/customer-list.css"> -->
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/link.css">
+    <link rel="stylesheet" href="{{ ASSETS_URL }}/css/utility/scrollbar.css">
+    <script src="https://kit.fontawesome.com/c3d300ba56.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block panel_title %}
+    Customer List
+{% endblock %}
+
+{% set paths = [
+    { 'name': 'Dashboard', 'url': '/dashboard' },
+    { 'name': 'Customer List', 'url': '/customer-list' }
+] %}
+
+{% block body %}
+
+    <!-- Includes -->
+    {% include 'customer/add-customer-modal.html.twig' %}
+    {% include 'customer/delete-customer-modal.html.twig' %}
+    {% include 'customer/update-customer-modal.html.twig' %}
+
+    <!-- Card Section -->
+    <section class="p-6 bg-gray-100 dark:bg-gray-900 mb-6 rounded-lg">
+        <div class="container mx-auto">
+            <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 flex items-center space-x-6">
+                <!-- Total -->
+                <div class="flex items-center space-x-4 flex-1">
+                    <i class="fas fa-users text-gray-500 text-2xl"></i>
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-500 dark:text-white">Total</h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-400"><span class="text-blue-500 font-bold">{{ total_customers }}</span></p>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="h-12 w-px bg-gray-300 dark:bg-gray-600"></div>
+
+                <!-- Total Customers -->
+                <div class="flex items-center space-x-4 flex-1">
+                    <i class="fas fa-user-circle text-gray-500 text-2xl"></i>
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-500 dark:text-white">Total Customers</h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">This Month: <span class="text-blue-500 font-bold">{{ total_customers }}</span></p>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="h-12 w-px bg-gray-300 dark:bg-gray-600"></div>
+
+                <!-- Add Customer Button -->
+                <button onclick="openAddCustomerModal()"
+                        class="flex items-center bg-blue-500 text-white px-5 py-3 rounded-lg hover:bg-blue-600 transition shadow">
+                    <i class="fas fa-plus mr-2"></i> Add Customer
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- Customer Table Section -->
+    <section class="p-6 bg-gray-100 dark:bg-gray-900 rounded-lg">
+        <div class="container mx-auto">
+            <!-- Customer Table -->
+            <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase text-xs">
+                        <tr>
+                            <th class="px-6 py-3">ID</th>
+                            <th class="px-6 py-3">Name</th>
+                            <th class="px-6 py-3">Email</th>
+                            <th class="px-6 py-3">Address</th>
+                            <th class="px-6 py-3">Contact No</th>
+                            <th class="px-6 py-3 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for customer in customers %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-6 py-4">{{ customer.id }}</td>
+                                <td class="px-6 py-4">{{ customer.name }}</td>
+                                <td class="px-6 py-4">{{ customer.email }}</td>
+                                <td class="px-6 py-4">{{ customer.address }}</td>
+                                <td class="px-6 py-4">{{ customer.contact_no }}</td>
+                                <td class="px-6 py-4 text-center">
+                                    <div class="flex justify-center space-x-4">
+                                        <!-- Edit Action -->
+                                        <button type="button" 
+                                                onclick="openUpdateCustomerModal({
+                                                    id: {{ customer.id }},
+                                                    name: '{{ customer.name|e('js') }}',
+                                                    email: '{{ customer.email|e('js') }}',
+                                                    address: '{{ customer.address|e('js') }}',
+                                                    contact_no: '{{ customer.contact_no|e('js') }}'
+                                                })"
+                                                class="text-blue-500 hover:text-blue-700">
+                                            <i class="fas fa-edit mr-2"></i>
+                                        </button>
+
+  
+                                        <!-- Delete Action -->
+                                        <button onclick="openDeleteCustomerModal({{ customer.id }})"
+                                                class="text-red-500 hover:text-red-700">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center px-6 py-4 text-gray-500 dark:text-gray-300">No customers found.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Error Messages -->
+            {% if errors %}
+                <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    <ul>
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ ASSETS_URL }}/js/customer/addCustomer.js"></script>
+    <script src="{{ ASSETS_URL }}/js/customer/deleteCustomer.js"></script>
+    <script src="{{ ASSETS_URL }}/js/customer/updateCustomer.js"></script>
+{% endblock %}

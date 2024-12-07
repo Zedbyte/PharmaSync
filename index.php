@@ -23,6 +23,9 @@ use App\Controllers\MedicineController;
 use App\Controllers\RawController;
 use App\Controllers\ExportController;
 use \App\Middleware\AuthMiddleware;
+use App\Controllers\CustomerController;
+use App\Controllers\SupplierController;
+use App\Controllers\UserController;
 
 //Models
 use App\Models\User;
@@ -47,6 +50,9 @@ try {
     $rawController = new RawController($twig);
     $medicineController = new MedicineController($twig);
     $exportController = new ExportController($twig);
+    $customerController = new CustomerController($twig);
+    $supplierController = new SupplierController($twig);
+    $userController = new UserController($twig);
 
     // Add userRole as a global variable after session start
     $userObject = new User();
@@ -819,6 +825,92 @@ try {
         $exportController->exportAllRack();
     });
 
+
+    /**
+     * 
+     * CUSTOMER
+     * 
+     */
+    $router->respond('GET', '/customer-list', function() use ($customerController) {
+        AuthMiddleware::checkAuth();
+        AuthMiddleware::checkRole(['hr_manager']);
+        $customerController->display();
+    });
+
+        // Add customer route
+    $router->respond('POST', '/add-customer', function() use ($customerController) {
+        AuthMiddleware::checkAuth();
+        $customerController->addCustomer($_POST);
+    });
+        
+    $router->respond('POST', '/delete-customer', function() use ($customerController) {
+        AuthMiddleware::checkAuth();
+        $customerController->deleteCustomer((int) $_POST['customer_id']);
+    });
+
+        // Update customer route
+    $router->respond('POST', '/update-customer', function() use ($customerController) {
+        AuthMiddleware::checkAuth();
+        $customerController->updateCustomer($_POST);
+    });
+
+    /**
+     * 
+     * SUPPLIER
+     * 
+     */
+    $router->respond('GET', '/supplier-list', function() use ($supplierController) {
+        AuthMiddleware::checkAuth();
+        AuthMiddleware::checkRole(['hr_manager']);
+        $supplierController->display();
+    });
+
+    // Add supplier route
+    $router->respond('POST', '/add-supplier', function() use ($supplierController) {
+        AuthMiddleware::checkAuth();
+        $supplierController->addSupplier($_POST);
+    });
+
+    // Delete supplier route
+    $router->respond('POST', '/delete-supplier', function() use ($supplierController) {
+        AuthMiddleware::checkAuth();
+        $supplierController->deleteSupplier((int) $_POST['supplier_id']);
+    });
+
+    // Update supplier route
+    $router->respond('POST', '/update-supplier', function() use ($supplierController) {
+        AuthMiddleware::checkAuth();
+        $supplierController->updateSupplier($_POST);
+    });
+
+    /**
+     * 
+     * USER
+     * 
+     */
+    $router->respond('GET', '/users-list', function() use ($userController) {
+        AuthMiddleware::checkAuth();
+        AuthMiddleware::checkRole(['hr_manager']);
+        $userController->displayUsers();
+    });
+    
+    $router->respond('POST', '/add-user', function() use ($userController) {
+        AuthMiddleware::checkAuth();
+        $userController->addUser($_POST);
+    });
+    
+    $router->respond('POST', '/delete-user', function() use ($userController) {
+        AuthMiddleware::checkAuth();
+        $userController->deleteUser((int)$_POST['user_id']);
+    });
+    
+    $router->respond('POST', '/update-user', function() use ($userController) {
+        AuthMiddleware::checkAuth();
+        $userController->updateUser($_POST);
+    });
+
+
+    
     $router->dispatch();
 
 } catch (Exception $e) {

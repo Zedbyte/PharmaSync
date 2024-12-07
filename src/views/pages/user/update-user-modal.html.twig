@@ -1,0 +1,108 @@
+<!-- Update User Modal -->
+<div id="updateUserModal" 
+     class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300">
+    <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg w-full max-w-md p-6 transform scale-95 transition-transform duration-300">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center border-b pb-4 mb-4 dark:border-gray-600">
+            <h2 class="text-lg font-semibold text-gray-700 dark:text-white">Update User</h2>
+            <button type="button" 
+                    onclick="closeUpdateUserModal()" 
+                    class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Modal Form -->
+        <form id="updateUserForm" method="POST" action="/update-user" enctype="multipart/form-data">
+            <!-- Hidden Input for User ID -->
+            <input type="hidden" name="id" id="updateUserId">
+
+            <!-- Profile Picture -->
+            <div class="mb-4">
+                <label for="updateUserProfilePicture" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Profile Picture
+                </label>
+                <input type="file" id="updateUserProfilePicture" name="profile_picture" accept="image/*"
+                       class="block w-full mt-1 p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- First Name -->
+            <div class="mb-4">
+                <label for="updateUserFirstName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    First Name
+                </label>
+                <input type="text" id="updateUserFirstName" name="first_name" required
+                       class="block w-full mt-1 p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Last Name -->
+            <div class="mb-4">
+                <label for="updateUserLastName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Last Name
+                </label>
+                <input type="text" id="updateUserLastName" name="last_name" required
+                       class="block w-full mt-1 p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Email -->
+            <div class="mb-4">
+                <label for="updateUserEmail" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Email
+                </label>
+                <input type="email" id="updateUserEmail" name="email_address" required
+                       class="block w-full mt-1 p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Contact No -->
+            <div class="mb-4">
+                <label for="updateUserContact" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Contact No
+                </label>
+                <input type="text" id="updateUserContact" name="contact_no" required
+                       class="block w-full mt-1 p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Gender -->
+            <div class="mb-4">
+                <label for="updateUserGender" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Gender
+                </label>
+                <select id="updateUserGender" name="gender" required
+                        class="block w-full mt-1 p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+                    <option value="" disabled>Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+
+            <!-- Role -->
+            <div class="mb-4">
+                <label for="updateUserRole" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Role
+                </label>
+                <select id="updateUserRole" name="role" required
+                        class="block w-full mt-1 p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+                    <option value="" disabled>Select Role</option>
+                    <option value="administrator">Administrator</option>
+                    <option value="inventory_manager">Inventory Manager</option>
+                    <option value="finance_manager">Finance Manager</option>
+                    <option value="hr_manager">HR Manager</option>
+                    <option value="staff">Staff</option>
+                </select>
+            </div>
+
+            <!-- Form Buttons -->
+            <div class="flex justify-end space-x-4">
+                <button type="button" 
+                        onclick="closeUpdateUserModal()" 
+                        class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+                    Cancel
+                </button>
+                <button type="submit" 
+                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

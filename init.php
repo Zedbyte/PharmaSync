@@ -17,6 +17,9 @@
         __DIR__ . '\src\views\pages\medicine\rack',
         __DIR__ . '\src\views\pages\settings',
         __DIR__ . '\src\views\components',
+        __DIR__ . '\src\views\pages\customer',
+        __DIR__ . '\src\views\pages\supplier',
+        __DIR__ . '\src\views\pages\user',
         __DIR__ . '\src\views'
     ]);
 
