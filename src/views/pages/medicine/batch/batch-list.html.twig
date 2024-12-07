@@ -385,7 +385,7 @@
                                         {{ rack.location }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ rack.temperature_controlled }}
+                                        {{ rack.temperature_controlled == 1 ? 'Yes' : 'No' }}
                                     </td>
                                     <!-- <td class="px-6 py-4">
                                         <button onclick="toggleDetails('details-{{ medicine.id }}')" 
