@@ -89,8 +89,9 @@ class UserController extends BaseController
             if (!empty($errors)) {
                 // Return errors to the form
                 echo $this->twig->render('users-list.html.twig', [
+                    'ASSETS_URL' => ASSETS_URL,
                     'errors' => $errors,
-                    'users' => $userModel->getAllUsers(),
+                    'users' => $userModel->getAllUsersWithBase64Pictures(),
                 ]);
                 return;
             }
