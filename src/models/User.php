@@ -58,7 +58,6 @@ class User extends BaseModel
     
             return $this->db->lastInsertId();
         } catch (PDOException $e) {
-            $this->db->rollBack();
             error_log($e->getMessage());
             throw new Exception("Database error occurred: " . $e->getMessage(), (int)$e->getCode());
         }
