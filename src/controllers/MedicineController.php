@@ -275,57 +275,199 @@ class MedicineController extends BaseController
     }
 
     public function sendGroqRequest() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['groq_request'])) {
-            $user_query = trim($_POST['groq_request']); // Get the user's query from POST
-        
-            // GROQ API endpoint and your API key
-            $groq_api_url = "https://api.groq.com/openai/v1/chat/completions";
-            $api_key =  $_ENV['GROQ_API'];
-        
-            // Prepare the API request payload
-            $payload = [
-                "model" => "llama3-70b-8192", // Use the model specified in the example
-                "messages" => [
-                    [
-                        "role" => "user",
-                        "content" => $user_query,
-                    ]
-                ],
-                "temperature" => 1,
-                "max_tokens" => 1024,
-                "top_p" => 1,
-                "stream" => false,
-                "stop" => null,
-            ];
-        
-            // Initialize cURL
-            $ch = curl_init($groq_api_url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Content-Type: application/json',
-                'Authorization: Bearer ' . $api_key,
-            ]);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload)); // Convert payload to JSON
-        
-            // Execute the request and capture the response
-            $groq_response = curl_exec($ch);
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-        
-            // Handle the response
-            if ($http_code === 200) {
-                // Success: Send the API response back to the frontend
-                header('Content-Type: application/json');
-                echo $groq_response;
-            } else {
-                // Error: Return an error message
-                header('Content-Type: application/json');
-                echo json_encode(['error' => "Rate limit exceeded. Please wait and try again. HTTP Code: $http_code"]);
-            }
-        
-            exit;
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['error' => 'Method not allowed.']);
+            return;
         }
+
+        $user_query = trim($_POST['groq_request'] ?? '');
+        if ($user_query === '') {
+            http_response_code(400);
+            echo json_encode(['error' => 'Please enter a prompt before sending.']);
+            return;
+        }
+
+        $config = $this->getGroqConfig();
+        if ($config['api_key'] === '') {
+            http_response_code(500);
+            echo json_encode([
+                'error' => 'Chatbot is not configured. Set GROQ_API_KEY (or GROQ_API) in .env.'
+            ]);
+            return;
+        }
+
+        $messages = [
+            [
+                'role' => 'user',
+                'content' => $user_query,
+            ]
+        ];
+
+        if ($config['system_prompt'] !== '') {
+            array_unshift($messages, [
+                'role' => 'system',
+                'content' => $config['system_prompt'],
+            ]);
+        }
+
+        $models = array_values(array_unique(array_filter(array_merge([$config['model']], $config['fallback_models']))));
+        $attempts = max(1, $config['max_retries'] + 1);
+
+        $last_status = 500;
+        $last_message = 'Unable to reach the Groq API right now.';
+
+        for ($attempt = 0; $attempt < $attempts; $attempt++) {
+            $model = $models[min($attempt, count($models) - 1)];
+            $payload = [
+                'model' => $model,
+                'messages' => $messages,
+                'temperature' => $config['temperature'],
+                'max_tokens' => $config['max_tokens'],
+                'top_p' => $config['top_p'],
+                'stream' => false,
+            ];
+
+            $result = $this->executeGroqRequest($config, $payload);
+            $http_code = $result['http_code'];
+            $groq_response = $result['body'];
+            $curl_error = $result['curl_error'];
+            $headers = $result['headers'];
+
+            if ($curl_error !== '') {
+                $last_status = 502;
+                $last_message = 'Network error while contacting Groq: ' . $curl_error;
+
+                if ($attempt < $attempts - 1) {
+                    $sleep_seconds = $this->resolveRetryDelaySeconds($attempt, $headers, false);
+                    usleep((int)round($sleep_seconds * 1000000));
+                    continue;
+                }
+
+                break;
+            }
+
+            $decoded = json_decode($groq_response, true);
+
+            if ($http_code === 200 && isset($decoded['choices'][0]['message']['content'])) {
+                echo $groq_response;
+                return;
+            }
+
+            $error_message = $decoded['error']['message'] ?? ('Groq request failed with HTTP code: ' . $http_code);
+            $is_rate_limited = $http_code === 429 || stripos($error_message, 'rate limit') !== false;
+            $is_retryable = in_array($http_code, [408, 409, 425, 429, 500, 502, 503, 504], true);
+
+            $last_status = $is_rate_limited ? 429 : ($http_code > 0 ? $http_code : 500);
+            $last_message = $error_message;
+
+            if ($attempt < $attempts - 1 && $is_retryable) {
+                $sleep_seconds = $this->resolveRetryDelaySeconds($attempt, $headers, $is_rate_limited);
+                usleep((int)round($sleep_seconds * 1000000));
+                continue;
+            }
+
+            break;
+        }
+
+        http_response_code($last_status);
+        echo json_encode([
+            'error' => $last_message,
+            'hint' => 'If you keep getting 429, lower max_tokens, use a lighter model, or wait for quota reset.',
+            'status' => $last_status,
+        ]);
+    }
+
+    private function getGroqConfig() {
+        $fallback_raw = $_ENV['GROQ_FALLBACK_MODELS'] ?? '';
+        $fallback_models = array_values(array_filter(array_map('trim', explode(',', $fallback_raw))));
+
+        $max_retries = (int)($_ENV['GROQ_MAX_RETRIES'] ?? 2);
+        $max_retries = max(0, min($max_retries, 5));
+
+        $max_tokens = (int)($_ENV['GROQ_MAX_TOKENS'] ?? 512);
+        $max_tokens = max(64, min($max_tokens, 4096));
+
+        $temperature = (float)($_ENV['GROQ_TEMPERATURE'] ?? 0.7);
+        $temperature = max(0.0, min($temperature, 2.0));
+
+        $top_p = (float)($_ENV['GROQ_TOP_P'] ?? 1.0);
+        $top_p = max(0.0, min($top_p, 1.0));
+
+        return [
+            'api_url' => trim($_ENV['GROQ_API_URL'] ?? 'https://api.groq.com/openai/v1/chat/completions'),
+            'api_key' => trim($_ENV['GROQ_API_KEY'] ?? ($_ENV['GROQ_API'] ?? '')),
+            'model' => trim($_ENV['GROQ_MODEL'] ?? 'llama-3.1-8b-instant'),
+            'fallback_models' => $fallback_models,
+            'temperature' => $temperature,
+            'max_tokens' => $max_tokens,
+            'top_p' => $top_p,
+            'max_retries' => $max_retries,
+            'request_timeout' => max(5, (int)($_ENV['GROQ_REQUEST_TIMEOUT'] ?? 45)),
+            'connect_timeout' => max(3, (int)($_ENV['GROQ_CONNECT_TIMEOUT'] ?? 10)),
+            'system_prompt' => trim($_ENV['GROQ_SYSTEM_PROMPT'] ?? ''),
+        ];
+    }
+
+    private function executeGroqRequest($config, $payload) {
+        $response_headers = [];
+
+        $ch = curl_init($config['api_url']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $config['api_key'],
+        ]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+        curl_setopt($ch, CURLOPT_TIMEOUT, $config['request_timeout']);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $config['connect_timeout']);
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, function ($curl, $header_line) use (&$response_headers) {
+            $len = strlen($header_line);
+            $parts = explode(':', $header_line, 2);
+
+            if (count($parts) === 2) {
+                $name = strtolower(trim($parts[0]));
+                $value = trim($parts[1]);
+                $response_headers[$name] = $value;
+            }
+
+            return $len;
+        });
+
+        $body = curl_exec($ch);
+        $http_code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curl_error = curl_error($ch);
+        curl_close($ch);
+
+        return [
+            'http_code' => $http_code,
+            'body' => $body ?: '',
+            'curl_error' => $curl_error,
+            'headers' => $response_headers,
+        ];
+    }
+
+    private function resolveRetryDelaySeconds($attempt, $headers, $is_rate_limited) {
+        if (!empty($headers['retry-after'])) {
+            $retry_after = trim($headers['retry-after']);
+
+            if (is_numeric($retry_after)) {
+                return max(1.0, (float)$retry_after);
+            }
+
+            $retry_at = strtotime($retry_after);
+            if ($retry_at !== false) {
+                return max(1.0, (float)($retry_at - time()));
+            }
+        }
+
+        $base = $is_rate_limited ? 1.5 : 0.8;
+        $jitter = random_int(0, 500) / 1000;
+
+        return min(15.0, ($base * pow(2, $attempt)) + $jitter);
     }
 
     private function validateMedicineData($data) {

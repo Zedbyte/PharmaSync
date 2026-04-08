@@ -1,5 +1,9 @@
 {
   "devDependencies": {
     "tailwindcss": "^3.4.13"
+  },
+  "dependencies": {
+    "flowbite": "^4.0.1",
+    "highcharts": "^12.5.0"
   }
 }

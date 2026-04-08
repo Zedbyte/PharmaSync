@@ -1,10 +1,16 @@
 document.getElementById('groqForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent the default form submission
 
-    const groqRequest = document.getElementById('groqRequest').value; // Get the input value
+    const requestInput = document.getElementById('groqRequest');
+    const groqRequest = requestInput.value.trim(); // Get the input value
     const responseDiv = document.getElementById('responseContent'); // Get the response display area
     const userPrompt = document.getElementById('userPrompt');
     responseDiv.innerText = ''; // Clear previous content
+
+    if (!groqRequest) {
+        responseDiv.innerText = 'Please enter a prompt before sending.';
+        return;
+    }
 
     // Send the user's query to the backend
     fetch('/ask-groq', {
@@ -14,11 +20,14 @@ document.getElementById('groqForm').addEventListener('submit', function (event) 
         },
         body: new URLSearchParams({ groq_request: groqRequest }), // Send user query
     })
-        .then((response) => {
+        .then(async (response) => {
+            const data = await response.json().catch(() => ({}));
+
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(data.error || `HTTP error! status: ${response.status}`);
             }
-            return response.json(); // Expect JSON response from PHP
+
+            return data;
         })
         .then((data) => {
             if (data.choices && data.choices.length > 0) {
@@ -28,7 +37,7 @@ document.getElementById('groqForm').addEventListener('submit', function (event) 
                 // Parse and replace **bold** syntax with <strong> tags
                 const parsedText = parseText(responseText);
 
-                groqRequest.value = '';
+                requestInput.value = '';
                 typeText(userPrompt, groqRequest);
                 typeHTML(responseDiv, parsedText); // Call typing effect
             } else {
@@ -36,7 +45,7 @@ document.getElementById('groqForm').addEventListener('submit', function (event) 
             }
         })
         .catch((error) => {
-            responseDiv.innerText = 'Error: Unable to fetch data from GROQ API.';
+            responseDiv.innerText = error.message || 'Error: Unable to fetch data from GROQ API.';
             console.error('Error:', error);
         });
 });
